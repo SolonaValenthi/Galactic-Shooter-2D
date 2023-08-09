@@ -18,17 +18,34 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // fetch horizontal input from the input manager
+        // Fetch horizontal input from the input manager
         float horizontalInput = Input.GetAxis("Horizontal");
-        // fetch vertical input from the input manager
+        // Fetch vertical input from the input manager
         float verticalInput = Input.GetAxis("Vertical");
         // Vector3 to store player movement input
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
-        // new Vector3(1, 0, 0) * player input * 5 * real time
-        //transform.Translate(Vector3.right * horizontalInput * _speed * Time.deltaTime);
-        // new Vector3(0, 1, 0) * player input * 5 * real time
-        //transform.Translate(Vector3.up * verticalInput * _speed * Time.deltaTime);
+        // Vector3(playerinput, playerInput, 0) * 3.5f * real time
         transform.Translate(direction * _speed * Time.deltaTime);
+
+        // Restrict player movement on y axis
+        if (transform.position.y >= 2)
+        {
+            transform.position = new Vector3(transform.position.x, 2, 0);
+        }
+        else if (transform.position.y <= -3.8f)
+        {
+            transform.position = new Vector3(transform.position.x, -3.8f, 0);
+        }
+
+        // Wrap player to other side when moving off-screen
+        if (transform.position.x > 11.3f)
+        {
+            transform.position = new Vector3(-11.3f, transform.position.y, 0);
+        }
+        else if (transform.position.x < -11.3f)
+        {
+            transform.position = new Vector3(11.3f, transform.position.y, 0);
+        }
     }
 }
