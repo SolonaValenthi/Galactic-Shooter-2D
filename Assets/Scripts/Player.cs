@@ -22,10 +22,13 @@ public class Player : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         // fetch vertical input from the input manager
         float verticalInput = Input.GetAxis("Vertical");
+        // Vector3 to store player movement input
+        Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
         // new Vector3(1, 0, 0) * player input * 5 * real time
-        transform.Translate(Vector3.right * horizontalInput * _speed * Time.deltaTime);
+        //transform.Translate(Vector3.right * horizontalInput * _speed * Time.deltaTime);
         // new Vector3(0, 1, 0) * player input * 5 * real time
-        transform.Translate(Vector3.up * verticalInput * _speed * Time.deltaTime);
+        //transform.Translate(Vector3.up * verticalInput * _speed * Time.deltaTime);
+        transform.Translate(direction * _speed * Time.deltaTime);
     }
 }
