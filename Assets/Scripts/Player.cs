@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _laserPrefab;
 
+    private float _offest = 0.8f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,9 +24,11 @@ public class Player : MonoBehaviour
     {
         CalculateMovement();
 
+        Vector3 laserOffset = new Vector3(0, _offest, 0);
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+            Instantiate(_laserPrefab, transform.position + laserOffset, Quaternion.identity);
         }
     }
 
