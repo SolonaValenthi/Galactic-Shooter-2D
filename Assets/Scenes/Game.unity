@@ -213,7 +213,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &135098815
 MonoBehaviour:
@@ -231,6 +231,7 @@ MonoBehaviour:
   _laserPrefab: {fileID: 2468182553236780734, guid: 1f884b10af8492043ad2e98abd263a2f,
     type: 3}
   _fireRate: 0.15
+  _lives: 3
 --- !u!1 &632865955
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,17 +417,17 @@ PrefabInstance:
     - target: {fileID: 3292597004659243814, guid: 21dc4303193221c44a876d9db370224b,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3292597004659243814, guid: 21dc4303193221c44a876d9db370224b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.00999999
+      value: 1.512
       objectReference: {fileID: 0}
     - target: {fileID: 3292597004659243814, guid: 21dc4303193221c44a876d9db370224b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.13
+      value: 3.173
       objectReference: {fileID: 0}
     - target: {fileID: 3292597004659243814, guid: 21dc4303193221c44a876d9db370224b,
         type: 3}
