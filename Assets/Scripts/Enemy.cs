@@ -22,10 +22,21 @@ public class Enemy : MonoBehaviour
         
         if (transform.position.y < -6)
         {
-            _spawnRange = Random.Range(-12, 12);
+            _spawnRange = Random.Range(-9.0f, 9.0f);
             transform.position = new Vector3(_spawnRange, 8, 0);
+        }
+    }
 
-            Debug.Log("x spawn pos set to" + _spawnRange);
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+        }
+        else if (other.CompareTag("Laser"))
+        {
+            Destroy(other.gameObject);
+            Destroy(gameObject);
         }
     }
 }
