@@ -31,12 +31,20 @@ public class Enemy : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Destroy(gameObject);
+            Player player = other.GetComponent<Player>();
+
+            if (player != null)
+            {
+                player.Damage();
+            }
+            
+            Destroy(this.gameObject);
         }
-        else if (other.CompareTag("Laser"))
+
+        if (other.CompareTag("Laser"))
         {
             Destroy(other.gameObject);
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
     }
 }
