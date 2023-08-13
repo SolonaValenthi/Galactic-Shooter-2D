@@ -22,7 +22,7 @@ public class Laser : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        else if (transform.position.x < -5)
+        else if (transform.position.y < -5)
         {
             Destroy(this.gameObject);
         }
