@@ -11,7 +11,7 @@ public class SpawnManager : MonoBehaviour
 
     private bool _stopSpawning = false;
 
-    private WaitForSeconds _spawnTime = new WaitForSeconds(5.0f);
+    private WaitForSeconds _spawnTime = new WaitForSeconds(1.0f);
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +33,6 @@ public class SpawnManager : MonoBehaviour
             GameObject newEnemy = Instantiate(_enemyBasic, spawnPos, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
             yield return _spawnTime;
-
         }
     }
 
