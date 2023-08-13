@@ -16,11 +16,13 @@ public class Player : MonoBehaviour
 
     private float _offest = 0.8f;
     private float _canFire = -1f;
+    private SpawnManager _spawnManager;
     // Start is called before the first frame update
     void Start()
     {
         // Set current position = new position (0, 0, 0)
         transform.position = new Vector3(0, 0, 0);
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
     }
 
     // Update is called once per frame
@@ -78,6 +80,7 @@ public class Player : MonoBehaviour
 
         if ( _lives < 1)
         {
+            _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
         }
     }

@@ -6,6 +6,10 @@ public class SpawnManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject _enemyBasic;
+    [SerializeField]
+    private GameObject _enemyContainer;
+
+    private bool _stopSpawning = false;
 
     private WaitForSeconds _spawnTime = new WaitForSeconds(5.0f);
 
@@ -23,10 +27,16 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnRoutine()
     {
-        while (true)
-        {
+        while (_stopSpawning == false)
+        {        
+            GameObject newEnemy = Instantiate(_enemyBasic);
+            newEnemy.transform.parent = _enemyContainer.transform;
             yield return _spawnTime;
-            Instantiate(_enemyBasic);
         }
+    }
+
+    public void OnPlayerDeath()
+    {
+        _stopSpawning = true;
     }
 }
