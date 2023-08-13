@@ -12,7 +12,8 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        _spawnRange = Random.Range(-9.0f, 9.0f);
+        transform.position = new Vector3(_spawnRange, 8, 0);
     }
 
     // Update is called once per frame
