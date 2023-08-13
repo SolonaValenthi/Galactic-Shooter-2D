@@ -28,10 +28,12 @@ public class SpawnManager : MonoBehaviour
     IEnumerator SpawnRoutine()
     {
         while (_stopSpawning == false)
-        {        
-            GameObject newEnemy = Instantiate(_enemyBasic);
+        {
+            Vector3 spawnPos = new Vector3(Random.Range(-9.0f, 9.0f), 8, 0);
+            GameObject newEnemy = Instantiate(_enemyBasic, spawnPos, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
             yield return _spawnTime;
+
         }
     }
 
