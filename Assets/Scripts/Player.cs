@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _lives = 3;
 
-    private float _offest = 0.8f;
+    private float _offest = 1.05f;
     private float _canFire = -1f;
     private SpawnManager _spawnManager;
     // Start is called before the first frame update
@@ -46,9 +46,9 @@ public class Player : MonoBehaviour
 
         transform.Translate(direction * _speed * Time.deltaTime);
 
-        if (transform.position.y >= 2)
+        if (transform.position.y >= 0)
         {
-            transform.position = new Vector3(transform.position.x, 2, 0);
+            transform.position = new Vector3(transform.position.x, 0, 0);
         }
         else if (transform.position.y <= -3.8f)
         {
