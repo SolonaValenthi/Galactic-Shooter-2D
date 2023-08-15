@@ -15,10 +15,11 @@ public class Player : MonoBehaviour
     private int _lives = 3;
     [SerializeField]
     private GameObject _tripleShotPrefab;
+    [SerializeField]
+    private bool _tripleShotActive = false;
 
     private float _offset = 1.05f;
     private float _canFire = -1f;
-    private bool _tripleShotActive = false;
     private SpawnManager _spawnManager;
     private Vector3 _laserOffset;
     // Start is called before the first frame update
@@ -92,5 +93,17 @@ public class Player : MonoBehaviour
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
         }
+    }
+
+    public void ActivateTripleShot()
+    {
+        _tripleShotActive = true;
+        StartCoroutine(DeactivateTripleShot());
+    }
+
+    IEnumerator DeactivateTripleShot()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _tripleShotActive = false;
     }
 }

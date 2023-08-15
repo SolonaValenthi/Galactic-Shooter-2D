@@ -11,7 +11,7 @@ public class SpawnManager : MonoBehaviour
 
     private bool _stopSpawning = false;
 
-    private WaitForSeconds _spawnTime = new WaitForSeconds(1.0f);
+    private WaitForSeconds _spawnTime = new WaitForSeconds(5.0f);
 
     // Start is called before the first frame update
     void Start()
