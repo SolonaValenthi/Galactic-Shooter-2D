@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
     {
         transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
         
-        if (transform.position.y < -6)
+        if (transform.position.y < -7)
         {
             _spawnRange = Random.Range(-9.0f, 9.0f);
             transform.position = new Vector3(_spawnRange, 8, 0);

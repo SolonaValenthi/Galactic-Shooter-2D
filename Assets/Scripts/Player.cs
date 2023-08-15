@@ -14,15 +14,17 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _lives = 3;
 
-    private float _offest = 1.05f;
+    private float _offset = 1.05f;
     private float _canFire = -1f;
     private SpawnManager _spawnManager;
+    private Vector3 _laserOffset;
     // Start is called before the first frame update
     void Start()
     {
         // Set current position = new position (0, 0, 0)
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+        _laserOffset = new Vector3(0, _offset, 0);
     }
 
     // Update is called once per frame
@@ -36,8 +38,6 @@ public class Player : MonoBehaviour
         }
     }
 
-
-
     void CalculateMovement()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
@@ -50,9 +50,9 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, 0, 0);
         }
-        else if (transform.position.y <= -3.8f)
+        else if (transform.position.y <= -4.8f)
         {
-            transform.position = new Vector3(transform.position.x, -3.8f, 0);
+            transform.position = new Vector3(transform.position.x, -4.8f, 0);
         }
 
         // horizontal wrap
@@ -68,10 +68,8 @@ public class Player : MonoBehaviour
 
     void FireLaser()
     {
-        Vector3 laserOffset = new Vector3(0, _offest, 0);
-
         _canFire = Time.time + _fireRate;
-        Instantiate(_laserPrefab, transform.position + laserOffset, Quaternion.identity);
+        Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
     }
 
     public void Damage()
