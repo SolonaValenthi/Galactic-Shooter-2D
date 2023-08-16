@@ -565,10 +565,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f41b3bdffe8f58428af1d81349eb5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyBasic: {fileID: 5729218059076540325, guid: 21dc4303193221c44a876d9db370224b,
+  _enemyBasic: {fileID: 5729218059076540325, guid: 5ada96081eed7c64793abf8f6a786fb2,
     type: 3}
   _enemyContainer: {fileID: 421063456}
-  _tripleShot: {fileID: 3864236032440819159, guid: 7fdfdee9c1d3ae84eabbce5a8057f2a9,
+  _tripleShot: {fileID: 3864236032440819159, guid: 21b2bbf1d3288da40b47cd87d275eb53,
     type: 3}
 --- !u!4 &1927561165
 Transform:
