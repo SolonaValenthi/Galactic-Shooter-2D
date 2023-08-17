@@ -568,8 +568,10 @@ MonoBehaviour:
   _enemyBasic: {fileID: 5729218059076540325, guid: 5ada96081eed7c64793abf8f6a786fb2,
     type: 3}
   _enemyContainer: {fileID: 421063456}
-  _tripleShot: {fileID: 3864236032440819159, guid: 21b2bbf1d3288da40b47cd87d275eb53,
-    type: 3}
+  _powerups:
+  - {fileID: 3864236032440819159, guid: 21b2bbf1d3288da40b47cd87d275eb53, type: 3}
+  - {fileID: 6457033654757454521, guid: c941c0063e3fc0e4cb162b88adbfaa2c, type: 3}
+  - {fileID: 0}
 --- !u!4 &1927561165
 Transform:
   m_ObjectHideFlags: 0

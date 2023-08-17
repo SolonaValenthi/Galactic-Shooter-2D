@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Initialize speed variable
     [SerializeField]
-    private float _speed = 3.5f;
+    private float _speed = 5.0f;
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
@@ -25,7 +24,6 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Set current position = new position (0, 0, 0)
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _laserOffset = new Vector3(0, _offset, 0);
@@ -105,5 +103,17 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5.0f);
         _tripleShotActive = false;
+    }
+
+    public void ActivateSpeedBoost()
+    {
+        _speed = 8.5f;
+        StartCoroutine(DeactivateSpeedBoost());
+    }
+
+    IEnumerator DeactivateSpeedBoost()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _speed = 5.0f;
     }
 }
