@@ -16,6 +16,10 @@ public class Player : MonoBehaviour
     private GameObject _tripleShotPrefab;
     [SerializeField]
     private bool _tripleShotActive = false;
+    [SerializeField]
+    private bool _shieldsActive = false;
+    [SerializeField]
+    private GameObject _playerShield;
 
     private float _offset = 1.05f;
     private float _canFire = -1f;
@@ -84,7 +88,14 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        _lives--;
+        if (_shieldsActive == true)
+        {
+            _shieldsActive = false;
+            _playerShield.SetActive(false);
+            return;
+        }
+
+            _lives--;
 
         if ( _lives < 1)
         {
@@ -115,5 +126,11 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5.0f);
         _speed = 5.0f;
+    }
+
+    public void ActivateShield()
+    {
+        _playerShield.SetActive(true);
+        _shieldsActive = true;
     }
 }

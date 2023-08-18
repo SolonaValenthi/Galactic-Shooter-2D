@@ -37,7 +37,7 @@ public class Powerup : MonoBehaviour
                         player.ActivateSpeedBoost();
                         break;
                     case 2:
-                        Debug.Log("shields collected");
+                        player.ActivateShield();
                         break;
                     default:
                         Debug.Log("Invalid ID assigned");
