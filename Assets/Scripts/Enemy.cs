@@ -8,6 +8,12 @@ public class Enemy : MonoBehaviour
     private float _enemySpeed = 4.0f;
 
     private float _spawnRange;
+    private Player _player;
+
+    private void Start()
+    {
+        _player = GameObject.Find("Player").GetComponent<Player>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -25,11 +31,11 @@ public class Enemy : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Player player = other.GetComponent<Player>();
+            //Player player = other.GetComponent<Player>();
 
-            if (player != null)
+            if (_player != null)
             {
-                player.Damage();
+                _player.Damage();
             }
             
             Destroy(this.gameObject);
@@ -37,6 +43,11 @@ public class Enemy : MonoBehaviour
 
         if (other.CompareTag("Laser"))
         {
+            if (_player != null)
+            {
+                _player.AddScore(10);
+            }
+            
             Destroy(other.gameObject);
             Destroy(this.gameObject);
         }

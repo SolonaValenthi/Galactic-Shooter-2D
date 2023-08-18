@@ -20,16 +20,20 @@ public class Player : MonoBehaviour
     private bool _shieldsActive = false;
     [SerializeField]
     private GameObject _playerShield;
+    [SerializeField]
+    private int _score = 0;
 
     private float _offset = 1.05f;
     private float _canFire = -1f;
     private SpawnManager _spawnManager;
+    private UIManager _uiManager;
     private Vector3 _laserOffset;
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+        _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
         _laserOffset = new Vector3(0, _offset, 0);
     }
 
@@ -132,5 +136,11 @@ public class Player : MonoBehaviour
     {
         _playerShield.SetActive(true);
         _shieldsActive = true;
+    }
+
+    public void AddScore(int points)
+    {
+        _score += 10;
+        _uiManager.UpdateScore(_score);
     }
 }
