@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -13,11 +14,14 @@ public class UIManager : MonoBehaviour
     private Image _livesDisplay;
     [SerializeField]
     private Text _gameOverText;
+    [SerializeField]
+    private Text _restartText;
 
     // Start is called before the first frame update
     void Start()
     {
         _gameOverText.gameObject.SetActive(false);
+        _restartText.gameObject.SetActive(false);
         _livesDisplay.sprite = _liveSprites[3];
         _scoreText.text = "Score: " + 0;
     }
@@ -25,7 +29,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     public void UpdateScore(int scoreToAdd)
@@ -39,12 +43,18 @@ public class UIManager : MonoBehaviour
         
         if (currentLives == 0)
         {
-            _gameOverText.gameObject.SetActive(true);
-            StartCoroutine(GameOverSequence());
+            GameOverSequence();
         }
     }
 
-    IEnumerator GameOverSequence()
+    void GameOverSequence()
+    {
+        _gameOverText.gameObject.SetActive(true);
+        _restartText.gameObject.SetActive(true);
+        StartCoroutine(GameOverRoutine());
+    }
+
+    IEnumerator GameOverRoutine()
     {
         while (true)
         {

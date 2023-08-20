@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     private float _canFire = -1f;
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
+    private GameManager _gameManager;
     private Vector3 _laserOffset;
     // Start is called before the first frame update
     void Start()
@@ -34,6 +35,7 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
+        _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         _laserOffset = new Vector3(0, _offset, 0);
     }
 
@@ -105,6 +107,7 @@ public class Player : MonoBehaviour
         if ( _lives < 1)
         {
             _spawnManager.OnPlayerDeath();
+            _gameManager.GameOver();
             Destroy(this.gameObject);
         }
     }
