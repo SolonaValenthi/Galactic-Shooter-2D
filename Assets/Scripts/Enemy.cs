@@ -10,9 +10,21 @@ public class Enemy : MonoBehaviour
     private float _spawnRange;
     private Player _player;
 
+    Animator _deathAnim;
+    BoxCollider2D _enemyCollider;
+
     private void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
+        _deathAnim = gameObject.GetComponent<Animator>();
+        _enemyCollider = gameObject.GetComponent<BoxCollider2D>();
+
+        if (_player == null)
+        {
+            Debug.Log("Unable to set player");
+        }
+
+
     }
 
     // Update is called once per frame
@@ -37,8 +49,8 @@ public class Enemy : MonoBehaviour
             {
                 _player.Damage();
             }
-            
-            Destroy(this.gameObject);
+
+            DeathSequence();
         }
 
         if (other.CompareTag("Laser"))
@@ -47,9 +59,17 @@ public class Enemy : MonoBehaviour
             {
                 _player.AddScore(10);
             }
-            
+
+            DeathSequence();
             Destroy(other.gameObject);
-            Destroy(this.gameObject);
         }
+    }
+
+    private void DeathSequence()
+    {
+        Destroy(this._enemyCollider);
+        _deathAnim.SetTrigger("OnEnemyDeath");
+        _enemySpeed = 0f;
+        Destroy(this.gameObject, 2.4f);
     }
 }
