@@ -10,6 +10,7 @@ TagManager:
   - SpeedBoost
   - Shield
   - Asteroid
+  - Explosion
   layers:
   - Default
   - TransparentFX

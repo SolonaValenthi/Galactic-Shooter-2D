@@ -22,6 +22,10 @@ public class Player : MonoBehaviour
     private GameObject _playerShield;
     [SerializeField]
     private int _score = 0;
+    [SerializeField]
+    private GameObject _rightDmg;
+    [SerializeField]
+    private GameObject _leftDmg;
 
     private float _offset = 1.05f;
     private float _canFire = -1f;
@@ -101,14 +105,43 @@ public class Player : MonoBehaviour
             return;
         }
 
-            _lives--;
+        _lives--;
         _uiManager.UpdateLives(_lives);
+        DamageEngine();
 
         if ( _lives < 1)
         {
             _spawnManager.OnPlayerDeath();
             _gameManager.GameOver();
             Destroy(this.gameObject);
+        }
+    }
+
+    public void DamageEngine()
+    {
+        int _engineSelection = Random.Range(0, 2);
+
+        if (_engineSelection == 0)
+        {
+            if (_rightDmg.activeInHierarchy == false)
+            {
+                _rightDmg.SetActive(true);
+            }
+            else
+            {
+                _leftDmg.SetActive(true);
+            }
+        }
+        else if (_engineSelection == 1)
+        {
+            if (_leftDmg.activeInHierarchy == false)
+            {
+                _leftDmg.SetActive(true);
+            }
+            else
+            {
+                _rightDmg.SetActive(true);
+            }
         }
     }
 
