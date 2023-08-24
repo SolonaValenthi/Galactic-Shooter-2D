@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
 
     private float _spawnRange;
     private Player _player;
+    private AudioManager _audioManager;
 
     Animator _deathAnim;
     BoxCollider2D _enemyCollider;
@@ -18,13 +19,24 @@ public class Enemy : MonoBehaviour
         _player = GameObject.Find("Player").GetComponent<Player>();
         _deathAnim = gameObject.GetComponent<Animator>();
         _enemyCollider = gameObject.GetComponent<BoxCollider2D>();
+        _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
 
         if (_player == null)
         {
-            Debug.Log("Unable to set player");
+            Debug.LogError("Enemy player reference is NULL!");
         }
-
-
+        if (_deathAnim == null)
+        {
+            Debug.LogError("Enemy animator reference is NULL!");
+        }
+        if (_enemyCollider == null)
+        {
+            Debug.LogError("Enemy collider reference is NULL!");
+        }
+        if (_audioManager == null)
+        {
+            Debug.LogError("Enemy audio manager reference is NULL!");
+        }
     }
 
     // Update is called once per frame
@@ -70,6 +82,7 @@ public class Enemy : MonoBehaviour
         Destroy(this._enemyCollider);
         _deathAnim.SetTrigger("OnEnemyDeath");
         _enemySpeed = 0f;
+        _audioManager.Explosion();
         Destroy(this.gameObject, 2.4f);
     }
 }

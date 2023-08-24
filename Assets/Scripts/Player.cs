@@ -26,6 +26,10 @@ public class Player : MonoBehaviour
     private GameObject _rightDmg;
     [SerializeField]
     private GameObject _leftDmg;
+    [SerializeField]
+    private AudioClip _laserClip;
+    [SerializeField]
+    private GameObject _explosion;
 
     private float _offset = 1.05f;
     private float _canFire = -1f;
@@ -33,6 +37,8 @@ public class Player : MonoBehaviour
     private UIManager _uiManager;
     private GameManager _gameManager;
     private Vector3 _laserOffset;
+
+    AudioSource _playerAudio;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +47,24 @@ public class Player : MonoBehaviour
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         _laserOffset = new Vector3(0, _offset, 0);
+        _playerAudio = gameObject.GetComponent<AudioSource>();
+
+        if (_spawnManager == null)
+        {
+            Debug.LogError("Player spawn manager reference is NULL!");
+        }
+        if (_uiManager == null)
+        {
+            Debug.LogError("Player UI manager reference is NULL!");
+        }
+        if (_gameManager == null)
+        {
+            Debug.LogError("Player game manager reference is NULL!");
+        }
+        if (_playerAudio == null)
+        {
+            Debug.LogError("Player audio source reference is NULL!");
+        }
     }
 
     // Update is called once per frame
@@ -93,7 +117,9 @@ public class Player : MonoBehaviour
         else
         {
             Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
-        }     
+        }
+
+        _playerAudio.PlayOneShot(_laserClip);
     }
 
     public void Damage()
@@ -113,6 +139,7 @@ public class Player : MonoBehaviour
         {
             _spawnManager.OnPlayerDeath();
             _gameManager.GameOver();
+            Instantiate(_explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
     }

@@ -9,6 +9,18 @@ public class Powerup : MonoBehaviour
 
     [SerializeField] // 0 = triple shot, 1 = speed boost, 2 = shields
     private int powerupID;
+    [SerializeField]
+    private AudioManager _audioManager;
+
+    private void Start()
+    {
+        _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+
+        if (_audioManager == null)
+        {
+            Debug.LogError("Powerup audio manager reference is NULL!");
+        }
+    }
 
     // Update is called once per frame
     void Update()
@@ -44,7 +56,7 @@ public class Powerup : MonoBehaviour
                         break;
                 }
             }
-     
+            _audioManager.PowerUp();   
             Destroy(this.gameObject);
         }
     }
