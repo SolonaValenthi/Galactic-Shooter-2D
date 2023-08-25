@@ -6,8 +6,11 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField]
     private float _enemySpeed = 4.0f;
+    [SerializeField]
+    private GameObject _laserPrefab;
 
     private float _spawnRange;
+    private float _canFire;
     private Player _player;
     private AudioManager _audioManager;
 
@@ -20,6 +23,7 @@ public class Enemy : MonoBehaviour
         _deathAnim = gameObject.GetComponent<Animator>();
         _enemyCollider = gameObject.GetComponent<BoxCollider2D>();
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+        _canFire = Random.Range(3, 6);
 
         if (_player == null)
         {
@@ -49,14 +53,17 @@ public class Enemy : MonoBehaviour
             _spawnRange = Random.Range(-9.0f, 9.0f);
             transform.position = new Vector3(_spawnRange, 8, 0);
         }
+
+        if (Time.time > _canFire)
+        {
+            EnemyFire();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            //Player player = other.GetComponent<Player>();
-
             if (_player != null)
             {
                 _player.Damage();
@@ -84,5 +91,11 @@ public class Enemy : MonoBehaviour
         _enemySpeed = 0f;
         _audioManager.Explosion();
         Destroy(this.gameObject, 2.4f);
+    }
+
+    public void EnemyFire()
+    {
+        _canFire = Time.time + Random.Range(3, 6);
+        Instantiate(_laserPrefab, transform.position, Quaternion.Euler(0, 0, 180));
     }
 }
