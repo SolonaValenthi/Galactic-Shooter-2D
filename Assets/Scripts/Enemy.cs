@@ -11,8 +11,12 @@ public class Enemy : MonoBehaviour
 
     private float _spawnRange;
     private float _canFire;
+    private float _offset = -1.3f;
+    private bool _isDead = false;
     private Player _player;
     private AudioManager _audioManager;
+    private GameObject _playerObj;
+    private Vector3 _laserOffset;
 
     Animator _deathAnim;
     BoxCollider2D _enemyCollider;
@@ -24,6 +28,8 @@ public class Enemy : MonoBehaviour
         _enemyCollider = gameObject.GetComponent<BoxCollider2D>();
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         _canFire = Random.Range(3, 6);
+        _playerObj = GameObject.Find("Player");
+        _laserOffset = new Vector3(0, _offset, 0);
 
         if (_player == null)
         {
@@ -54,7 +60,7 @@ public class Enemy : MonoBehaviour
             transform.position = new Vector3(_spawnRange, 8, 0);
         }
 
-        if (Time.time > _canFire)
+        if (Time.time > _canFire && _isDead == false)
         {
             EnemyFire();
         }
@@ -87,6 +93,7 @@ public class Enemy : MonoBehaviour
     private void DeathSequence()
     {
         Destroy(this._enemyCollider);
+        _isDead = true;
         _deathAnim.SetTrigger("OnEnemyDeath");
         _enemySpeed = 0f;
         _audioManager.Explosion();
@@ -95,7 +102,9 @@ public class Enemy : MonoBehaviour
 
     public void EnemyFire()
     {
+        Vector3 targetPos = _playerObj.transform.position - transform.position;
+        float fireAngle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg - 90; 
         _canFire = Time.time + Random.Range(3, 6);
-        Instantiate(_laserPrefab, transform.position, Quaternion.Euler(0, 0, 180));
+        Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.Euler(Vector3.forward * fireAngle));
     }
 }
