@@ -52,17 +52,22 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
-        
-        if (transform.position.y < -7)
-        {
-            _spawnRange = Random.Range(-9.0f, 9.0f);
-            transform.position = new Vector3(_spawnRange, 8, 0);
-        }
+        EnemyMovement();
 
         if (Time.time > _canFire && _isDead == false)
         {
             EnemyFire();
+        }
+    }
+
+    private void EnemyMovement()
+    {
+        transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
+
+        if (transform.position.y < -7)
+        {
+            _spawnRange = Random.Range(-9.0f, 9.0f);
+            transform.position = new Vector3(_spawnRange, 8, 0);
         }
     }
 
@@ -102,9 +107,12 @@ public class Enemy : MonoBehaviour
 
     public void EnemyFire()
     {
-        Vector3 targetPos = _playerObj.transform.position - transform.position;
-        float fireAngle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg - 90; 
-        _canFire = Time.time + Random.Range(3, 6);
-        Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.Euler(Vector3.forward * fireAngle));
+        if (_playerObj != null)
+        {
+            Vector3 targetPos = _playerObj.transform.position - transform.position;
+            float fireAngle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg - 90;
+            _canFire = Time.time + Random.Range(3, 6);
+            Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.Euler(Vector3.forward * fireAngle));
+        }
     }
 }
