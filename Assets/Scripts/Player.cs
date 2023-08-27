@@ -109,17 +109,19 @@ public class Player : MonoBehaviour
     void FireLaser()
     {
         _canFire = Time.time + _fireRate;
-
-        if (_tripleShotActive == true)
+        if (_gameManager.isPaused == false)
         {
-            Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
-        }
-        else
-        {
-            Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
-        }
+            if (_tripleShotActive == true)
+            {
+                Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+            }
+            else
+            {
+                Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
+            }
 
-        _playerAudio.PlayOneShot(_laserClip);
+            _playerAudio.PlayOneShot(_laserClip);
+        }
     }
 
     public void Damage()

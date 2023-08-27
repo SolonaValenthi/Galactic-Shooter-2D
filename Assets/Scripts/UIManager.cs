@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void UpdateScore(int scoreToAdd)
@@ -40,7 +40,7 @@ public class UIManager : MonoBehaviour
     public void UpdateLives(int currentLives)
     {
         _livesDisplay.sprite = _liveSprites[currentLives];
-        
+
         if (currentLives == 0)
         {
             GameOverSequence();
