@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     private float _spawnRange;
     private float _canFire;
     private float _offset = -1.3f;
+    private float _playerDeviation;
     private bool _isDead = false;
     private Player _player;
     private AudioManager _audioManager;
@@ -54,7 +55,12 @@ public class Enemy : MonoBehaviour
     {
         EnemyMovement();
 
-        if (Time.time > _canFire && _isDead == false)
+        if (_playerObj != null)
+        {
+            _playerDeviation = transform.position.y - _playerObj.transform.position.y;
+        }      
+
+        if (Time.time > _canFire && _isDead == false && _playerDeviation >= 1.3)
         {
             EnemyFire();
         }

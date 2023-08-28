@@ -30,6 +30,8 @@ public class Player : MonoBehaviour
     private AudioClip _laserClip;
     [SerializeField]
     private GameObject _explosion;
+    [SerializeField]
+    private GameObject _debrisPrefab;
 
     private float _offset = 1.05f;
     private float _canFire = -1f;
@@ -142,6 +144,7 @@ public class Player : MonoBehaviour
             _spawnManager.OnPlayerDeath();
             _gameManager.GameOver();
             Instantiate(_explosion, transform.position, Quaternion.identity);
+            Instantiate(_debrisPrefab, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
     }

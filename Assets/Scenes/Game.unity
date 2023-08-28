@@ -1903,6 +1903,8 @@ MonoBehaviour:
   _laserClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _explosion: {fileID: 4620905344678611944, guid: 0089de8db287e6140a153a1ba9ca6166,
     type: 3}
+  _debrisPrefab: {fileID: 17176875075301070, guid: f5a38777fbdcfac4db657231130aa346,
+    type: 3}
 --- !u!212 &1652883515
 SpriteRenderer:
   m_ObjectHideFlags: 0
