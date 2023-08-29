@@ -10,18 +10,12 @@ public class Explosion : MonoBehaviour
     void Start()
     {
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
-        
+
         if (_audioManager == null)
         {
             Debug.LogError("Explosion audio manager referece is NULL!");
         }
         _audioManager.Explosion();
         Destroy(this.gameObject, 2.37f);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

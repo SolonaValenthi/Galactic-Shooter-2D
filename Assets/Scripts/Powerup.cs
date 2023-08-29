@@ -6,7 +6,6 @@ public class Powerup : MonoBehaviour
 {
     [SerializeField]
     private float _moveSpeed = 3.0f;
-
     [SerializeField] // 0 = triple shot, 1 = speed boost, 2 = shields
     private int powerupID;
     [SerializeField]
@@ -52,7 +51,7 @@ public class Powerup : MonoBehaviour
                         player.ActivateShield();
                         break;
                     default:
-                        Debug.Log("Invalid ID assigned");
+                        Debug.LogError("Invalid ID assigned");
                         break;
                 }
             }

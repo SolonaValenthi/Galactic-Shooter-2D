@@ -12,7 +12,6 @@ public class PlayerDebris : MonoBehaviour
     private float _driftVariance;
     private Vector3 _driftDirection;
     
-
     // Start is called before the first frame update
     void Start()
     {

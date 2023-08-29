@@ -26,12 +26,6 @@ public class UIManager : MonoBehaviour
         _scoreText.text = "Score: " + 0;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void UpdateScore(int scoreToAdd)
     {
         _scoreText.text = "Score: " + scoreToAdd;

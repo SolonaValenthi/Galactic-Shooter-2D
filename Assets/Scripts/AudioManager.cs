@@ -24,12 +24,6 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void Explosion()
     {
         _gameAudio.PlayOneShot(_explosionSFX);

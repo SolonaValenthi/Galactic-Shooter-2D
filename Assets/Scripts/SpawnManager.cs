@@ -12,14 +12,7 @@ public class SpawnManager : MonoBehaviour
     private GameObject[] _powerups;
 
     private bool _stopSpawning = false;
-
     private WaitForSeconds _spawnTime = new WaitForSeconds(5.0f);
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     public void StartSpawning()
     {

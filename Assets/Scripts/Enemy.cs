@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
     private float _enemySpeed = 4.0f;
     [SerializeField]
     private GameObject _laserPrefab;
+    [SerializeField]
+    private AudioClip _laserClip;
 
     private float _spawnRange;
     private float _canFire;
@@ -20,6 +22,7 @@ public class Enemy : MonoBehaviour
     private Vector3 _laserOffset;
 
     Animator _deathAnim;
+    AudioSource _enemyAudio;
     BoxCollider2D _enemyCollider;
 
     private void Start()
@@ -27,6 +30,7 @@ public class Enemy : MonoBehaviour
         _player = GameObject.Find("Player").GetComponent<Player>();
         _deathAnim = gameObject.GetComponent<Animator>();
         _enemyCollider = gameObject.GetComponent<BoxCollider2D>();
+        _enemyAudio = gameObject.GetComponent<AudioSource>();
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         _canFire = Random.Range(3, 6);
         _playerObj = GameObject.Find("Player");
@@ -47,6 +51,10 @@ public class Enemy : MonoBehaviour
         if (_audioManager == null)
         {
             Debug.LogError("Enemy audio manager reference is NULL!");
+        }
+        if (_enemyAudio == null)
+        {
+            Debug.LogError("Enemy audio source reference is NULL!");
         }
     }
 
@@ -119,6 +127,7 @@ public class Enemy : MonoBehaviour
             float fireAngle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg - 90;
             _canFire = Time.time + Random.Range(3, 6);
             Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.Euler(Vector3.forward * fireAngle));
+            _enemyAudio.PlayOneShot(_laserClip);
         }
     }
 }

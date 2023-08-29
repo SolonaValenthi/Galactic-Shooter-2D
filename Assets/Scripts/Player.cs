@@ -5,23 +5,15 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 5.0f;
+    private float _speed;
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
     private float _fireRate = 0.15f;
     [SerializeField]
-    private int _lives = 3;
-    [SerializeField]
     private GameObject _tripleShotPrefab;
     [SerializeField]
-    private bool _tripleShotActive = false;
-    [SerializeField]
-    private bool _shieldsActive = false;
-    [SerializeField]
     private GameObject _playerShield;
-    [SerializeField]
-    private int _score = 0;
     [SerializeField]
     private GameObject _rightDmg;
     [SerializeField]
@@ -33,8 +25,13 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _debrisPrefab;
 
+    private int _lives = 3;
+    private int _score = 0;
     private float _offset = 1.05f;
     private float _canFire = -1f;
+    private float _speedMulti;
+    private bool _tripleShotActive = false;
+    private bool _shieldsActive = false;
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
     private GameManager _gameManager;
@@ -45,10 +42,11 @@ public class Player : MonoBehaviour
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
+        _laserOffset = new Vector3(0, _offset, 0);
+        _speedMulti = 1.0f;
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
-        _laserOffset = new Vector3(0, _offset, 0);
         _playerAudio = gameObject.GetComponent<AudioSource>();
 
         if (_spawnManager == null)
@@ -86,7 +84,7 @@ public class Player : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
-        transform.Translate(direction * _speed * Time.deltaTime);
+        transform.Translate(direction * _speed * _speedMulti * Time.deltaTime);
 
         if (transform.position.y >= 0)
         {
@@ -151,6 +149,7 @@ public class Player : MonoBehaviour
 
     public void DamageEngine()
     {
+        // randomly select which engine is damaged first
         int _engineSelection = Random.Range(0, 2);
 
         if (_engineSelection == 0)
@@ -191,14 +190,14 @@ public class Player : MonoBehaviour
 
     public void ActivateSpeedBoost()
     {
-        _speed = 8.5f;
+        _speedMulti = 1.7f;
         StartCoroutine(DeactivateSpeedBoost());
     }
 
     IEnumerator DeactivateSpeedBoost()
     {
         yield return new WaitForSeconds(5.0f);
-        _speed = 5.0f;
+        _speedMulti = 1.0f;
     }
 
     public void ActivateShield()
