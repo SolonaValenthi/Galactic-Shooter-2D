@@ -7,9 +7,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed;
     [SerializeField]
-    private GameObject _laserPrefab;
-    [SerializeField]
     private float _fireRate = 0.15f;
+    [SerializeField]
+    private GameObject _laserPrefab;
     [SerializeField]
     private GameObject _tripleShotPrefab;
     [SerializeField]
@@ -19,11 +19,13 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _leftDmg;
     [SerializeField]
-    private AudioClip _laserClip;
-    [SerializeField]
     private GameObject _explosion;
     [SerializeField]
     private GameObject _debrisPrefab;
+    [SerializeField]
+    private GameObject _thruster;
+    [SerializeField]
+    private AudioClip _laserClip;
     [SerializeField]
     private Vector3 _laserOffset;
 
@@ -31,6 +33,7 @@ public class Player : MonoBehaviour
     private int _score = 0;
     private float _canFire = -1f;
     private float _speedMulti;
+    private float _thrustScale;
     private bool _tripleShotActive = false;
     private bool _shieldsActive = false;
     private SpawnManager _spawnManager;
@@ -38,10 +41,12 @@ public class Player : MonoBehaviour
     private GameManager _gameManager;
 
     AudioSource _playerAudio;
+
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
+        _thrustScale = 0.1f;
         _speedMulti = 1.0f;
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
@@ -70,6 +75,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         CalculateMovement();
+        ThrusterControl();
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
@@ -103,6 +109,25 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(11.3f, transform.position.y, 0);
         }
+    }
+
+    void ThrusterControl()
+    {
+        _thrustScale = Mathf.Clamp(_thrustScale, 0.1f, 1.0f);
+        _speedMulti = Mathf.Clamp(_speedMulti, 1.0f, 2.0f);
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            _thrustScale += 0.02f;
+            _speedMulti += 0.02f;
+        }
+        else
+        {
+            _thrustScale -= 0.02f;
+            _speedMulti -= 0.02f;
+        }
+
+        _thruster.transform.localScale = new Vector3(_thrustScale, 1, 1);
     }
 
     void FireLaser()
