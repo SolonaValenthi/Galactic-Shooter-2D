@@ -10,12 +10,12 @@ public class Asteroid : MonoBehaviour
     private float _rotationSpeed = 4.0f;
     private SpawnManager _spawnManager;
 
-    BoxCollider2D _asteroidCollider;
+    CircleCollider2D _asteroidCollider;
 
     // Start is called before the first frame update
     void Start()
     {
-        _asteroidCollider = gameObject.GetComponent<BoxCollider2D>();
+        _asteroidCollider = gameObject.GetComponent<CircleCollider2D>();
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
     }
 
@@ -30,7 +30,7 @@ public class Asteroid : MonoBehaviour
         if (other.CompareTag("Laser"))
         {
             Destroy(other.gameObject);
-            Destroy(this._asteroidCollider);
+            _asteroidCollider.enabled = false;
             Instantiate(_explosion, transform.position, Quaternion.identity);
             _spawnManager.StartSpawning();
             Destroy(this.gameObject, 0.25f);

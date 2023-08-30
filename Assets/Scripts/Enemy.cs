@@ -10,16 +10,16 @@ public class Enemy : MonoBehaviour
     private GameObject _laserPrefab;
     [SerializeField]
     private AudioClip _laserClip;
+    [SerializeField]
+    private Vector3 _laserOffset;
 
     private float _spawnRange;
     private float _canFire;
-    private float _offset = -1.3f;
     private float _playerDeviation;
     private bool _isDead = false;
     private Player _player;
     private AudioManager _audioManager;
     private GameObject _playerObj;
-    private Vector3 _laserOffset;
 
     Animator _deathAnim;
     AudioSource _enemyAudio;
@@ -34,7 +34,6 @@ public class Enemy : MonoBehaviour
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         _canFire = Random.Range(3, 6);
         _playerObj = GameObject.Find("Player");
-        _laserOffset = new Vector3(0, _offset, 0);
 
         if (_player == null)
         {
@@ -111,7 +110,7 @@ public class Enemy : MonoBehaviour
 
     private void DeathSequence()
     {
-        Destroy(this._enemyCollider);
+        _enemyCollider.enabled = false;
         _isDead = true;
         _deathAnim.SetTrigger("OnEnemyDeath");
         _enemySpeed = 0f;

@@ -24,10 +24,11 @@ public class Player : MonoBehaviour
     private GameObject _explosion;
     [SerializeField]
     private GameObject _debrisPrefab;
+    [SerializeField]
+    private Vector3 _laserOffset;
 
     private int _lives = 3;
     private int _score = 0;
-    private float _offset = 1.05f;
     private float _canFire = -1f;
     private float _speedMulti;
     private bool _tripleShotActive = false;
@@ -35,14 +36,12 @@ public class Player : MonoBehaviour
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
     private GameManager _gameManager;
-    private Vector3 _laserOffset;
 
     AudioSource _playerAudio;
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
-        _laserOffset = new Vector3(0, _offset, 0);
         _speedMulti = 1.0f;
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
