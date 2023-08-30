@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
 
     // DO NOT EDIT OUTSIDE THIS SCRIPT
     // VARIABLE FOR REFERENCE ONLY!!!
-    public bool isPaused;
+    public bool isPaused { get; private set; }
 
     private void Start()
     {

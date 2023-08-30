@@ -116,15 +116,18 @@ public class Player : MonoBehaviour
         _thrustScale = Mathf.Clamp(_thrustScale, 0.1f, 1.0f);
         _speedMulti = Mathf.Clamp(_speedMulti, 1.0f, 2.0f);
 
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (_gameManager.isPaused == false)
         {
-            _thrustScale += 0.02f;
-            _speedMulti += 0.02f;
-        }
-        else
-        {
-            _thrustScale -= 0.02f;
-            _speedMulti -= 0.02f;
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                _thrustScale += 0.02f;
+                _speedMulti += 0.02f;
+            }
+            else
+            {
+                _thrustScale -= 0.02f;
+                _speedMulti -= 0.02f;
+            }
         }
 
         _thruster.transform.localScale = new Vector3(_thrustScale, 1, 1);
