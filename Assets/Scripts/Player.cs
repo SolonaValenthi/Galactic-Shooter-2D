@@ -30,17 +30,20 @@ public class Player : MonoBehaviour
     private Vector3 _laserOffset;
 
     private int _lives = 3;
+    private int _shieldStrength;
     private int _score = 0;
     private float _canFire = -1f;
     private float _speedMulti;
     private float _thrustScale;
+    private float _blueValue;
+    private float _greenValue;
     private bool _tripleShotActive = false;
-    private bool _shieldsActive = false;
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
     private GameManager _gameManager;
 
     AudioSource _playerAudio;
+    SpriteRenderer _shieldRenderer;
 
     // Start is called before the first frame update
     void Start()
@@ -51,6 +54,7 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
+        _shieldRenderer = _playerShield.GetComponent<SpriteRenderer>();
         _playerAudio = gameObject.GetComponent<AudioSource>();
 
         if (_spawnManager == null)
@@ -153,10 +157,9 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if (_shieldsActive == true)
+        if (_shieldStrength > 0)
         {
-            _shieldsActive = false;
-            _playerShield.SetActive(false);
+            DamageShields();
             return;
         }
 
@@ -230,7 +233,35 @@ public class Player : MonoBehaviour
     public void ActivateShield()
     {
         _playerShield.SetActive(true);
-        _shieldsActive = true;
+        _shieldStrength = 3;
+        _greenValue = 1;
+        _blueValue = 1;
+        _shieldRenderer.color = new Color(1, _greenValue, _blueValue, 1);
+    }
+
+    public void DamageShields()
+    {
+        _shieldStrength--;
+
+        switch (_shieldStrength)
+        {
+            case 0:
+                _playerShield.SetActive(false);
+                break;
+            case 1:
+                _greenValue = 0;
+                break;
+            case 2:
+                _blueValue = 0;
+                _greenValue = 0.5f;
+                break;
+            default:
+                Debug.LogError("Invalid Shield Strength Detected.");
+                break;
+
+        }
+
+        _shieldRenderer.color = new Color(1, _greenValue, _blueValue, 1);
     }
 
     public void AddScore(int points)

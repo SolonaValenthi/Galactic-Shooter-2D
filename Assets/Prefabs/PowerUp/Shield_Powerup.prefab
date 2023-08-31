@@ -98,7 +98,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 3
-  powerupID: 2
+  _powerupID: 2
+  _audioManager: {fileID: 0}
 --- !u!50 &6274576004711441999
 Rigidbody2D:
   serializedVersion: 4
