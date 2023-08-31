@@ -73,6 +73,10 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("Player audio source reference is NULL!");
         }
+        if (_shieldRenderer == null)
+        {
+            Debug.LogError("Player shield renderer reference is NULL!");
+        }
     }
 
     // Update is called once per frame
@@ -258,7 +262,6 @@ public class Player : MonoBehaviour
             default:
                 Debug.LogError("Invalid Shield Strength Detected.");
                 break;
-
         }
 
         _shieldRenderer.color = new Color(1, _greenValue, _blueValue, 1);
