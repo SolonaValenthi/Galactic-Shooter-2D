@@ -161,6 +161,7 @@ public class Player : MonoBehaviour
             _playerAudio.PlayOneShot(_laserClip);
             StopCoroutine("ReplenishAmmo");
             UpdateAmmo();
+            _uiManager.UpdateAmmo(_ammoCount);
         }
     }
 
@@ -177,8 +178,9 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
         while (_ammoCount < 15)
         {
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
             _ammoCount++;
+            _uiManager.UpdateAmmo(_ammoCount);
         }
     }
 
