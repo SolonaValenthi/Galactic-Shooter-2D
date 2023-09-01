@@ -32,6 +32,8 @@ public class Player : MonoBehaviour
     private int _lives = 3;
     private int _shieldStrength;
     private int _score = 0;
+    [SerializeField]
+    private int _ammoCount = 15;
     private float _canFire = -1f;
     private float _speedMulti;
     private float _thrustScale;
@@ -144,7 +146,8 @@ public class Player : MonoBehaviour
     void FireLaser()
     {
         _canFire = Time.time + _fireRate;
-        if (_gameManager.isPaused == false)
+
+        if (_gameManager.isPaused == false && _ammoCount > 0)
         {
             if (_tripleShotActive == true)
             {
@@ -156,6 +159,26 @@ public class Player : MonoBehaviour
             }
 
             _playerAudio.PlayOneShot(_laserClip);
+            StopCoroutine("ReplenishAmmo");
+            UpdateAmmo();
+        }
+    }
+
+    private void UpdateAmmo()
+    {
+        _ammoCount = Mathf.Clamp(_ammoCount, 0, 15);
+        _ammoCount--;
+
+        StartCoroutine("ReplenishAmmo");
+    }
+
+    IEnumerator ReplenishAmmo()
+    {
+        yield return new WaitForSeconds(2.0f);
+        while (_ammoCount < 15)
+        {
+            yield return new WaitForSeconds(0.3f);
+            _ammoCount++;
         }
     }
 
@@ -213,7 +236,8 @@ public class Player : MonoBehaviour
     public void ActivateTripleShot()
     {
         _tripleShotActive = true;
-        StartCoroutine(DeactivateTripleShot());
+        StopCoroutine("DeactivateTripleShot");
+        StartCoroutine("DeactivateTripleShot");
     }
 
     IEnumerator DeactivateTripleShot()
