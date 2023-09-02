@@ -662,7 +662,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 5.700012, y: 140.8}
+  m_AnchoredPosition: {x: 5.699951, y: 140.79999}
   m_SizeDelta: {x: 271.73453, y: 294.16522}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &352335761
@@ -1977,7 +1977,6 @@ MonoBehaviour:
   _thruster: {fileID: 684452962}
   _laserClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _laserOffset: {x: 0, y: 1.05, z: 0}
-  _ammoCount: 15
 --- !u!212 &1652883515
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2418,6 +2417,7 @@ MonoBehaviour:
   - {fileID: 3864236032440819159, guid: 21b2bbf1d3288da40b47cd87d275eb53, type: 3}
   - {fileID: 6457033654757454521, guid: c941c0063e3fc0e4cb162b88adbfaa2c, type: 3}
   - {fileID: 6274576004711441993, guid: 6c4cdc097b3f10745836099e3fa75ebe, type: 3}
+  - {fileID: 8016352171792655580, guid: 734b6bc44f90b694ea55b3055dbba49d, type: 3}
 --- !u!4 &1927561165
 Transform:
   m_ObjectHideFlags: 0

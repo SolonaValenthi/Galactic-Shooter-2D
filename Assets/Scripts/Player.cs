@@ -32,7 +32,6 @@ public class Player : MonoBehaviour
     private int _lives = 3;
     private int _shieldStrength;
     private int _score = 0;
-    [SerializeField]
     private int _ammoCount = 15;
     private float _canFire = -1f;
     private float _speedMulti;
@@ -40,6 +39,7 @@ public class Player : MonoBehaviour
     private float _blueValue;
     private float _greenValue;
     private bool _tripleShotActive = false;
+    private bool _infinAmmoActive = false;
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
     private GameManager _gameManager;
@@ -159,8 +159,11 @@ public class Player : MonoBehaviour
             }
 
             _playerAudio.PlayOneShot(_laserClip);
-            StopCoroutine("ReplenishAmmo");
-            UpdateAmmo();          
+            if (_infinAmmoActive == false)
+            {
+                StopCoroutine("ReplenishAmmo");
+                UpdateAmmo();
+            }
         }
     }
 
@@ -267,6 +270,19 @@ public class Player : MonoBehaviour
         _greenValue = 1;
         _blueValue = 1;
         _shieldRenderer.color = new Color(1, _greenValue, _blueValue, 1);
+    }
+
+    public void ActivateInfinAmmo()
+    {
+        _infinAmmoActive = true;
+        StopCoroutine("DeactivateInfinAmmo");
+        StartCoroutine("DeactivateInfinAmmo");
+    }
+
+    IEnumerator DeactivateInfinAmmo()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _infinAmmoActive = false;
     }
 
     public void DamageShields()

@@ -12,6 +12,7 @@ TagManager:
   - Asteroid
   - Explosion
   - EnemyLaser
+  - AmmoBox
   layers:
   - Default
   - TransparentFX
