@@ -160,8 +160,7 @@ public class Player : MonoBehaviour
 
             _playerAudio.PlayOneShot(_laserClip);
             StopCoroutine("ReplenishAmmo");
-            UpdateAmmo();
-            _uiManager.UpdateAmmo(_ammoCount);
+            UpdateAmmo();          
         }
     }
 
@@ -170,6 +169,7 @@ public class Player : MonoBehaviour
         _ammoCount = Mathf.Clamp(_ammoCount, 0, 15);
         _ammoCount--;
 
+        _uiManager.UpdateAmmo(_ammoCount);
         StartCoroutine("ReplenishAmmo");
     }
 
