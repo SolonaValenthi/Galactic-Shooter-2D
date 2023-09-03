@@ -6,7 +6,7 @@ public class Powerup : MonoBehaviour
 {
     [SerializeField]
     private float _moveSpeed = 3.0f;
-    [SerializeField] // 0 = triple shot, 1 = speed boost, 2 = shields, 3 = ammo
+    [SerializeField] // 0 = triple shot, 1 = speed boost, 2 = shields, 3 = ammo, 4 = health
     private int _powerupID;
     [SerializeField]
     private AudioManager _audioManager;
@@ -52,6 +52,9 @@ public class Powerup : MonoBehaviour
                         break;
                     case 3:
                         player.ActivateInfinAmmo();
+                        break;
+                    case 4:
+                        player.HealPlayer();
                         break;
                     default:
                         Debug.LogError("Invalid ID assigned");

@@ -275,6 +275,9 @@ public class Player : MonoBehaviour
     public void ActivateInfinAmmo()
     {
         _infinAmmoActive = true;
+        _ammoCount = 15;
+        StopCoroutine("ReplenishAmmo");
+        _uiManager.UpdateAmmo(_ammoCount);
         StopCoroutine("DeactivateInfinAmmo");
         StartCoroutine("DeactivateInfinAmmo");
     }
@@ -283,6 +286,27 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5.0f);
         _infinAmmoActive = false;
+    }
+
+    public void HealPlayer()
+    {
+        if (_lives < 3)
+        {
+            _lives++;
+            _uiManager.UpdateLives(_lives);
+
+            if (_leftDmg.activeInHierarchy == true)
+            {
+                if (_rightDmg.activeInHierarchy == true)
+                {
+                    _rightDmg.SetActive(false);
+                }
+                else
+                {
+                    _leftDmg.SetActive(false);
+                }
+            }
+        }
     }
 
     public void DamageShields()
