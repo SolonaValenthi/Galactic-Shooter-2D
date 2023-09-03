@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 6274576004711441996}
   - component: {fileID: 6274576004711441997}
   - component: {fileID: 6274576004711441998}
+  - component: {fileID: 7775678949909066254}
   - component: {fileID: 6274576004711441999}
-  - component: {fileID: 6274576004711441992}
-  - component: {fileID: 6274576004711441987}
+  - component: {fileID: 1780999460670461884}
   m_Layer: 0
   m_Name: Shield_Powerup
   m_TagString: Shield
@@ -74,8 +74,8 @@ SpriteRenderer:
   m_SortingLayerID: -454961801
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e2f5f1638e62545a09c5d6e6d3643101, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: da7827e07df91954085191a8b442ac20, type: 3}
+  m_Color: {r: 0, g: 0.8392157, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -100,6 +100,22 @@ MonoBehaviour:
   _moveSpeed: 3
   _powerupID: 2
   _audioManager: {fileID: 0}
+--- !u!58 &7775678949909066254
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6274576004711441993}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1.3912075
 --- !u!50 &6274576004711441999
 Rigidbody2D:
   serializedVersion: 4
@@ -121,33 +137,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &6274576004711441992
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6274576004711441993}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.0074726343, y: 0.51202834}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.12, y: 5.12}
-    newSize: {x: 5.12, y: 5.12}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2.25545, y: 2.9401608}
-  m_EdgeRadius: 0
---- !u!95 &6274576004711441987
+--- !u!95 &1780999460670461884
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
