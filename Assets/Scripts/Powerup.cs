@@ -6,7 +6,7 @@ public class Powerup : MonoBehaviour
 {
     [SerializeField]
     private float _moveSpeed = 3.0f;
-    [SerializeField] // 0 = triple shot, 1 = speed boost, 2 = shields, 3 = ammo, 4 = health
+    [SerializeField] // 0 = triple shot, 1 = fuel, 2 = shields, 3 = ammo, 4 = health
     private int _powerupID;
     [SerializeField]
     private AudioManager _audioManager;
@@ -45,7 +45,7 @@ public class Powerup : MonoBehaviour
                         player.ActivateTripleShot();
                         break;
                     case 1:
-                        player.ActivateSpeedBoost();
+                        player.ReplenishFuel();
                         break;
                     case 2:
                         player.ActivateShield();

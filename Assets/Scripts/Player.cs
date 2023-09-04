@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
     private int _shieldStrength;
     private int _score = 0;
     private int _ammoCount = 15;
+    private float _fuel = 100;
     private float _canFire = -1f;
     private float _speedMulti;
     private float _thrustScale;
@@ -40,6 +41,7 @@ public class Player : MonoBehaviour
     private float _greenValue;
     private bool _tripleShotActive = false;
     private bool _infinAmmoActive = false;
+    private bool _thrusterOverheat = false;
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
     private GameManager _gameManager;
@@ -91,6 +93,11 @@ public class Player : MonoBehaviour
         {
             FireLaser();
         }
+
+        if (_fuel >= 100)
+        {
+            _thrusterOverheat = false;
+        }
     }
 
     void CalculateMovement()
@@ -125,18 +132,37 @@ public class Player : MonoBehaviour
     {
         _thrustScale = Mathf.Clamp(_thrustScale, 0.1f, 1.0f);
         _speedMulti = Mathf.Clamp(_speedMulti, 1.0f, 2.0f);
+        _fuel = Mathf.Clamp(_fuel, 0.0f, 100.0f);
 
         if (_gameManager.isPaused == false)
         {
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && _thrusterOverheat == false)
             {
                 _thrustScale += 0.02f;
                 _speedMulti += 0.02f;
+                _fuel -= 0.5f;
+                _uiManager.UpdateFuel(_fuel);
+
+                if (_fuel <= 0)
+                {
+                    _thrusterOverheat = true;
+                    _uiManager.ThrusterOverheat();
+                }
             }
             else
             {
                 _thrustScale -= 0.02f;
                 _speedMulti -= 0.02f;
+
+                if (_thrusterOverheat == true)
+                {
+                    _fuel += 0.05f;                
+                }
+                else
+                {
+                    _fuel += 0.1f;
+                }
+                _uiManager.UpdateFuel(_fuel);
             }
         }
 
@@ -159,6 +185,7 @@ public class Player : MonoBehaviour
             }
 
             _playerAudio.PlayOneShot(_laserClip);
+
             if (_infinAmmoActive == false)
             {
                 StopCoroutine("ReplenishAmmo");
@@ -251,16 +278,11 @@ public class Player : MonoBehaviour
         _tripleShotActive = false;
     }
 
-    public void ActivateSpeedBoost()
+    public void ReplenishFuel()
     {
-        _speedMulti = 1.7f;
-        StartCoroutine(DeactivateSpeedBoost());
-    }
-
-    IEnumerator DeactivateSpeedBoost()
-    {
-        yield return new WaitForSeconds(5.0f);
-        _speedMulti = 1.0f;
+        _thrusterOverheat = false;
+        _fuel = 100;
+        _uiManager.UpdateFuel(_fuel);
     }
 
     public void ActivateShield()
