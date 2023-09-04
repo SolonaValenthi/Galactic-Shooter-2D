@@ -295,7 +295,10 @@ public class Player : MonoBehaviour
             _lives++;
             _uiManager.UpdateLives(_lives);
 
-            if (_leftDmg.activeInHierarchy == true)
+            // randomly select which engine is repaired first
+            int _engineSelection = Random.Range(0, 2);
+
+            if (_engineSelection == 0)
             {
                 if (_rightDmg.activeInHierarchy == true)
                 {
@@ -304,6 +307,17 @@ public class Player : MonoBehaviour
                 else
                 {
                     _leftDmg.SetActive(false);
+                }
+            }
+            else if (_engineSelection == 1)
+            {
+                if (_leftDmg.activeInHierarchy == true)
+                {
+                    _leftDmg.SetActive(false);
+                }
+                else
+                {
+                    _rightDmg.SetActive(false);
                 }
             }
         }
