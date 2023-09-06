@@ -45,6 +45,7 @@ public class Player : MonoBehaviour
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
     private GameManager _gameManager;
+    private CameraShake _cameraShake;
 
     AudioSource _playerAudio;
     SpriteRenderer _shieldRenderer;
@@ -58,6 +59,7 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
+        _cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
         _shieldRenderer = _playerShield.GetComponent<SpriteRenderer>();
         _playerAudio = gameObject.GetComponent<AudioSource>();
 
@@ -72,6 +74,10 @@ public class Player : MonoBehaviour
         if (_gameManager == null)
         {
             Debug.LogError("Player game manager reference is NULL!");
+        }
+        if (_cameraShake == null)
+        {
+            Debug.LogError("Player camera shake reference is NULL!");
         }
         if (_playerAudio == null)
         {
@@ -225,6 +231,7 @@ public class Player : MonoBehaviour
         _lives--;
         _uiManager.UpdateLives(_lives);
         DamageEngine();
+        StartCoroutine(_cameraShake.ShakeCamera(0.2f, 0.2f));
 
         if ( _lives < 1)
         {
