@@ -64,7 +64,7 @@ public class SpawnManager : MonoBehaviour
 
             foreach(var weight in _powerupTable)
             {
-                if (_randomPowerup <= weight)
+                if (_randomPowerup < weight)
                 {
                     Instantiate(_powerups[powerupToSpawn], powerupPos, Quaternion.identity);
                     break;
