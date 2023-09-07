@@ -13,6 +13,7 @@ TagManager:
   - Explosion
   - EnemyLaser
   - AmmoBox
+  - Bomb
   layers:
   - Default
   - TransparentFX
