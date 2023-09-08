@@ -61,6 +61,13 @@ public class UIManager : MonoBehaviour
     public void UpdateAmmo(int currentAmmo)
     {
         _ammoDisplay.sprite = _ammoSprites[currentAmmo];
+
+        if (currentAmmo >= 15)
+        {
+            StopCoroutine("LaserHeatSequence");
+            _ammoColor.r = 0f;
+            _ammoWarning.color = _ammoColor;
+        }
     }
 
     public void UpdateFuel(float currentFuel)
@@ -103,6 +110,11 @@ public class UIManager : MonoBehaviour
         StartCoroutine("ThrusterHeatSequence");
     }
 
+    public void LaserOverheat()
+    {
+        StartCoroutine("LaserHeatSequence");
+    }
+
     IEnumerator ThrusterHeatSequence()
     {
         while (true)
@@ -116,6 +128,23 @@ public class UIManager : MonoBehaviour
                 _fuelColor.r = 0f; 
             }
             _fuelWarning.color = _fuelColor;
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
+
+    IEnumerator LaserHeatSequence()
+    {
+        while (true)
+        {
+            if (_ammoWarning.color.r != 1.0f)
+            {
+                _ammoColor.r = 1.0f;
+            }
+            else
+            {
+                _ammoColor.r = 0f;
+            }
+            _ammoWarning.color = _ammoColor;
             yield return new WaitForSeconds(0.2f);
         }
     }

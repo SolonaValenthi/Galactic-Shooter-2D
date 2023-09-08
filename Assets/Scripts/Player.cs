@@ -50,6 +50,7 @@ public class Player : MonoBehaviour
     private bool _tripleShotActive = false;
     private bool _infinAmmoActive = false;
     private bool _thrusterOverheat = false;
+    private bool _laserOverheat = false;
     private bool _bombsReady = false;
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
@@ -119,6 +120,11 @@ public class Player : MonoBehaviour
         if (_fuel >= 100)
         {
             _thrusterOverheat = false;
+        }
+
+        if (_ammoCount >= 15)
+        {
+            _laserOverheat = false;
         }
     }
 
@@ -195,7 +201,7 @@ public class Player : MonoBehaviour
     {
         _canFire = Time.time + _fireRate;
 
-        if (_gameManager.isPaused == false && _ammoCount > 0)
+        if (_gameManager.isPaused == false && _ammoCount > 0 && _laserOverheat == false)
         {
             if (_tripleShotActive == true)
             {
@@ -230,6 +236,12 @@ public class Player : MonoBehaviour
     {
         _ammoCount = Mathf.Clamp(_ammoCount, 0, 15);
         _ammoCount--;
+        
+        if (_ammoCount <= 0)
+        {
+            _laserOverheat = true;
+            _uiManager.LaserOverheat();
+        }
 
         _uiManager.UpdateAmmo(_ammoCount);
         StartCoroutine("ReplenishAmmo");
@@ -330,6 +342,8 @@ public class Player : MonoBehaviour
     public void ActivateInfinAmmo()
     {
         _infinAmmoActive = true;
+        _laserOverheat = false;
+        _canFire = Time.time;
         _ammoCount = 15;
         StopCoroutine("ReplenishAmmo");
         _uiManager.UpdateAmmo(_ammoCount);

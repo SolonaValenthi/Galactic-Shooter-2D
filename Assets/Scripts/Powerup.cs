@@ -11,8 +11,9 @@ public class Powerup : MonoBehaviour
     [SerializeField]
     private AudioManager _audioManager;
 
-    private SpriteRenderer _powerupSprite;
     private Color _powerupColor;
+
+    SpriteRenderer _powerupSprite;
 
     private void Start()
     {
