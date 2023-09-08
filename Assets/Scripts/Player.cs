@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEditor.XR;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -9,7 +11,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _fireRate = 0.15f;
     [SerializeField]
+    private float _bombRate = 0.6f;
+    [SerializeField]
     private GameObject _laserPrefab;
+    [SerializeField]
+    private GameObject _bombPrefab;
     [SerializeField]
     private GameObject _tripleShotPrefab;
     [SerializeField]
@@ -28,6 +34,8 @@ public class Player : MonoBehaviour
     private AudioClip _laserClip;
     [SerializeField]
     private Vector3 _laserOffset;
+    [SerializeField]
+    private Vector3 _bombOffset;
 
     private int _lives = 3;
     private int _shieldStrength;
@@ -42,6 +50,7 @@ public class Player : MonoBehaviour
     private bool _tripleShotActive = false;
     private bool _infinAmmoActive = false;
     private bool _thrusterOverheat = false;
+    private bool _bombsReady = false;
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
     private GameManager _gameManager;
@@ -97,7 +106,14 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
-            FireLaser();
+            if (_bombsReady == true)
+            {
+                FireBomb();
+            }
+            else
+            {
+                FireLaser();
+            }
         }
 
         if (_fuel >= 100)
@@ -197,6 +213,16 @@ public class Player : MonoBehaviour
                 StopCoroutine("ReplenishAmmo");
                 UpdateAmmo();
             }
+        }
+    }
+
+    private void FireBomb()
+    {
+        _canFire = Time.time + _bombRate;
+
+        if (_gameManager.isPaused == false)
+        {
+            Instantiate(_bombPrefab, transform.position + _bombOffset, Quaternion.identity);
         }
     }
 
@@ -350,6 +376,19 @@ public class Player : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void BombsReady()
+    {
+        _bombsReady = true;
+        StopCoroutine("DeactivateBombs");
+        StartCoroutine("DeactivateBombs");
+    }
+
+    IEnumerator DeactivateBombs()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _bombsReady = false;
     }
 
     public void DamageShields()

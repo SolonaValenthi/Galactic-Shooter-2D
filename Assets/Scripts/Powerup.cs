@@ -11,13 +11,24 @@ public class Powerup : MonoBehaviour
     [SerializeField]
     private AudioManager _audioManager;
 
+    private SpriteRenderer _powerupSprite;
+    private Color _powerupColor;
+
     private void Start()
     {
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+        _powerupSprite = gameObject.GetComponent<SpriteRenderer>();
+        _powerupColor = _powerupSprite.color;
 
         if (_audioManager == null)
         {
             Debug.LogError("Powerup audio manager reference is NULL!");
+        }
+
+        // bomb color change
+        if (_powerupID == 5)
+        {
+            StartCoroutine(BombColorChange());
         }
     }
 
@@ -57,7 +68,7 @@ public class Powerup : MonoBehaviour
                         player.HealPlayer();
                         break;
                     case 5:
-                        //call bomb method here
+                        player.BombsReady();
                         break;
                     default:
                         Debug.LogError("Invalid ID assigned");
@@ -66,6 +77,25 @@ public class Powerup : MonoBehaviour
             }
             _audioManager.PowerUp();   
             Destroy(this.gameObject);
+        }
+    }
+
+    IEnumerator BombColorChange()
+    {
+        while (true)
+        {
+            while (_powerupColor.g < 0.8f)
+            {
+                _powerupColor.g += 0.06f;
+                _powerupSprite.color = _powerupColor;
+                yield return new WaitForSeconds(0.1f);
+            }
+            while (_powerupColor.g > 0.4f)
+            {
+                _powerupColor.g -= 0.06f;
+                _powerupSprite.color = _powerupColor;
+                yield return new WaitForSeconds(0.1f);
+            }
         }
     }
 }

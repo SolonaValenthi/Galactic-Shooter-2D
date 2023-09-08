@@ -29,8 +29,8 @@ public class Asteroid : MonoBehaviour
     {
         if (other.CompareTag("Laser"))
         {
-            Destroy(other.gameObject);
             _asteroidCollider.enabled = false;
+            Destroy(other.gameObject);
             Instantiate(_explosion, transform.position, Quaternion.identity);
             _spawnManager.StartSpawning();
             Destroy(this.gameObject, 0.25f);

@@ -4,17 +4,49 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject _laserPrefab;
+    [SerializeField]
+    private GameObject _laserBurstPrefab;
+    
     private float _rotationSpeed;
+    private float _speed = 2f;
+    private float _duration = 2.0f;
+    private int _rotateDirection;
 
     // Start is called before the first frame update
     void Start()
     {
-        _rotationSpeed = Random.Range(-1.5f, 1.5f);
+        _rotateDirection = Random.Range(0, 2);
+        if (_rotateDirection == 0)
+        {
+            _rotationSpeed = -2;
+        }
+        else
+        {
+            _rotationSpeed = 2;
+        }
+        StartCoroutine(BombSequence());
     }
 
     // Update is called once per frame
     void Update()
     {
+        transform.position = transform.position + new Vector3(0, 1 * _speed * Time.deltaTime, 0);
         transform.Rotate(0, 0, _rotationSpeed);
+    }
+
+    IEnumerator BombSequence()
+    {
+        float elapsed = 0f;
+
+        while (elapsed < _duration)
+        {
+            Instantiate(_laserPrefab, transform.position, transform.rotation);
+            elapsed += 0.1f;
+            yield return new WaitForSeconds(0.1f);
+        }
+        Instantiate(_laserBurstPrefab, transform.position, transform.rotation);
+        Destroy(this.gameObject);      
     }
 }
