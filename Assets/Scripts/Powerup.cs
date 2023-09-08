@@ -25,6 +25,10 @@ public class Powerup : MonoBehaviour
         {
             Debug.LogError("Powerup audio manager reference is NULL!");
         }
+        if (_powerupSprite == null)
+        {
+            Debug.LogError("Powerup sprite renderer reference is NULL!");
+        }
 
         // bomb color change
         if (_powerupID == 5)

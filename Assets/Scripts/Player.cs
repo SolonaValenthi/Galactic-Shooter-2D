@@ -190,6 +190,7 @@ public class Player : MonoBehaviour
                 {
                     _fuel += 0.1f;
                 }
+
                 _uiManager.UpdateFuel(_fuel);
             }
         }

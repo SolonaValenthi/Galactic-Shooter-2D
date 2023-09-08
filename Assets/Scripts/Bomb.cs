@@ -32,7 +32,7 @@ public class Bomb : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += new Vector3(0, 1 * _speed * Time.deltaTime, 0);
+        transform.position += Vector3.up * _speed * Time.deltaTime;
         transform.Rotate(0, 0, _rotationSpeed);
     }
 

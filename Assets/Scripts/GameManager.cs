@@ -13,8 +13,6 @@ public class GameManager : MonoBehaviour
     private bool _isGameOver = false;
     private UIManager _uiManager;
 
-    // DO NOT EDIT OUTSIDE THIS SCRIPT
-    // VARIABLE FOR REFERENCE ONLY!!!
     public bool isPaused { get; private set; }
 
     private void Start()

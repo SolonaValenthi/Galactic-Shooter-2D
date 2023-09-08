@@ -12,15 +12,10 @@ public class CameraShake : MonoBehaviour
         _originalPos = transform.position;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public IEnumerator ShakeCamera(float duration, float magnitude)
     {
         float elapsed = 0f;
+
         while (elapsed < duration)
         {
             float xShake = Random.Range(-1f, 1f) * magnitude;

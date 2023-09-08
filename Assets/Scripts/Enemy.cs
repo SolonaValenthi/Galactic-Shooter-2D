@@ -55,6 +55,10 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("Enemy audio source reference is NULL!");
         }
+        if (_playerObj == null)
+        {
+            Debug.LogError("Enemy player object reference is NULL!");
+        }
     }
 
     // Update is called once per frame

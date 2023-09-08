@@ -15,6 +15,7 @@ public class Explosion : MonoBehaviour
         {
             Debug.LogError("Explosion audio manager referece is NULL!");
         }
+
         _audioManager.Explosion();
         Destroy(this.gameObject, 2.37f);
     }
