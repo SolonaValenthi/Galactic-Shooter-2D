@@ -155,12 +155,11 @@ public class Enemy : MonoBehaviour
 
     private void FlyIn()
     {
-        float horizSpeed = Mathf.Abs(transform.position.x - _flyInDestination.x);
         float vertSpeed = Mathf.Abs(transform.position.y - _flyInDestination.y);
 
-        transform.Translate((Vector3.down * vertSpeed + (_flyInDirection * horizSpeed)) * Time.deltaTime);
+        transform.Translate((Vector3.down * vertSpeed + (_flyInDirection * _enemySpeed)) * Time.deltaTime);
         
-        if (horizSpeed < 1.5f || vertSpeed < 1.5f)
+        if (vertSpeed < 1.5f)
         {
             _flyingIn = false;
         }
