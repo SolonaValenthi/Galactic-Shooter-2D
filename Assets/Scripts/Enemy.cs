@@ -139,7 +139,6 @@ public class Enemy : MonoBehaviour
     private void StopMoving()
     {
         _enemySpeed = 0;
-        _flyInSpeed = 0;
     }
 
     public void EnemyFire()
