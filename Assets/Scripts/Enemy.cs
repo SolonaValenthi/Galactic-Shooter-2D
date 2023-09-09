@@ -16,10 +16,14 @@ public class Enemy : MonoBehaviour
     private float _spawnRange;
     private float _canFire;
     private float _playerDeviation;
+    private float _flyInSpeed = 0;
     private bool _isDead = false;
+    private bool _flyingIn = true;
     private Player _player;
     private AudioManager _audioManager;
     private GameObject _playerObj;
+    private Vector3 _flyInDirection;
+    private Vector3 _flyInDestination;
 
     Animator _deathAnim;
     AudioSource _enemyAudio;
@@ -59,12 +63,21 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("Enemy player object reference is NULL!");
         }
+
+        CalculateFlyIn();
     }
 
     // Update is called once per frame
     void Update()
     {
-        EnemyMovement();
+        if (_flyingIn == true)
+        {
+            FlyIn();
+        }
+        else
+        {
+            EnemyMovement();
+        }
 
         if (_playerObj != null)
         {
@@ -85,7 +98,9 @@ public class Enemy : MonoBehaviour
         {
             _spawnRange = Random.Range(-9.0f, 9.0f);
             transform.position = new Vector3(_spawnRange, 8, 0);
-        }
+            CalculateFlyIn();
+            _flyingIn = true;
+        } 
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -117,9 +132,15 @@ public class Enemy : MonoBehaviour
         _enemyCollider.enabled = false;
         _isDead = true;
         _deathAnim.SetTrigger("OnEnemyDeath");
-        _enemySpeed = 0f;
         _audioManager.Explosion();
+        StopMoving();
         Destroy(this.gameObject, 2.4f);
+    }
+
+    private void StopMoving()
+    {
+        _enemySpeed = 0;
+        _flyInSpeed = 0;
     }
 
     public void EnemyFire()
@@ -131,6 +152,33 @@ public class Enemy : MonoBehaviour
             _canFire = Time.time + Random.Range(3, 6);
             Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.Euler(Vector3.forward * fireAngle));
             _enemyAudio.PlayOneShot(_laserClip);
+        }
+    }
+
+    private void FlyIn()
+    {
+        float horizSpeed = Mathf.Abs(transform.position.x - _flyInDestination.x);
+        float vertSpeed = Mathf.Abs(transform.position.y - _flyInDestination.y);
+
+        transform.Translate((Vector3.down * vertSpeed + (_flyInDirection * horizSpeed)) * Time.deltaTime);
+        
+        if (horizSpeed < 1.5f || vertSpeed < 1.5f)
+        {
+            _flyingIn = false;
+        }
+    }
+
+    private void CalculateFlyIn()
+    {
+        if (transform.position.x > 0)
+        {
+            _flyInDirection = Vector3.left;
+            _flyInDestination = new Vector3(transform.position.x - Random.Range(4.0f, 10.0f), 1, 0);
+        }
+        else if (transform.position.x < 0)
+        {
+            _flyInDirection = Vector3.right;
+            _flyInDestination = new Vector3(transform.position.x + Random.Range(4.0f, 10.0f), 1, 0);
         }
     }
 }
