@@ -16,7 +16,6 @@ public class Enemy : MonoBehaviour
     private float _spawnRange;
     private float _canFire;
     private float _playerDeviation;
-    private float _flyInSpeed = 0;
     private bool _isDead = false;
     private bool _flyingIn = true;
     private Player _player;
