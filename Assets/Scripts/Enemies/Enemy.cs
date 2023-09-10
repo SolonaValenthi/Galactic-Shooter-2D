@@ -40,7 +40,7 @@ public class Enemy : MonoBehaviour
 
         if (_player == null)
         {
-            Debug.LogError("Enemy player reference is NULL!");
+            Debug.LogError("Enemy player script reference is NULL!");
         }
         if (_deathAnim == null)
         {

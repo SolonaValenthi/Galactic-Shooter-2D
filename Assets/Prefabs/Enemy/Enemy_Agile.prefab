@@ -103,7 +103,7 @@ MonoBehaviour:
   _explosionPrefab: {fileID: 4620905344678611944, guid: 0089de8db287e6140a153a1ba9ca6166,
     type: 3}
   _laserClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
-  _laserOffset: {x: 0, y: 0, z: 0}
+  _laserOffset: {x: 0, y: -1.3, z: 0}
 --- !u!61 &7500437245128398116
 BoxCollider2D:
   m_ObjectHideFlags: 0

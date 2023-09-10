@@ -20,6 +20,9 @@ public class EnemyAgile : MonoBehaviour
     private bool _atDestination = true;
     private float _xDestination; // -9.5 to 9.5
     private float _yDestination; // 3 to 5
+    private float _canFire;
+    private float _fireAngle;
+    private float _shotVariance;
     private GameObject _playerObj;
     private Vector3 _nextDestination;
     private Vector3 _flyInDirection;
@@ -58,6 +61,12 @@ public class EnemyAgile : MonoBehaviour
         {
             FacePlayer();
         }
+
+        if (Time.time > _canFire && _flyingIn == false && _atDestination == true && _isDead == false)
+        {
+            _canFire = Time.time + 2.0f;
+            StartCoroutine(AgileFire());
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -95,7 +104,7 @@ public class EnemyAgile : MonoBehaviour
     private void FacePlayer()
     {
         Vector3 lookTarget = _playerObj.transform.position - transform.position;
-        float lookAngle = Mathf.Atan2(lookTarget.x, lookTarget.y) * Mathf.Rad2Deg + 180;
+        float lookAngle = Mathf.Atan2(lookTarget.x, lookTarget.y) * Mathf.Rad2Deg - 180;
         transform.rotation = Quaternion.Euler(Vector3.back * lookAngle);
     }
 
@@ -104,7 +113,6 @@ public class EnemyAgile : MonoBehaviour
         _xDestination = Random.Range(-9.5f, 9.5f);
         _yDestination = Random.Range(3.0f, 5.0f);
         _nextDestination = new Vector3(_xDestination, _yDestination, 0);
-        Debug.Log("Destination set to " + _nextDestination);
     }
 
     private void MoveToDestination(Vector3 destination)
@@ -114,7 +122,7 @@ public class EnemyAgile : MonoBehaviour
 
         if (transform.position == destination)
         {
-            Debug.Log("Destination reached");
+            _atDestination = true;
         }
     }
 
@@ -128,5 +136,17 @@ public class EnemyAgile : MonoBehaviour
             _atDestination = false;
             yield return new WaitForSeconds(3.0f);
         }
+    }
+
+    IEnumerator AgileFire()
+    {
+        _fireAngle = transform.eulerAngles.z + 180;
+        Instantiate(_laserPrefab, transform.TransformPoint(Vector3.down * 1.3f), Quaternion.Euler(Vector3.forward * _fireAngle));
+        yield return new WaitForSeconds(0.1f);
+        _shotVariance = Random.Range(3f, 10f);
+        Instantiate(_laserPrefab, transform.TransformPoint(Vector3.down * 1.3f), Quaternion.Euler(Vector3.forward * (_fireAngle - _shotVariance)));
+        yield return new WaitForSeconds(0.1f);
+        _shotVariance = Random.Range(3f, 10f);
+        Instantiate(_laserPrefab, transform.TransformPoint(Vector3.down * 1.3f), Quaternion.Euler(Vector3.forward * (_fireAngle + _shotVariance)));
     }
 }
