@@ -22,6 +22,8 @@ public class EnemyAgile : MonoBehaviour
     private Vector3 _flyInDirection;
     private Vector3 _flyInDestination;
 
+    AudioSource _enemyAudio;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +42,11 @@ public class EnemyAgile : MonoBehaviour
         {
             MoveToDestination(_nextDestination);
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        
     }
 
     private void FlyIn()
