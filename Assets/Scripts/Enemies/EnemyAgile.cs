@@ -118,7 +118,7 @@ public class EnemyAgile : MonoBehaviour
     private void MoveToDestination(Vector3 destination)
     {
         Vector3 targetPos = destination - transform.position;
-        transform.position += (targetPos * 1.0f * Time.deltaTime);
+        transform.position += (targetPos * Time.deltaTime);
 
         if (transform.position == destination)
         {
