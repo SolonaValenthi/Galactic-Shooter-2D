@@ -83,7 +83,7 @@ public class Enemy : MonoBehaviour
             _playerDeviation = transform.position.y - _playerObj.transform.position.y;
         }      
 
-        if (Time.time > _canFire && _isDead == false && _playerDeviation >= 1.3)
+        if (Time.time > _canFire && _isDead == false && _playerDeviation >= 1.3 && _flyingIn == false)
         {
             EnemyFire();
         }
