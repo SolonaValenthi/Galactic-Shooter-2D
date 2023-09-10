@@ -9,6 +9,8 @@ public class EnemyAgile : MonoBehaviour
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
+    private GameObject _explosionPrefab;
+    [SerializeField]
     private AudioClip _laserClip;
     [SerializeField]
     private Vector3 _laserOffset;
@@ -18,15 +20,24 @@ public class EnemyAgile : MonoBehaviour
     private bool _atDestination = true;
     private float _xDestination; // -9.5 to 9.5
     private float _yDestination; // 3 to 5
+    private GameObject _playerObj;
     private Vector3 _nextDestination;
     private Vector3 _flyInDirection;
     private Vector3 _flyInDestination;
 
     AudioSource _enemyAudio;
+    BoxCollider2D _enemyCollider;
 
     // Start is called before the first frame update
     void Start()
     {
+        _playerObj = GameObject.Find("Player");
+
+        if (_playerObj == null)
+        {
+            Debug.LogError("Agile enemy player reference is NULL!");
+        }
+
         CalculateFlyIn();   
     }
 
@@ -38,9 +49,14 @@ public class EnemyAgile : MonoBehaviour
             FlyIn();
         }
 
-        if (_atDestination == false)
+        if (_atDestination == false && _isDead == false)
         {
             MoveToDestination(_nextDestination);
+        }
+
+        if (_flyingIn == false)
+        {
+            FacePlayer();
         }
     }
 
@@ -76,6 +92,13 @@ public class EnemyAgile : MonoBehaviour
         }
     }
 
+    private void FacePlayer()
+    {
+        Vector3 lookTarget = _playerObj.transform.position - transform.position;
+        float lookAngle = Mathf.Atan2(lookTarget.x, lookTarget.y) * Mathf.Rad2Deg + 180;
+        transform.rotation = Quaternion.Euler(Vector3.back * lookAngle);
+    }
+
     private void SelectDesitnation()
     {
         _xDestination = Random.Range(-9.5f, 9.5f);
@@ -86,8 +109,8 @@ public class EnemyAgile : MonoBehaviour
 
     private void MoveToDestination(Vector3 destination)
     {
-        Vector3 targetpos = destination - transform.position;
-        transform.position += (targetpos * 1.0f * Time.deltaTime);
+        Vector3 targetPos = destination - transform.position;
+        transform.position += (targetPos * 1.0f * Time.deltaTime);
 
         if (transform.position == destination)
         {
