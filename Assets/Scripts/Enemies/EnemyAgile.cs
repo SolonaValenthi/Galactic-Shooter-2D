@@ -12,8 +12,6 @@ public class EnemyAgile : MonoBehaviour
     private GameObject _explosionPrefab;
     [SerializeField]
     private AudioClip _laserClip;
-    [SerializeField]
-    private Vector3 _laserOffset;
 
     private bool _flyingIn = true;
     private bool _isDead = false;
@@ -24,6 +22,8 @@ public class EnemyAgile : MonoBehaviour
     private float _fireAngle;
     private float _shotVariance;
     private GameObject _playerObj;
+    private Player _player;
+    private AudioManager _audioManager;
     private Vector3 _nextDestination;
     private Vector3 _flyInDirection;
     private Vector3 _flyInDestination;
@@ -35,10 +35,30 @@ public class EnemyAgile : MonoBehaviour
     void Start()
     {
         _playerObj = GameObject.Find("Player");
+        _player = _playerObj.GetComponent<Player>();
+        _audioManager = GameObject.Find("Audio_manager").GetComponent<AudioManager>();
+        _enemyAudio = gameObject.GetComponent<AudioSource>();
+        _enemyCollider = gameObject.GetComponent<BoxCollider2D>();
 
         if (_playerObj == null)
         {
             Debug.LogError("Agile enemy player reference is NULL!");
+        }
+        if (_player == null)
+        {
+            Debug.LogError("Agile enemy player script reference is NULL!");
+        }
+        if (_audioManager == null)
+        {
+            Debug.LogError("Agile enemy audio manager reference is NULL!");
+        }
+        if (_enemyAudio == null)
+        {
+            Debug.LogError("Agile enemy audio source reference is NULL!");
+        }
+        if (_enemyCollider == null)
+        {
+            Debug.LogError("Agile enemy collider reference is NULL!");
         }
 
         CalculateFlyIn();   

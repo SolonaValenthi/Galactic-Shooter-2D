@@ -30,13 +30,14 @@ public class Enemy : MonoBehaviour
 
     private void Start()
     {
-        _player = GameObject.Find("Player").GetComponent<Player>();
+        _playerObj = GameObject.Find("Player");
+        _player = _playerObj.GetComponent<Player>();
         _deathAnim = gameObject.GetComponent<Animator>();
         _enemyCollider = gameObject.GetComponent<BoxCollider2D>();
         _enemyAudio = gameObject.GetComponent<AudioSource>();
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         _canFire = Random.Range(3, 6);
-        _playerObj = GameObject.Find("Player");
+
 
         if (_player == null)
         {
