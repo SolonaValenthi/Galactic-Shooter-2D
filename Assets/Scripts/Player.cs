@@ -432,7 +432,7 @@ public class Player : MonoBehaviour
 
     public void AddScore(int points)
     {
-        _score += 10;
+        _score += points;
         _uiManager.UpdateScore(_score);
     }
 

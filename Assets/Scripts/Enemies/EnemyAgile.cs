@@ -12,6 +12,8 @@ public class EnemyAgile : MonoBehaviour
     private GameObject _explosionPrefab;
     [SerializeField]
     private AudioClip _laserClip;
+    [SerializeField]
+    private Vector3 _laserOffset;
 
     private bool _flyingIn = true;
     private bool _isDead = false;
@@ -36,7 +38,7 @@ public class EnemyAgile : MonoBehaviour
     {
         _playerObj = GameObject.Find("Player");
         _player = _playerObj.GetComponent<Player>();
-        _audioManager = GameObject.Find("Audio_manager").GetComponent<AudioManager>();
+        _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         _enemyAudio = gameObject.GetComponent<AudioSource>();
         _enemyCollider = gameObject.GetComponent<BoxCollider2D>();
 
@@ -72,26 +74,45 @@ public class EnemyAgile : MonoBehaviour
             FlyIn();
         }
 
-        if (_atDestination == false && _isDead == false)
+        if (_atDestination == false && _isDead == false && _playerObj != null)
         {
             MoveToDestination(_nextDestination);
         }
 
-        if (_flyingIn == false)
+        if (_flyingIn == false && _isDead == false)
         {
             FacePlayer();
         }
 
-        if (Time.time > _canFire && _flyingIn == false && _atDestination == true && _isDead == false)
+        if (Time.time > _canFire && _flyingIn == false && _atDestination == true && _isDead == false && _playerObj != null)
         {
             _canFire = Time.time + 2.0f;
             StartCoroutine(AgileFire());
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        
+        if (other.CompareTag("Player"))
+        {
+            if (_player != null)
+            {
+                _player.Damage();
+            }
+
+            DeathSequence();
+        }
+
+        if (other.CompareTag("Laser"))
+        {
+            if (_player != null)
+            {
+                _player.AddScore(30);
+            }
+
+            Destroy(other.gameObject);
+            DeathSequence();
+        }
     }
 
     private void FlyIn()
@@ -123,9 +144,12 @@ public class EnemyAgile : MonoBehaviour
 
     private void FacePlayer()
     {
-        Vector3 lookTarget = _playerObj.transform.position - transform.position;
-        float lookAngle = Mathf.Atan2(lookTarget.x, lookTarget.y) * Mathf.Rad2Deg - 180;
-        transform.rotation = Quaternion.Euler(Vector3.back * lookAngle);
+        if (_playerObj != null)
+        {
+            Vector3 lookTarget = _playerObj.transform.position - transform.position;
+            float lookAngle = Mathf.Atan2(lookTarget.x, lookTarget.y) * Mathf.Rad2Deg - 180;
+            transform.rotation = Quaternion.Euler(Vector3.back * lookAngle);
+        }
     }
 
     private void SelectDesitnation()
@@ -146,6 +170,15 @@ public class EnemyAgile : MonoBehaviour
         }
     }
 
+    private void DeathSequence()
+    {
+        _enemyCollider.enabled = false;
+        _isDead = true;
+        _audioManager.Explosion();
+        Instantiate(_explosionPrefab, transform.position, transform.rotation);
+        Destroy(this.gameObject, 1.0f);
+    }
+
     IEnumerator AgileMovement()
     {
         while (true)
@@ -161,12 +194,12 @@ public class EnemyAgile : MonoBehaviour
     IEnumerator AgileFire()
     {
         _fireAngle = transform.eulerAngles.z + 180;
-        Instantiate(_laserPrefab, transform.TransformPoint(Vector3.down * 1.3f), Quaternion.Euler(Vector3.forward * _fireAngle));
+        Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * _fireAngle));
         yield return new WaitForSeconds(0.1f);
         _shotVariance = Random.Range(3f, 10f);
-        Instantiate(_laserPrefab, transform.TransformPoint(Vector3.down * 1.3f), Quaternion.Euler(Vector3.forward * (_fireAngle - _shotVariance)));
+        Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * (_fireAngle - _shotVariance)));
         yield return new WaitForSeconds(0.1f);
         _shotVariance = Random.Range(3f, 10f);
-        Instantiate(_laserPrefab, transform.TransformPoint(Vector3.down * 1.3f), Quaternion.Euler(Vector3.forward * (_fireAngle + _shotVariance)));
+        Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * (_fireAngle + _shotVariance)));
     }
 }
