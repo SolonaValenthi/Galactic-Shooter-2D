@@ -24,6 +24,7 @@ public class EnemyAggressive : MonoBehaviour
     private Player _player;
     private Vector3 _flyInDirection;
     private Vector3 _flyInDestination;
+    private Vector3 _retreatDestination;
     private Vector3 _playerPos;
 
     /// Aggressive enemy behavior outline
@@ -83,6 +84,11 @@ public class EnemyAggressive : MonoBehaviour
         {
             RamPlayer();
         }
+
+        if (_retreatPhase == true)
+        {
+            Retreat(_retreatDestination);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -92,6 +98,8 @@ public class EnemyAggressive : MonoBehaviour
             if (_player != null)
             {
                 _player.Damage();
+                _ramPhase = false;
+                SelectDestination();
             }
         }
 
@@ -102,8 +110,6 @@ public class EnemyAggressive : MonoBehaviour
                 _player.AddScore(40);
             }
         }
-
-        _ramPhase = false;
     }
 
     private void FlyIn()
@@ -163,6 +169,21 @@ public class EnemyAggressive : MonoBehaviour
         if (transform.position.y <= -4.5f)
         {
             _ramPhase = false;
+            SelectDestination();
         }
+    }
+
+    private void SelectDestination()
+    {
+        float xPos = Random.Range(-9.5f, 9.5f);
+        float yPos = Random.Range(3.0f, 5.0f);
+        _retreatDestination = new Vector3(xPos, yPos, 0);
+        _retreatPhase = true;
+    }
+
+    private void Retreat(Vector3 destination)
+    {
+        Vector3 targetPos = destination - transform.position;
+        transform.position += (targetPos * Time.deltaTime);
     }
 }
