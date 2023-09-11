@@ -14,6 +14,7 @@ TagManager:
   - EnemyLaser
   - AmmoBox
   - Bomb
+  - EnemyMissile
   layers:
   - Default
   - TransparentFX

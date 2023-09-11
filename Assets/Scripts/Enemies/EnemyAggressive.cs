@@ -184,6 +184,13 @@ public class EnemyAggressive : MonoBehaviour
     private void Retreat(Vector3 destination)
     {
         Vector3 targetPos = destination - transform.position;
+        float retreatDistance = Vector3.Distance(destination, transform.position);
         transform.position += (targetPos * Time.deltaTime);
+
+        if (retreatDistance <= 0.3)
+        {
+            _retreatPhase = false;
+            _firePhase = true;
+        }
     }
 }
