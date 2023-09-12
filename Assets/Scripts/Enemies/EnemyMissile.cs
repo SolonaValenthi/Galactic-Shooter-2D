@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemyMissile : MonoBehaviour
 {
     private float _speed = 4.0f;
-
     private float _distanceToPlayer;
     private float _homingSpeed = 10.0f;
     private bool _homingOn = false;
