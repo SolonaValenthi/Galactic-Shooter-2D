@@ -443,5 +443,11 @@ public class Player : MonoBehaviour
             Damage();
             Destroy(other.gameObject);
         }
+
+        if (other.CompareTag("EnemyMissile"))
+        {
+            Damage();
+            Destroy(other.gameObject);
+        }
     }
 }

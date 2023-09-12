@@ -59,35 +59,44 @@ public class EnemyAggressive : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_playerObj != null)
+        if (_isDead == false)
         {
-            _playerPos = _playerObj.transform.position - transform.position;
-            _distanceToPlayer = Vector3.Distance(_playerObj.transform.position, transform.position);
-        }
+            if (_playerObj != null)
+            {
+                _playerPos = _playerObj.transform.position - transform.position;
+                _distanceToPlayer = Vector3.Distance(_playerObj.transform.position, transform.position);
+            }
 
-        if (_flyingIn == true)
-        {
-            FlyIn();
-        }
+            if (_flyingIn == true)
+            {
+                FlyIn();
+            }
 
-        if (_flyingIn == false && _ramPhase == false)
-        {
-            FacePlayer();
-        }
-        
-        if (_movePhase == true)
-        {
-            MoveToPlayer();
-        }
+            if (_flyingIn == false && _ramPhase == false)
+            {
+                FacePlayer();
+            }
 
-        if (_ramPhase == true)
-        {
-            RamPlayer();
-        }
+            if (_movePhase == true)
+            {
+                MoveToPlayer();
+            }
 
-        if (_retreatPhase == true)
-        {
-            Retreat(_retreatDestination);
+            if (_ramPhase == true)
+            {
+                RamPlayer();
+            }
+
+            if (_retreatPhase == true)
+            {
+                Retreat(_retreatDestination);
+            }
+
+            if (_firePhase == true)
+            {
+                StartCoroutine(ExitFirePhase());
+                _firePhase = false;
+            }
         }
     }
 
@@ -176,7 +185,7 @@ public class EnemyAggressive : MonoBehaviour
     private void SelectDestination()
     {
         float xPos = Random.Range(-9.5f, 9.5f);
-        float yPos = Random.Range(3.0f, 5.0f);
+        float yPos = Random.Range(3.5f, 5.0f);
         _retreatDestination = new Vector3(xPos, yPos, 0);
         _retreatPhase = true;
     }
@@ -192,5 +201,21 @@ public class EnemyAggressive : MonoBehaviour
             _retreatPhase = false;
             _firePhase = true;
         }
+    }
+
+    IEnumerator ExitFirePhase()
+    {
+        yield return new WaitForSeconds(0.5f);
+        if (_playerObj != null)
+        {
+            Instantiate(_missilePrefab, transform.position, transform.rotation);
+        }
+        yield return new WaitForSeconds(2.0f);
+        if (_playerObj != null)
+        {
+            Instantiate(_missilePrefab, transform.position, transform.rotation);
+        }
+        yield return new WaitForSeconds(0.5f);
+        _movePhase = true;
     }
 }
