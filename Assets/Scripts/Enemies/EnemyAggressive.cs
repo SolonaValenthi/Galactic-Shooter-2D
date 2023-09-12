@@ -27,17 +27,6 @@ public class EnemyAggressive : MonoBehaviour
     private Vector3 _retreatDestination;
     private Vector3 _playerPos;
 
-    /// Aggressive enemy behavior outline
-    /// alternate between firing and moving, similar to agile enemy
-    /// move directly towards player after initial fly-in
-    /// attemp to "ram" the player when in close proximity
-    /// after ram attempt retreat to top screen bound
-    /// does not die when colliding with player
-    /// enter fire mode
-    /// fire a volley of homing projectiles at the player (missiles probably)
-    /// homing function deactivates once projectiles are near the player
-    /// enter move phase again 
-
     // Start is called before the first frame update
     void Start()
     {
