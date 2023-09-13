@@ -48,6 +48,10 @@ public class EnemyAgile : MonoBehaviour
         {
             Debug.LogError("Agile enemy player reference is NULL!");
         }
+        if (_projectileContainer == null)
+        {
+            Debug.LogError("Agile enemy projectile container reference is NULL!");
+        }
         if (_player == null)
         {
             Debug.LogError("Agile enemy player script reference is NULL!");

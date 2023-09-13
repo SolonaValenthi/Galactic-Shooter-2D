@@ -45,6 +45,10 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("Enemy player script reference is NULL!");
         }
+        if (_projectileContainer == null)
+        {
+            Debug.LogError("Enemy projectile container reference is NULL!");
+        }
         if (_deathAnim == null)
         {
             Debug.LogError("Enemy animator reference is NULL!");
