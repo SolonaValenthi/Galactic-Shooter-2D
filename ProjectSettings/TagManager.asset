@@ -15,6 +15,7 @@ TagManager:
   - AmmoBox
   - Bomb
   - EnemyMissile
+  - Container
   layers:
   - Default
   - TransparentFX

@@ -21,6 +21,7 @@ public class EnemyAggressive : MonoBehaviour
     private bool _retreatPhase;
     private bool _firePhase;
     private GameObject _playerObj;
+    private GameObject _projectileContainer;
     private AudioManager _audioManager;
     private Player _player;
     private Vector3 _flyInDirection;
@@ -35,6 +36,7 @@ public class EnemyAggressive : MonoBehaviour
     void Start()
     {
         _playerObj = GameObject.Find("Player");
+        _projectileContainer = GameObject.Find("Enemy_Projectiles");
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         _player = _playerObj.GetComponent<Player>();
         _enemyAudio = gameObject.GetComponent<AudioSource>();
@@ -43,6 +45,10 @@ public class EnemyAggressive : MonoBehaviour
         if (_playerObj == null)
         {
             Debug.LogError("Aggressiive enemy player reference is NULL!");
+        }
+        if (_projectileContainer == null)
+        {
+            Debug.LogError("Aggressive enemy projectile container reference is NULL!");
         }
         if (_audioManager == null)
         {
@@ -227,15 +233,18 @@ public class EnemyAggressive : MonoBehaviour
 
     IEnumerator ExitFirePhase()
     {
+        GameObject newMissile;
         yield return new WaitForSeconds(0.5f);
         if (_playerObj != null)
         {
-            Instantiate(_missilePrefab, transform.position, transform.rotation);
+            newMissile = Instantiate(_missilePrefab, transform.position, transform.rotation);
+            newMissile.transform.parent = _projectileContainer.transform;
         }
         yield return new WaitForSeconds(2.0f);
         if (_playerObj != null)
         {
-            Instantiate(_missilePrefab, transform.position, transform.rotation);
+            newMissile = Instantiate(_missilePrefab, transform.position, transform.rotation);
+            newMissile.transform.parent = _projectileContainer.transform;
         }
         yield return new WaitForSeconds(0.5f);
         _movePhase = true;

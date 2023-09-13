@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3292597004659243814}
-  - component: {fileID: 4369744200881639450}
   - component: {fileID: 1707279058807526712}
+  - component: {fileID: 4369744200881639450}
   - component: {fileID: 7528586659782016686}
   - component: {fileID: 6590460535342714991}
   - component: {fileID: 7266537785120235875}
@@ -36,23 +36,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4369744200881639450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5729218059076540325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c67a3d1ba6cd124490c83a7f3d2e942, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemySpeed: 4
-  _laserPrefab: {fileID: 3462453089705872088, guid: ca6244f99240cd74591691df0c4a32bb,
-    type: 3}
-  _laserClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
-  _laserOffset: {x: 0, y: -1.3, z: 0}
 --- !u!212 &1707279058807526712
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -103,6 +86,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4369744200881639450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5729218059076540325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c67a3d1ba6cd124490c83a7f3d2e942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemySpeed: 4
+  _laserPrefab: {fileID: 3462453089705872088, guid: ca6244f99240cd74591691df0c4a32bb,
+    type: 3}
+  _projectileContainer: {fileID: 0}
+  _laserClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+  _laserOffset: {x: 0, y: -1.3, z: 0}
 --- !u!50 &7528586659782016686
 Rigidbody2D:
   serializedVersion: 4

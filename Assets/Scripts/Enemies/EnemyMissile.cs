@@ -43,6 +43,23 @@ public class EnemyMissile : MonoBehaviour
                 _homingOn = false;
             }
         }
+
+        if (transform.position.y > 15)
+        {
+            if (transform.parent != null && transform.parent.tag != "Container")
+            {
+                Destroy(transform.parent.gameObject);
+            }
+            Destroy(this.gameObject);
+        }
+        else if (transform.position.y < -10)
+        {
+            if (transform.parent != null && transform.parent.tag != "Container")
+            {
+                Destroy(transform.parent.gameObject);
+            }
+            Destroy(this.gameObject);
+        }
     }
 
     private void Homing()

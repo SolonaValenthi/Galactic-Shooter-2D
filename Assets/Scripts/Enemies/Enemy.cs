@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     private Player _player;
     private AudioManager _audioManager;
     private GameObject _playerObj;
+    private GameObject _projectileContainer;
     private Vector3 _flyInDirection;
     private Vector3 _flyInDestination;
 
@@ -31,6 +32,7 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         _playerObj = GameObject.Find("Player");
+        _projectileContainer = GameObject.Find("Enemy_Projectiles");
         _player = _playerObj.GetComponent<Player>();
         _deathAnim = gameObject.GetComponent<Animator>();
         _enemyCollider = gameObject.GetComponent<BoxCollider2D>();
@@ -149,7 +151,8 @@ public class Enemy : MonoBehaviour
             Vector3 targetPos = _playerObj.transform.position - transform.position;
             float fireAngle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg - 90;
             _canFire = Time.time + Random.Range(3, 6);
-            Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.Euler(Vector3.forward * fireAngle));
+            GameObject newLaser = Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.Euler(Vector3.forward * fireAngle));
+            newLaser.transform.parent = _projectileContainer.transform;
             _enemyAudio.PlayOneShot(_laserClip);
         }
     }

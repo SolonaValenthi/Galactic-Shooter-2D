@@ -24,6 +24,7 @@ public class EnemyAgile : MonoBehaviour
     private float _fireAngle;
     private float _shotVariance;
     private GameObject _playerObj;
+    private GameObject _projectileContainer;
     private Player _player;
     private AudioManager _audioManager;
     private Vector3 _nextDestination;
@@ -37,6 +38,7 @@ public class EnemyAgile : MonoBehaviour
     void Start()
     {
         _playerObj = GameObject.Find("Player");
+        _projectileContainer = GameObject.Find("Enemy_Projectiles");
         _player = _playerObj.GetComponent<Player>();
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         _enemyAudio = gameObject.GetComponent<AudioSource>();
@@ -69,25 +71,28 @@ public class EnemyAgile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_flyingIn == true)
+        if (_isDead == false)
         {
-            FlyIn();
-        }
+            if (_flyingIn == true)
+            {
+                FlyIn();
+            }
 
-        if (_atDestination == false && _isDead == false && _playerObj != null)
-        {
-            MoveToDestination(_nextDestination);
-        }
+            if (_atDestination == false && _playerObj != null)
+            {
+                MoveToDestination(_nextDestination);
+            }
 
-        if (_flyingIn == false && _isDead == false)
-        {
-            FacePlayer();
-        }
+            if (_flyingIn == false)
+            {
+                FacePlayer();
+            }
 
-        if (Time.time > _canFire && _flyingIn == false && _atDestination == true && _isDead == false && _playerObj != null)
-        {
-            _canFire = Time.time + 2.0f;
-            StartCoroutine(AgileFire());
+            if (Time.time > _canFire && _flyingIn == false && _atDestination == true && _playerObj != null)
+            {
+                _canFire = Time.time + 2.0f;
+                StartCoroutine(AgileFire());
+            }
         }
     }
 
@@ -194,12 +199,18 @@ public class EnemyAgile : MonoBehaviour
     IEnumerator AgileFire()
     {
         _fireAngle = transform.eulerAngles.z + 180;
-        Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * (_fireAngle + _shotVariance)));
+        GameObject newLaser = Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * (_fireAngle + _shotVariance)));
+        newLaser.transform.parent = _projectileContainer.transform;
+        _enemyAudio.PlayOneShot(_laserClip);
         yield return new WaitForSeconds(0.1f);
         _shotVariance = Random.Range(-10f, 10f);
-        Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * (_fireAngle + _shotVariance)));
+        newLaser = Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * (_fireAngle + _shotVariance)));
+        newLaser.transform.parent = _projectileContainer.transform;
+        _enemyAudio.PlayOneShot(_laserClip);
         yield return new WaitForSeconds(0.1f);
         _shotVariance = Random.Range(-10f, 10f);
-        Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * (_fireAngle + _shotVariance)));
+        newLaser = Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * (_fireAngle + _shotVariance)));
+        newLaser.transform.parent = _projectileContainer.transform;
+        _enemyAudio.PlayOneShot(_laserClip);
     }
 }
