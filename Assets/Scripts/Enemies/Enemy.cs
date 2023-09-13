@@ -148,7 +148,6 @@ public class Enemy : MonoBehaviour
     {
         if (Time.time > _powerupAttackCD && _isDead == false)
         {
-
             Vector3 targetPos = powerupPos - transform.position;
             float fireAngle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg - 90;
             float powerupDeviation = transform.position.y - powerupPos.y;
