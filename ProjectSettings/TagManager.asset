@@ -6,16 +6,14 @@ TagManager:
   tags:
   - Enemy
   - Laser
-  - TripleShot
-  - SpeedBoost
-  - Shield
   - Asteroid
   - Explosion
   - EnemyLaser
-  - AmmoBox
   - Bomb
   - EnemyMissile
   - Container
+  - PowerUp
+  - PowerupDetection
   layers:
   - Default
   - TransparentFX
