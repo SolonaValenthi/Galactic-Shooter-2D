@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 9207668279806926602}
   m_Layer: 0
   m_Name: Ammo_Powerup
-  m_TagString: AmmoBox
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

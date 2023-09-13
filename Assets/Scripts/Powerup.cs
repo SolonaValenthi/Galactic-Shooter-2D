@@ -11,6 +11,7 @@ public class Powerup : MonoBehaviour
     [SerializeField]
     private AudioManager _audioManager;
 
+    private PowerupDetection _detectedEnemy;
     private Color _powerupColor;
 
     SpriteRenderer _powerupSprite;
@@ -82,6 +83,26 @@ public class Powerup : MonoBehaviour
             }
             _audioManager.PowerUp();   
             Destroy(this.gameObject);
+        }
+
+        if (other.CompareTag("PowerupDetection"))
+        {
+            _detectedEnemy = other.GetComponent<PowerupDetection>();
+        }
+
+        if (other.CompareTag("EnemyLaser"))
+        {
+            _detectedEnemy.ClearTarget();
+            Destroy(other.gameObject);
+            Destroy(this.gameObject);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (_detectedEnemy != null)
+        {
+            _detectedEnemy.ClearTarget();
         }
     }
 

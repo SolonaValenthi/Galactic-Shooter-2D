@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
 
     private float _spawnRange;
     private float _canFire;
+    private float _powerupAttackCD;
     private float _playerDeviation;
     private bool _isDead = false;
     private bool _flyingIn = true;
@@ -143,12 +144,30 @@ public class Enemy : MonoBehaviour
         Destroy(this.gameObject, 2.4f);
     }
 
+    public void AttackPowerup(Vector3 powerupPos)
+    {
+        if (Time.time > _powerupAttackCD && _isDead == false)
+        {
+
+            Vector3 targetPos = powerupPos - transform.position;
+            float fireAngle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg - 90;
+            float powerupDeviation = transform.position.y - powerupPos.y;
+            if (powerupDeviation > 3.0f)
+            {
+                _powerupAttackCD = Time.time + 3.0f;
+                GameObject newLaser = Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.Euler(Vector3.forward * fireAngle));
+                newLaser.transform.parent = _projectileContainer.transform;
+                _enemyAudio.PlayOneShot(_laserClip);
+            }
+        }
+    }
+
     private void StopMoving()
     {
         _enemySpeed = 0;
     }
 
-    public void EnemyFire()
+    private void EnemyFire()
     {
         if (_playerObj != null)
         {
