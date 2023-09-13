@@ -52,6 +52,7 @@ public class Player : MonoBehaviour
     private bool _thrusterOverheat = false;
     private bool _laserOverheat = false;
     private bool _bombsReady = false;
+    private GameObject _projectileContainer;
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
     private GameManager _gameManager;
@@ -66,6 +67,7 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(0, 0, 0);
         _thrustScale = 0.1f;
         _speedMulti = 1.0f;
+        _projectileContainer = GameObject.Find("Player_Projectiles");
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
@@ -73,6 +75,10 @@ public class Player : MonoBehaviour
         _shieldRenderer = _playerShield.GetComponent<SpriteRenderer>();
         _playerAudio = gameObject.GetComponent<AudioSource>();
 
+        if (_projectileContainer == null)
+        {
+            Debug.LogError("Player projectile container reference is NULL!");
+        }
         if (_spawnManager == null)
         {
             Debug.LogError("Player spawn manager reference is NULL!");
@@ -201,18 +207,20 @@ public class Player : MonoBehaviour
     void FireLaser()
     {
         _canFire = Time.time + _fireRate;
+        GameObject newLaser;
 
         if (_gameManager.isPaused == false && _ammoCount > 0 && _laserOverheat == false)
         {
             if (_tripleShotActive == true)
             {
-                Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+                newLaser = Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
             }
             else
             {
-                Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
+                newLaser = Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
             }
 
+            newLaser.transform.parent = _projectileContainer.transform;
             _playerAudio.PlayOneShot(_laserClip);
 
             if (_infinAmmoActive == false)

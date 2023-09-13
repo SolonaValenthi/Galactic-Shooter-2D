@@ -13,11 +13,19 @@ public class Bomb : MonoBehaviour
     private float _speed = 2f;
     private float _duration = 2.0f;
     private int _rotateDirection;
+    private GameObject _projectileContainer;
 
     // Start is called before the first frame update
     void Start()
     {
         _rotateDirection = Random.Range(0, 2);
+        _projectileContainer = GameObject.Find("Player_Projectiles");
+
+        if (_projectileContainer == null)
+        {
+            Debug.LogError("Bomb projectile container reference is NULL!");
+        }
+
         if (_rotateDirection == 0)
         {
             _rotationSpeed = -2;
@@ -39,14 +47,17 @@ public class Bomb : MonoBehaviour
     IEnumerator BombSequence()
     {
         float elapsed = 0f;
+        GameObject newLaser;
 
         while (elapsed < _duration)
         {
-            Instantiate(_laserPrefab, transform.position, transform.rotation);
+            newLaser = Instantiate(_laserPrefab, transform.position, transform.rotation);
+            newLaser.transform.parent = _projectileContainer.transform;
             elapsed += 0.1f;
             yield return new WaitForSeconds(0.1f);
         }
-        Instantiate(_laserBurstPrefab, transform.position, transform.rotation);
+        newLaser = Instantiate(_laserBurstPrefab, transform.position, transform.rotation);
+        newLaser.transform.parent = _projectileContainer.transform;
         Destroy(this.gameObject);      
     }
 }
