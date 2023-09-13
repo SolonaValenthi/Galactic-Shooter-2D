@@ -194,12 +194,12 @@ public class EnemyAgile : MonoBehaviour
     IEnumerator AgileFire()
     {
         _fireAngle = transform.eulerAngles.z + 180;
-        Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * _fireAngle));
+        Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * (_fireAngle + _shotVariance)));
         yield return new WaitForSeconds(0.1f);
-        _shotVariance = Random.Range(3f, 10f);
-        Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * (_fireAngle - _shotVariance)));
+        _shotVariance = Random.Range(-10f, 10f);
+        Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * (_fireAngle + _shotVariance)));
         yield return new WaitForSeconds(0.1f);
-        _shotVariance = Random.Range(3f, 10f);
+        _shotVariance = Random.Range(-10f, 10f);
         Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * (_fireAngle + _shotVariance)));
     }
 }
