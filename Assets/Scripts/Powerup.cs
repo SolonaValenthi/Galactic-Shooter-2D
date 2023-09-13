@@ -92,7 +92,6 @@ public class Powerup : MonoBehaviour
 
         if (other.CompareTag("EnemyLaser"))
         {
-            _detectedEnemy.ClearTarget();
             Destroy(other.gameObject);
             Destroy(this.gameObject);
         }
