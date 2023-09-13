@@ -21,25 +21,44 @@ public class EnemyAggressive : MonoBehaviour
     private bool _retreatPhase;
     private bool _firePhase;
     private GameObject _playerObj;
+    private AudioManager _audioManager;
     private Player _player;
     private Vector3 _flyInDirection;
     private Vector3 _flyInDestination;
     private Vector3 _retreatDestination;
     private Vector3 _playerPos;
 
+    AudioSource _enemyAudio;
+    BoxCollider2D _enemyCollider;
+
     // Start is called before the first frame update
     void Start()
     {
         _playerObj = GameObject.Find("Player");
+        _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         _player = _playerObj.GetComponent<Player>();
+        _enemyAudio = gameObject.GetComponent<AudioSource>();
+        _enemyCollider = gameObject.GetComponent<BoxCollider2D>();
 
         if (_playerObj == null)
         {
             Debug.LogError("Aggressiive enemy player reference is NULL!");
         }
+        if (_audioManager == null)
+        {
+            Debug.LogError("Aggressive enemy audio manager reference is NULL!");
+        }
         if (_player == null)
         {
             Debug.LogError("Aggressive enemy player script reference is NULL!");
+        }
+        if (_enemyAudio == null)
+        {
+            Debug.LogError("Aggressive enemy audio source reference is NULL!");
+        }
+        if (_enemyCollider == null)
+        {
+            Debug.LogError("Aggressive enemy collider reference is NULL!");
         }
 
         CalculateFlyIn();
@@ -107,6 +126,9 @@ public class EnemyAggressive : MonoBehaviour
             {
                 _player.AddScore(40);
             }
+
+            Destroy(other.gameObject);
+            DeathSequence();
         }
     }
 
@@ -181,15 +203,26 @@ public class EnemyAggressive : MonoBehaviour
 
     private void Retreat(Vector3 destination)
     {
+        _enemyCollider.enabled = false;
         Vector3 targetPos = destination - transform.position;
         float retreatDistance = Vector3.Distance(destination, transform.position);
         transform.position += (targetPos * Time.deltaTime);
 
         if (retreatDistance <= 0.3)
         {
+            _enemyCollider.enabled = true;
             _retreatPhase = false;
             _firePhase = true;
         }
+    }
+
+    private void DeathSequence()
+    {
+        _enemyCollider.enabled = false;
+        _isDead = true;
+        Instantiate(_explosionPrefab, transform.position, transform.rotation);
+        _audioManager.Explosion();
+        Destroy(this.gameObject, 1.0f);
     }
 
     IEnumerator ExitFirePhase()
