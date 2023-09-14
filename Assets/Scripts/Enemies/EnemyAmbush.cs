@@ -19,11 +19,18 @@ public class EnemyAmbush : MonoBehaviour
 
     private float _spawnRange;
     private float _canFire;
+    private float _fireRate = 4.5f;
+    private float _playerDeviation;
     private bool _isAmbushing;
     private bool _flyingIn = true;
+    private bool _isDead = false;
+    private Player _player;
     private GameObject _playerObj;
+    private GameObject _projectileContainer;
     private Vector3 _flyInDirection;
     private Vector3 _flyInDestination;
+
+    AudioSource _enemyAudio;
 
     /// ambush enemy behavior outline
     /// Spawns in and moves like a normal enemy (done)
@@ -39,7 +46,27 @@ public class EnemyAmbush : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _playerObj = GameObject.Find("Player");
+        _projectileContainer = GameObject.Find("Enemy_Projectiles");
+        _player = _playerObj.GetComponent<Player>();
+        _enemyAudio = gameObject.GetComponent<AudioSource>();
 
+        if (_playerObj == null)
+        {
+            Debug.LogError("Ambush enemy player object reference is NULL!");
+        }
+        if (_projectileContainer == null)
+        {
+            Debug.LogError("Ambush enemy projectile container reference is NULL!");
+        }
+        if (_player == null)
+        {
+            Debug.LogError("Ambush enemy player script reference is NULL!");
+        }
+        if (_enemyAudio == null)
+        {
+            Debug.LogError("Ambush enemy audio source reference is NULL!");
+        }
 
         CalculateFlyIn();
     }
@@ -52,9 +79,19 @@ public class EnemyAmbush : MonoBehaviour
             FlyIn();
         }
 
+        if (_playerObj != null)
+        {
+            _playerDeviation = transform.position.y - _playerObj.transform.position.y;
+        }
+
         if (_flyingIn == false && _isAmbushing == false)
         {
-            AmbushMovement();
+            EnemyMovement();
+
+            if (Time.time > _canFire && _isDead == false && _playerDeviation > 1.3)
+            {
+                EnemyFire();
+            }
             
             if (transform.position.y <= -5.3f)
             {
@@ -94,7 +131,7 @@ public class EnemyAmbush : MonoBehaviour
         }
     }
 
-    private void AmbushMovement()
+    private void EnemyMovement()
     {
         transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
 
@@ -105,5 +142,23 @@ public class EnemyAmbush : MonoBehaviour
             CalculateFlyIn();
             _flyingIn = true;
         }
+    }
+
+    private void EnemyFire()
+    {
+        if (_playerObj != null)
+        {
+            Vector3 targetPos = _playerObj.transform.position - transform.position;
+            float fireAngle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg - 90;
+            _canFire = Time.time + Random.Range(3, 6);
+            GameObject newLaser = Instantiate(_primaryLaserPrefab, transform.position + _laserOffset, Quaternion.Euler(Vector3.forward * fireAngle));
+            newLaser.transform.parent = _projectileContainer.transform;
+            _enemyAudio.PlayOneShot(_primaryLaserClip);
+        }
+    }
+
+    private void Ambush()
+    {
+
     }
 }
