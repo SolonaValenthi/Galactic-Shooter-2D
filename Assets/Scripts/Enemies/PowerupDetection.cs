@@ -7,6 +7,7 @@ public class PowerupDetection : MonoBehaviour
     private int _parentID; // 0 = basic enemy, 1 = ambush enemy
     private bool _hasTarget = false;
     private GameObject _powerupTarget;
+    private GameObject _incomingLaser;
     private EnemyAmbush _ambushParent;
     private Enemy _enemyParent;
 
@@ -41,6 +42,11 @@ public class PowerupDetection : MonoBehaviour
         {
             _enemyParent.AttackPowerup(_powerupTarget.transform.position);
         }
+
+        if (_incomingLaser != null && _parentID == 1)
+        {
+            _ambushParent.IncomingLaser(_incomingLaser.transform.position);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -53,11 +59,22 @@ public class PowerupDetection : MonoBehaviour
                 _hasTarget = true;
             }
         }
+
+        if (other.CompareTag("Laser"))
+        {
+            if (_incomingLaser == null)
+            {
+                _incomingLaser = other.gameObject;
+                _hasTarget = true;
+                StartCoroutine(_ambushParent.AfterDodge());
+            }
+        }
     }
 
     public void ClearTarget()
     {
         _powerupTarget = null;
+        _incomingLaser = null;
         _hasTarget = false;
     }
 }

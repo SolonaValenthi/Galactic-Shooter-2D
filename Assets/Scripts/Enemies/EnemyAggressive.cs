@@ -30,7 +30,7 @@ public class EnemyAggressive : MonoBehaviour
     private Vector3 _playerPos;
 
     AudioSource _enemyAudio;
-    BoxCollider2D _enemyCollider;
+    BoxCollider2D[] _enemyCollider;
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +40,7 @@ public class EnemyAggressive : MonoBehaviour
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         _player = _playerObj.GetComponent<Player>();
         _enemyAudio = gameObject.GetComponent<AudioSource>();
-        _enemyCollider = gameObject.GetComponent<BoxCollider2D>();
+        _enemyCollider = gameObject.GetComponents<BoxCollider2D>();
 
         if (_playerObj == null)
         {
@@ -209,14 +209,20 @@ public class EnemyAggressive : MonoBehaviour
 
     private void Retreat(Vector3 destination)
     {
-        _enemyCollider.enabled = false;
+        foreach (var collider in _enemyCollider)
+        {
+            collider.enabled = false;
+        }
         Vector3 targetPos = destination - transform.position;
         float retreatDistance = Vector3.Distance(destination, transform.position);
         transform.position += (targetPos * Time.deltaTime);
 
         if (retreatDistance <= 0.3)
         {
-            _enemyCollider.enabled = true;
+            foreach (var collider in _enemyCollider)
+            {
+                collider.enabled = true;
+            }
             _retreatPhase = false;
             _firePhase = true;
         }
@@ -224,7 +230,10 @@ public class EnemyAggressive : MonoBehaviour
 
     private void DeathSequence()
     {
-        _enemyCollider.enabled = false;
+        foreach (var collider in _enemyCollider)
+        {
+            collider.enabled = false;
+        }
         _isDead = true;
         Instantiate(_explosionPrefab, transform.position, transform.rotation);
         _audioManager.Explosion();

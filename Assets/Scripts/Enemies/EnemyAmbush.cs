@@ -7,11 +7,15 @@ public class EnemyAmbush : MonoBehaviour
     [SerializeField]
     private float _enemySpeed = 4.0f;
     [SerializeField]
+    private float _dodgeSpeed = 8.0f;
+    [SerializeField]
     private GameObject _primaryLaserPrefab;
     [SerializeField]
     private GameObject _ambushTargetIndicator;
     [SerializeField]
     private GameObject _ambushLaser;
+    [SerializeField]
+    private GameObject _explosionPrefab;
     [SerializeField]
     private AudioClip _primaryLaserClip;
     [SerializeField]
@@ -25,13 +29,19 @@ public class EnemyAmbush : MonoBehaviour
     private bool _isAmbushing;
     private bool _flyingIn = true;
     private bool _isDead = false;
+    private bool _incomingAttack = false;
+    private bool _dodgeCD = false;
     private Player _player;
+    private AudioManager _audioManager;
+    private PowerupDetection _powerupDetection;
     private GameObject _playerObj;
     private GameObject _projectileContainer;
     private Vector3 _flyInDirection;
     private Vector3 _flyInDestination;
+    private Vector3 _projToDodge;
 
     AudioSource _enemyAudio;
+    BoxCollider2D[] _enemyCollider;
 
     /// ambush enemy behavior outline
     /// Spawns in and moves like a normal enemy (done)
@@ -50,7 +60,10 @@ public class EnemyAmbush : MonoBehaviour
         _playerObj = GameObject.Find("Player");
         _projectileContainer = GameObject.Find("Enemy_Projectiles");
         _player = _playerObj.GetComponent<Player>();
+        _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+        _powerupDetection = gameObject.GetComponentInChildren<PowerupDetection>();
         _enemyAudio = gameObject.GetComponent<AudioSource>();
+        _enemyCollider = gameObject.GetComponents<BoxCollider2D>();
 
         if (_playerObj == null)
         {
@@ -64,9 +77,21 @@ public class EnemyAmbush : MonoBehaviour
         {
             Debug.LogError("Ambush enemy player script reference is NULL!");
         }
+        if (_audioManager == null)
+        {
+            Debug.LogError("Ambush enemy audio manager reference is NULL!");
+        }
+        if (_powerupDetection == null)
+        {
+            Debug.LogError("Ambush enemy powerup detection reference is NULL!");
+        }
         if (_enemyAudio == null)
         {
             Debug.LogError("Ambush enemy audio source reference is NULL!");
+        }
+        if (_enemyCollider == null)
+        {
+            Debug.LogError("Ambush enemy collider reference is NULL!");
         }
 
         CalculateFlyIn();
@@ -104,6 +129,12 @@ public class EnemyAmbush : MonoBehaviour
                 AvoidPlayer();
             }
         }
+
+        if (_incomingAttack == true)
+        {
+            AvoidAttack(_projToDodge);
+        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -111,9 +142,14 @@ public class EnemyAmbush : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _player.Damage();
-            Destroy(this.gameObject);
+            Deathsequence();
         }
         
+        if (other.CompareTag("Laser"))
+        {
+            Destroy(other.gameObject);
+            Deathsequence();
+        }
     }
 
     private void FlyIn()
@@ -172,16 +208,59 @@ public class EnemyAmbush : MonoBehaviour
     {
         if (_playerObj.transform.position.x >= transform.position.x)
         {
-            transform.Translate(Vector3.left * _enemySpeed * Time.deltaTime);
+            transform.Translate(Vector3.left * _dodgeSpeed * Time.deltaTime);
         }
         else if (_playerObj.transform.position.x < transform.position.x)
         {
-            transform.Translate(Vector3.right * _enemySpeed * Time.deltaTime);
+            transform.Translate(Vector3.right * _dodgeSpeed * Time.deltaTime);
+        }
+    }
+
+    private void AvoidAttack(Vector3 attackPosition)
+    {
+        if (_dodgeCD == false)
+        {
+            if (attackPosition.x >= transform.position.x)
+            {
+                transform.Translate(Vector3.left * _dodgeSpeed * Time.deltaTime);
+            }
+            else if (attackPosition.x < transform.position.x)
+            {
+                transform.Translate(Vector3.right * _dodgeSpeed * Time.deltaTime);
+            }
         }
     }
 
     private void Ambush()
     {
 
+    }
+
+    private void Deathsequence()
+    {
+        foreach (var collider in _enemyCollider)
+        {
+            collider.enabled = false;
+        }
+        _isDead = true;
+        _audioManager.Explosion();
+        Instantiate(_explosionPrefab, transform.position, transform.rotation);
+        Destroy(this.gameObject, 1.0f);
+    }
+
+    public void IncomingLaser(Vector3 attackPosition)
+    { 
+        _projToDodge = attackPosition;
+        _incomingAttack = true;
+    }
+
+     public IEnumerator AfterDodge()
+    {
+        yield return new WaitForSeconds(0.15f);
+        _incomingAttack = false;
+        _powerupDetection.ClearTarget();
+        _dodgeCD = true;
+        yield return new WaitForSeconds(2.0f);
+        _dodgeCD = false;
     }
 }

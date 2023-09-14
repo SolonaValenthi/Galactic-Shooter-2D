@@ -32,7 +32,7 @@ public class EnemyAgile : MonoBehaviour
     private Vector3 _flyInDestination;
 
     AudioSource _enemyAudio;
-    BoxCollider2D _enemyCollider;
+    BoxCollider2D[] _enemyCollider;
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +42,7 @@ public class EnemyAgile : MonoBehaviour
         _player = _playerObj.GetComponent<Player>();
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         _enemyAudio = gameObject.GetComponent<AudioSource>();
-        _enemyCollider = gameObject.GetComponent<BoxCollider2D>();
+        _enemyCollider = gameObject.GetComponents<BoxCollider2D>();
 
         if (_playerObj == null)
         {
@@ -181,7 +181,10 @@ public class EnemyAgile : MonoBehaviour
 
     private void DeathSequence()
     {
-        _enemyCollider.enabled = false;
+        foreach (var collider in _enemyCollider)
+        {
+            collider.enabled = false;
+        }
         _isDead = true;
         _audioManager.Explosion();
         Instantiate(_explosionPrefab, transform.position, transform.rotation);
