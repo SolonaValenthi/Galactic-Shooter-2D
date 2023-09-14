@@ -206,6 +206,7 @@ public class EnemyAmbush : MonoBehaviour
 
     private void AvoidPlayer()
     {
+        _flyingIn = false;
         if (_playerObj.transform.position.x >= transform.position.x)
         {
             transform.Translate(Vector3.left * _dodgeSpeed * Time.deltaTime);
