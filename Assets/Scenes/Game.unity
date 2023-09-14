@@ -1321,75 +1321,6 @@ Transform:
   m_Father: {fileID: 1927561165}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &983501577
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3292597004659243814, guid: 5ada96081eed7c64793abf8f6a786fb2,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292597004659243814, guid: 5ada96081eed7c64793abf8f6a786fb2,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 5.36
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292597004659243814, guid: 5ada96081eed7c64793abf8f6a786fb2,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.28
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292597004659243814, guid: 5ada96081eed7c64793abf8f6a786fb2,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292597004659243814, guid: 5ada96081eed7c64793abf8f6a786fb2,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292597004659243814, guid: 5ada96081eed7c64793abf8f6a786fb2,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292597004659243814, guid: 5ada96081eed7c64793abf8f6a786fb2,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292597004659243814, guid: 5ada96081eed7c64793abf8f6a786fb2,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292597004659243814, guid: 5ada96081eed7c64793abf8f6a786fb2,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292597004659243814, guid: 5ada96081eed7c64793abf8f6a786fb2,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3292597004659243814, guid: 5ada96081eed7c64793abf8f6a786fb2,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5729218059076540325, guid: 5ada96081eed7c64793abf8f6a786fb2,
-        type: 3}
-      propertyPath: m_Name
-      value: Enemy
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 5ada96081eed7c64793abf8f6a786fb2, type: 3}
 --- !u!1 &1001244840
 GameObject:
   m_ObjectHideFlags: 0
@@ -2525,6 +2456,7 @@ GameObject:
   - component: {fileID: 1652883515}
   - component: {fileID: 1652883514}
   - component: {fileID: 1652883517}
+  - component: {fileID: 1652883519}
   - component: {fileID: 1652883518}
   m_Layer: 0
   m_Name: Player
@@ -2647,7 +2579,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.00000059604645, y: -0.04397297}
+  m_Offset: {x: 0.0044457912, y: -0.14176416}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2658,7 +2590,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.2145216, y: 4.152604}
+  m_Size: {x: 1.3742671, y: 3.9570217}
   m_EdgeRadius: 0
 --- !u!82 &1652883518
 AudioSource:
@@ -2756,6 +2688,32 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!61 &1652883519
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1652883513}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.013839722, y: -1.4463189}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5.12, y: 5.12}
+    newSize: {x: 5.12, y: 5.12}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 3.2100286, y: 0.98173}
+  m_EdgeRadius: 0
 --- !u!1 &1752571410
 GameObject:
   m_ObjectHideFlags: 0

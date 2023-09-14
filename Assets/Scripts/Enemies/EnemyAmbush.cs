@@ -19,8 +19,9 @@ public class EnemyAmbush : MonoBehaviour
 
     private float _spawnRange;
     private float _canFire;
-    private float _fireRate = 4.5f;
+    private float _fireRate = 3.0f;
     private float _playerDeviation;
+    private float _distanceToPlayer;
     private bool _isAmbushing;
     private bool _flyingIn = true;
     private bool _isDead = false;
@@ -35,8 +36,8 @@ public class EnemyAmbush : MonoBehaviour
     /// ambush enemy behavior outline
     /// Spawns in and moves like a normal enemy (done)
     /// can detect and will try to avoid player attacks
-    /// actively tries to avoid collision with player to use ambush weapon
-    /// upon reaching bottom screen bound stop moving
+    /// actively tries to avoid collision with player to use ambush weapon (done)
+    /// upon reaching bottom screen bound stop moving (done)
     /// turn towards and begin tracking the player
     /// display a target indicator
     /// cease tracking after a few seconds
@@ -74,6 +75,8 @@ public class EnemyAmbush : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _distanceToPlayer = Vector3.Distance(transform.position, _playerObj.transform.position);
+        
         if (_flyingIn == true)
         {
             FlyIn();
@@ -92,16 +95,24 @@ public class EnemyAmbush : MonoBehaviour
             {
                 EnemyFire();
             }
-            
             if (transform.position.y <= -5.3f)
             {
                 _isAmbushing = true;
+            }
+            if (_distanceToPlayer <= 2.5)
+            {
+                AvoidPlayer();
             }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.CompareTag("Player"))
+        {
+            _player.Damage();
+            Destroy(this.gameObject);
+        }
         
     }
 
@@ -150,10 +161,22 @@ public class EnemyAmbush : MonoBehaviour
         {
             Vector3 targetPos = _playerObj.transform.position - transform.position;
             float fireAngle = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg - 90;
-            _canFire = Time.time + Random.Range(3, 6);
+            _canFire = Time.time + _fireRate;
             GameObject newLaser = Instantiate(_primaryLaserPrefab, transform.position + _laserOffset, Quaternion.Euler(Vector3.forward * fireAngle));
             newLaser.transform.parent = _projectileContainer.transform;
             _enemyAudio.PlayOneShot(_primaryLaserClip);
+        }
+    }
+
+    private void AvoidPlayer()
+    {
+        if (_playerObj.transform.position.x >= transform.position.x)
+        {
+            transform.Translate(Vector3.left * _enemySpeed * Time.deltaTime);
+        }
+        else if (_playerObj.transform.position.x < transform.position.x)
+        {
+            transform.Translate(Vector3.right * _enemySpeed * Time.deltaTime);
         }
     }
 

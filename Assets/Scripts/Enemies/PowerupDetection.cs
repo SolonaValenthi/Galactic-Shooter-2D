@@ -7,6 +7,7 @@ public class PowerupDetection : MonoBehaviour
     private int _parentID; // 0 = basic enemy, 1 = ambush enemy
     private bool _hasTarget = false;
     private GameObject _powerupTarget;
+    private EnemyAmbush _ambushParent;
     private Enemy _enemyParent;
 
     // Start is called before the first frame update
@@ -17,8 +18,17 @@ public class PowerupDetection : MonoBehaviour
             _enemyParent = transform.parent.GetComponent<Enemy>();
             _parentID = 0;
         }
+        if (transform.parent.name == "Enemy_Ambush(Clone)")
+        {
+            _ambushParent = transform.parent.GetComponent<EnemyAmbush>();
+            _parentID = 1;
+        }
 
-        if (_enemyParent == null)
+        if (_enemyParent == null && _parentID == 0)
+        {
+            Debug.LogError("Powerup Detection parent script reference is NULL!");
+        }
+        if (_ambushParent == null && _parentID == 1)
         {
             Debug.LogError("Powerup Detection parent script reference is NULL!");
         }

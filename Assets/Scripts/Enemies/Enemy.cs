@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour
 
     Animator _deathAnim;
     AudioSource _enemyAudio;
-    BoxCollider2D _enemyCollider;
+    BoxCollider2D[] _enemyCollider;
 
     private void Start()
     {
@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
         _projectileContainer = GameObject.Find("Enemy_Projectiles");
         _player = _playerObj.GetComponent<Player>();
         _deathAnim = gameObject.GetComponent<Animator>();
-        _enemyCollider = gameObject.GetComponent<BoxCollider2D>();
+        _enemyCollider = gameObject.GetComponents<BoxCollider2D>();
         _enemyAudio = gameObject.GetComponent<AudioSource>();
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         _canFire = Random.Range(3, 6);
@@ -136,7 +136,10 @@ public class Enemy : MonoBehaviour
 
     private void DeathSequence()
     {
-        _enemyCollider.enabled = false;
+        foreach (var collider in _enemyCollider)
+        {
+            collider.enabled = false;
+        }
         _isDead = true;
         _deathAnim.SetTrigger("OnEnemyDeath");
         _audioManager.Explosion();
