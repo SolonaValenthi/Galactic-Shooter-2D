@@ -45,7 +45,7 @@ public class EnemyAmbush : MonoBehaviour
 
     /// ambush enemy behavior outline
     /// Spawns in and moves like a normal enemy (done)
-    /// can detect and will try to avoid player attacks
+    /// can detect and will try to avoid player attacks (done)
     /// actively tries to avoid collision with player to use ambush weapon (done)
     /// upon reaching bottom screen bound stop moving (done)
     /// turn towards and begin tracking the player
@@ -230,11 +230,6 @@ public class EnemyAmbush : MonoBehaviour
                 transform.Translate(Vector3.right * _dodgeSpeed * Time.deltaTime);
             }
         }
-    }
-
-    private void Ambush()
-    {
-
     }
 
     private void Deathsequence()
