@@ -6,9 +6,20 @@ public class Laser : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 8.0f;
+    [SerializeField]
+    private int _projectileID; // 0 = regular laser, 1 = piercing laser
 
     // Update is called once per frame
     void Update()
+    {
+        if (_projectileID == 0)
+        {
+            BasicLaser();
+        }
+
+    }
+
+    private void BasicLaser()
     {
         transform.Translate(Vector3.up * _speed * Time.deltaTime);
 
