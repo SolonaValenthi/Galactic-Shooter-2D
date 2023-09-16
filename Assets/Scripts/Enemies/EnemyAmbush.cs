@@ -51,10 +51,10 @@ public class EnemyAmbush : MonoBehaviour
     /// can detect and will try to avoid player attacks (done)
     /// actively tries to avoid collision with player to use ambush weapon (done)
     /// upon reaching bottom screen bound stop moving (done)
-    /// turn towards and begin tracking the player
-    /// display a target indicator
-    /// cease tracking after a few seconds
-    /// fire a large piercing laser at the final position, shortly after tracking ends
+    /// turn towards and begin tracking the player (done)
+    /// display a target indicator (done)
+    /// cease tracking after a few seconds (done)
+    /// fire a large piercing laser at the final position, shortly after tracking ends (done)
     /// resume moving off screen to "respawn" at the top bound
 
     // Start is called before the first frame update
