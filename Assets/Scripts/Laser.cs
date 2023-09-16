@@ -9,6 +9,18 @@ public class Laser : MonoBehaviour
     [SerializeField]
     private int _projectileID; // 0 = regular laser, 1 = piercing laser
 
+    BoxCollider2D _laserCollider;
+
+    private void Start()
+    {
+        _laserCollider = gameObject.GetComponent<BoxCollider2D>();
+
+        if (_projectileID == 1)
+        {
+            StartCoroutine(PiercingLaser());
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -39,5 +51,19 @@ public class Laser : MonoBehaviour
             }
             Destroy(this.gameObject);
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (_projectileID == 1)
+        {
+            _laserCollider.enabled = false;
+        }
+    }
+
+    IEnumerator PiercingLaser()
+    {
+        yield return new WaitForSeconds(0.05f);
+        _laserCollider.enabled = true;
     }
 }

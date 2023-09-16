@@ -449,7 +449,14 @@ public class Player : MonoBehaviour
         if (other.CompareTag("EnemyLaser"))
         {
             Damage();
-            Destroy(other.gameObject);
+            if (other.name != "Piercing_Laser(Clone)")
+            {
+                Destroy(other.gameObject);
+            }
+            else
+            {
+                Destroy(other.gameObject, 0.2f);
+            }
         }
 
         if (other.CompareTag("EnemyMissile"))

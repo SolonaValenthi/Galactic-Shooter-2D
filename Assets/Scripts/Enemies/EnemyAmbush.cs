@@ -11,8 +11,6 @@ public class EnemyAmbush : MonoBehaviour
     [SerializeField]
     private GameObject _primaryLaserPrefab;
     [SerializeField]
-    private GameObject _ambushTargetIndicator;
-    [SerializeField]
     private GameObject _ambushLaser;
     [SerializeField]
     private GameObject _explosionPrefab;
@@ -24,8 +22,10 @@ public class EnemyAmbush : MonoBehaviour
     private float _spawnRange;
     private float _canFire;
     private float _fireRate = 3.0f;
+    private float _trackingSpeed = 5.0f;
     private float _playerDeviation;
     private float _distanceToPlayer;
+    private bool _trackingOn;
     private bool _isAmbushing;
     private bool _flyingIn = true;
     private bool _isDead = false;
@@ -35,13 +35,16 @@ public class EnemyAmbush : MonoBehaviour
     private AudioManager _audioManager;
     private PowerupDetection _powerupDetection;
     private GameObject _playerObj;
+    private GameObject _guideLaser;
     private GameObject _projectileContainer;
     private Vector3 _flyInDirection;
     private Vector3 _flyInDestination;
     private Vector3 _projToDodge;
+    private Color _GuideColor;
 
     AudioSource _enemyAudio;
     BoxCollider2D[] _enemyCollider;
+    SpriteRenderer _guideSprite;
 
     /// ambush enemy behavior outline
     /// Spawns in and moves like a normal enemy (done)
@@ -58,6 +61,7 @@ public class EnemyAmbush : MonoBehaviour
     void Start()
     {
         _playerObj = GameObject.Find("Player");
+        _guideLaser = transform.GetChild(1).gameObject;
         _projectileContainer = GameObject.Find("Enemy_Projectiles");
         _player = _playerObj.GetComponent<Player>();
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
@@ -68,6 +72,10 @@ public class EnemyAmbush : MonoBehaviour
         if (_playerObj == null)
         {
             Debug.LogError("Ambush enemy player object reference is NULL!");
+        }
+        if (_guideLaser == null)
+        {
+            Debug.LogError("Ambush enemy guide laser object reference is NULL!");
         }
         if (_projectileContainer == null)
         {
@@ -94,14 +102,18 @@ public class EnemyAmbush : MonoBehaviour
             Debug.LogError("Ambush enemy collider reference is NULL!");
         }
 
+        if (_guideLaser != null)
+        {
+            _guideSprite = _guideLaser.GetComponent<SpriteRenderer>();
+            _GuideColor = _guideSprite.color;
+        }
+
         CalculateFlyIn();
     }
 
     // Update is called once per frame
     void Update()
-    {
-        _distanceToPlayer = Vector3.Distance(transform.position, _playerObj.transform.position);
-        
+    {       
         if (_flyingIn == true)
         {
             FlyIn();
@@ -110,23 +122,36 @@ public class EnemyAmbush : MonoBehaviour
         if (_playerObj != null)
         {
             _playerDeviation = transform.position.y - _playerObj.transform.position.y;
+            _distanceToPlayer = Vector3.Distance(transform.position, _playerObj.transform.position);
         }
 
-        if (_flyingIn == false && _isAmbushing == false)
+        if (_flyingIn == false)
         {
-            EnemyMovement();
+            if (_isAmbushing == false && _trackingOn == false)
+            {
+                EnemyMovement();
 
-            if (Time.time > _canFire && _isDead == false && _playerDeviation > 1.3)
-            {
-                EnemyFire();
+                if (Time.time > _canFire && _isDead == false && _playerDeviation > 1.3)
+                {
+                    EnemyFire();
+                }
+                if (transform.position.y <= -5.3f)
+                {
+                    _trackingOn = true;
+                }
+                if (_distanceToPlayer <= 2.5)
+                {
+                    AvoidPlayer();
+                }
             }
-            if (transform.position.y <= -5.3f)
+
+            if (_trackingOn == true)
             {
-                _isAmbushing = true;
-            }
-            if (_distanceToPlayer <= 2.5)
-            {
-                AvoidPlayer();
+                FacePlayer();
+                if (_isAmbushing == false)
+                {
+                    StartCoroutine(Ambush());
+                }
             }
         }
 
@@ -204,6 +229,17 @@ public class EnemyAmbush : MonoBehaviour
         }
     }
 
+    private void FacePlayer()
+    {
+        if (_playerObj != null)
+        {
+            Vector3 lookTarget = _playerObj.transform.position - transform.position;
+            float lookAngle = Mathf.Atan2(lookTarget.x, lookTarget.y) * Mathf.Rad2Deg - 180;
+            Quaternion targetAngle = Quaternion.Euler(Vector3.back * lookAngle);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetAngle, Time.deltaTime * _trackingSpeed);
+        }
+    }
+
     private void AvoidPlayer()
     {
         _flyingIn = false;
@@ -258,5 +294,28 @@ public class EnemyAmbush : MonoBehaviour
         _dodgeCD = true;
         yield return new WaitForSeconds(2.0f);
         _dodgeCD = false;
+    }
+
+    IEnumerator Ambush()
+    {
+        _isAmbushing = true;
+        _guideLaser.SetActive(true);
+        while (_guideSprite.color.a < 1.0f)
+        {
+            _GuideColor.a += 0.06f;
+            _guideSprite.color = _GuideColor;
+            yield return new WaitForSeconds(0.1f);
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            _guideLaser.SetActive(false);
+            yield return new WaitForSeconds(0.1f);
+            _guideLaser.SetActive(true);
+            yield return new WaitForSeconds(0.1f);
+        }
+        _trackingOn = false;
+        yield return new WaitForSeconds(0.5f);
+        Instantiate(_ambushLaser, transform.position, _guideLaser.transform.rotation);
+        yield return null;
     }
 }
