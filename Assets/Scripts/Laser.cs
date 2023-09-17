@@ -28,7 +28,6 @@ public class Laser : MonoBehaviour
         {
             BasicLaser();
         }
-
     }
 
     private void BasicLaser()
@@ -53,17 +52,11 @@ public class Laser : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (_projectileID == 1)
-        {
-            _laserCollider.enabled = false;
-        }
-    }
-
     IEnumerator PiercingLaser()
     {
         yield return new WaitForSeconds(0.05f);
         _laserCollider.enabled = true;
+        yield return new WaitForSeconds(0.2f);
+        Destroy(this.gameObject);
     }
 }

@@ -453,10 +453,6 @@ public class Player : MonoBehaviour
             {
                 Destroy(other.gameObject);
             }
-            else
-            {
-                Destroy(other.gameObject, 0.2f);
-            }
         }
 
         if (other.CompareTag("EnemyMissile"))

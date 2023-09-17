@@ -5,7 +5,6 @@ using UnityEngine;
 public class PowerupDetection : MonoBehaviour
 {
     private int _parentID; // 0 = basic enemy, 1 = ambush enemy
-    private bool _hasTarget = false;
     private GameObject _powerupTarget;
     private GameObject _incomingLaser;
     private EnemyAmbush _ambushParent;
@@ -38,7 +37,7 @@ public class PowerupDetection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_hasTarget == true && _parentID == 0)
+        if (_powerupTarget != null && _parentID == 0)
         {
             _enemyParent.AttackPowerup(_powerupTarget.transform.position);
         }
@@ -56,7 +55,6 @@ public class PowerupDetection : MonoBehaviour
             if (_powerupTarget == null)
             {
                 _powerupTarget = other.gameObject;
-                _hasTarget = true;
             }
         }
 
@@ -65,7 +63,6 @@ public class PowerupDetection : MonoBehaviour
             if (_incomingLaser == null)
             {
                 _incomingLaser = other.gameObject;
-                _hasTarget = true;
                 StartCoroutine(_ambushParent.AfterDodge());
             }
         }
@@ -75,6 +72,5 @@ public class PowerupDetection : MonoBehaviour
     {
         _powerupTarget = null;
         _incomingLaser = null;
-        _hasTarget = false;
     }
 }

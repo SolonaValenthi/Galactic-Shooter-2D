@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ad80b5c4e266084eab79b357c99f2ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemySpeed: 4
+  _enemySpeed: 3
   _dodgeSpeed: 8
   _primaryLaserPrefab: {fileID: 3462453089705872088, guid: ca6244f99240cd74591691df0c4a32bb,
     type: 3}

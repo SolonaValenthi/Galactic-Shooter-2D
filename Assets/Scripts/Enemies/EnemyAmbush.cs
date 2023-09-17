@@ -167,13 +167,13 @@ public class EnemyAmbush : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _player.Damage();
-            Deathsequence();
+            DeathSequence();
         }
         
         if (other.CompareTag("Laser"))
         {
             Destroy(other.gameObject);
-            Deathsequence();
+            DeathSequence();
         }
     }
 
@@ -207,9 +207,10 @@ public class EnemyAmbush : MonoBehaviour
     {
         transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
 
-        if (transform.position.y < -7)
+        if (transform.position.y < -7f)
         {
             _spawnRange = Random.Range(-9.0f, 9.0f);
+            transform.rotation = Quaternion.identity;
             transform.position = new Vector3(_spawnRange, 8, 0);
             CalculateFlyIn();
             _flyingIn = true;
@@ -242,14 +243,17 @@ public class EnemyAmbush : MonoBehaviour
 
     private void AvoidPlayer()
     {
-        _flyingIn = false;
-        if (_playerObj.transform.position.x >= transform.position.x)
+        if (_playerObj != null)
         {
-            transform.Translate(Vector3.left * _dodgeSpeed * Time.deltaTime);
-        }
-        else if (_playerObj.transform.position.x < transform.position.x)
-        {
-            transform.Translate(Vector3.right * _dodgeSpeed * Time.deltaTime);
+            _flyingIn = false;
+            if (_playerObj.transform.position.x >= transform.position.x)
+            {
+                transform.Translate(Vector3.left * _dodgeSpeed * Time.deltaTime);
+            }
+            else if (_playerObj.transform.position.x < transform.position.x)
+            {
+                transform.Translate(Vector3.right * _dodgeSpeed * Time.deltaTime);
+            }
         }
     }
 
@@ -268,16 +272,23 @@ public class EnemyAmbush : MonoBehaviour
         }
     }
 
-    private void Deathsequence()
+    private void DeathSequence()
     {
         foreach (var collider in _enemyCollider)
         {
             collider.enabled = false;
         }
         _isDead = true;
+        StopMoving();
         _audioManager.Explosion();
         Instantiate(_explosionPrefab, transform.position, transform.rotation);
         Destroy(this.gameObject, 1.0f);
+    }
+
+    private void StopMoving()
+    {
+        _enemySpeed = 0;
+        _dodgeSpeed = 0;
     }
 
     public void IncomingLaser(Vector3 attackPosition)
@@ -292,7 +303,7 @@ public class EnemyAmbush : MonoBehaviour
         _incomingAttack = false;
         _powerupDetection.ClearTarget();
         _dodgeCD = true;
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.5f);
         _dodgeCD = false;
     }
 
@@ -308,14 +319,26 @@ public class EnemyAmbush : MonoBehaviour
         }
         for (int i = 0; i < 3; i++)
         {
+            _trackingOn = false;
             _guideLaser.SetActive(false);
             yield return new WaitForSeconds(0.1f);
             _guideLaser.SetActive(true);
             yield return new WaitForSeconds(0.1f);
         }
-        _trackingOn = false;
         yield return new WaitForSeconds(0.5f);
-        Instantiate(_ambushLaser, transform.position, _guideLaser.transform.rotation);
-        yield return null;
+        GameObject newLaser = Instantiate(_ambushLaser, transform.position, _guideLaser.transform.rotation);
+        newLaser.transform.parent = _projectileContainer.transform;
+        _GuideColor.a = 0.0f;
+        _guideSprite.color = _GuideColor;
+        _guideLaser.SetActive(false);
+        yield return new WaitForSeconds(0.2f);
+        while (transform.position.y > -7)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.identity, Time.deltaTime);
+            transform.position += Vector3.down * Time.deltaTime;
+            yield return null;
+        }
+        EnemyMovement();
+        _isAmbushing = false;
     }
 }
