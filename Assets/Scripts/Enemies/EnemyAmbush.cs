@@ -332,7 +332,7 @@ public class EnemyAmbush : MonoBehaviour
         _guideSprite.color = _GuideColor;
         _guideLaser.SetActive(false);
         yield return new WaitForSeconds(0.2f);
-        while (transform.position.y > -7)
+        while (transform.position.y > -7.5f)
         {
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.identity, Time.deltaTime);
             transform.position += Vector3.down * Time.deltaTime;
