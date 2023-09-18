@@ -3106,7 +3106,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyContainer: {fileID: 421063456}
-  _asteroidPrefab: {fileID: 0}
+  _asteroidPrefab: {fileID: 5052791149800782126, guid: 1fca0ae997369d348a47a701878269e2,
+    type: 3}
   _powerups:
   - {fileID: 6457033654757454521, guid: e003a2dfcd8b89747ad5964d37af92f6, type: 3}
   - {fileID: 8016352171792655580, guid: 734b6bc44f90b694ea55b3055dbba49d, type: 3}
