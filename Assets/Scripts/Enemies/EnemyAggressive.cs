@@ -24,6 +24,7 @@ public class EnemyAggressive : MonoBehaviour
     private GameObject _projectileContainer;
     private AudioManager _audioManager;
     private Player _player;
+    private SpawnManager _spawnManager;
     private Vector3 _flyInDirection;
     private Vector3 _flyInDestination;
     private Vector3 _retreatDestination;
@@ -38,6 +39,7 @@ public class EnemyAggressive : MonoBehaviour
         _playerObj = GameObject.Find("Player");
         _projectileContainer = GameObject.Find("Enemy_Projectiles");
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _player = _playerObj.GetComponent<Player>();
         _enemyAudio = gameObject.GetComponent<AudioSource>();
         _enemyCollider = gameObject.GetComponents<BoxCollider2D>();
@@ -53,6 +55,10 @@ public class EnemyAggressive : MonoBehaviour
         if (_audioManager == null)
         {
             Debug.LogError("Aggressive enemy audio manager reference is NULL!");
+        }
+        if (_spawnManager == null)
+        {
+            Debug.LogError("Aggressive enemy spawn manager reference is NULL!");
         }
         if (_player == null)
         {
@@ -238,6 +244,11 @@ public class EnemyAggressive : MonoBehaviour
         Instantiate(_explosionPrefab, transform.position, transform.rotation);
         _audioManager.Explosion();
         Destroy(this.gameObject, 1.0f);
+    }
+
+    private void OnDestroy()
+    {
+        _spawnManager.OnEnemyDeath();
     }
 
     IEnumerator ExitFirePhase()

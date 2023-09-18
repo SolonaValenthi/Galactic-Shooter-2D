@@ -34,6 +34,7 @@ public class EnemyAmbush : MonoBehaviour
     private Player _player;
     private AudioManager _audioManager;
     private PowerupDetection _powerupDetection;
+    private SpawnManager _spawnManager;
     private GameObject _playerObj;
     private GameObject _guideLaser;
     private GameObject _projectileContainer;
@@ -55,6 +56,7 @@ public class EnemyAmbush : MonoBehaviour
         _player = _playerObj.GetComponent<Player>();
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         _powerupDetection = gameObject.GetComponentInChildren<PowerupDetection>();
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _enemyAudio = gameObject.GetComponent<AudioSource>();
         _enemyCollider = gameObject.GetComponents<BoxCollider2D>();
 
@@ -81,6 +83,10 @@ public class EnemyAmbush : MonoBehaviour
         if (_powerupDetection == null)
         {
             Debug.LogError("Ambush enemy powerup detection reference is NULL!");
+        }
+        if (_spawnManager == null)
+        {
+            Debug.LogError("Ambush enemy spawn manager reference is NULL!");
         }
         if (_enemyAudio == null)
         {
@@ -294,7 +300,12 @@ public class EnemyAmbush : MonoBehaviour
         _incomingAttack = true;
     }
 
-     public IEnumerator AfterDodge()
+    private void OnDestroy()
+    {
+        _spawnManager.OnEnemyDeath();
+    }
+
+    public IEnumerator AfterDodge()
     {
         yield return new WaitForSeconds(0.15f);
         _incomingAttack = false;

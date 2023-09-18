@@ -35,6 +35,7 @@ public class SpawnManager : MonoBehaviour
     private int _aggressiveSpawned = 0;
     private int _ambushSpawned = 0;
     private int _enemiesSpawned = 0;
+    private int _enemiesKilled = 0;
     private int _totalEnemies;
     private bool _stopSpawning = false;
     private WaitForSeconds _spawnTime = new WaitForSeconds(5.0f);
@@ -60,8 +61,19 @@ public class SpawnManager : MonoBehaviour
         _totalEnemies = _basicToSpawn + _agileToSpawn + _aggressiveToSpawn + _ambushToSpawn;
     }
 
+    private void ResetEnemyCount()
+    {
+        _basicSpawned = 0;
+        _agileSpawned = 0;
+        _aggressiveSpawned = 0;
+        _ambushSpawned = 0;
+        _enemiesSpawned = 0;
+        _enemiesKilled = 0;
+    }
+
     IEnumerator SpawnEnemyRoutine()
     {
+        ResetEnemyCount();
         yield return new WaitForSeconds(3.0f);
         while (_stopSpawning == false)
         {
@@ -76,6 +88,8 @@ public class SpawnManager : MonoBehaviour
                         newEnemy = Instantiate(_enemyTypes[selectedEnemy], spawnPos, Quaternion.identity);
                         newEnemy.transform.parent = _enemyContainer.transform;
                         _basicSpawned++;
+                        _enemiesSpawned++;
+                        yield return _spawnTime;
                     }                 
                     break;
                 case 1:
@@ -84,6 +98,8 @@ public class SpawnManager : MonoBehaviour
                         newEnemy = Instantiate(_enemyTypes[selectedEnemy], spawnPos, Quaternion.identity);
                         newEnemy.transform.parent = _enemyContainer.transform;
                         _agileSpawned++;
+                        _enemiesSpawned++;
+                        yield return _spawnTime;
                     }
                     break;
                 case 2:
@@ -92,6 +108,8 @@ public class SpawnManager : MonoBehaviour
                         newEnemy = Instantiate(_enemyTypes[selectedEnemy], spawnPos, Quaternion.identity);
                         newEnemy.transform.parent = _enemyContainer.transform;
                         _aggressiveSpawned++;
+                        _enemiesSpawned++;
+                        yield return _spawnTime;
                     }
                     break;
                 case 3:
@@ -100,18 +118,18 @@ public class SpawnManager : MonoBehaviour
                         newEnemy = Instantiate(_enemyTypes[selectedEnemy], spawnPos, Quaternion.identity);
                         newEnemy.transform.parent = _enemyContainer.transform;
                         _ambushSpawned++;
+                        _enemiesSpawned++;
+                        yield return _spawnTime;
                     }
                     break;
                 default:
                     Debug.LogError("Invalid enemy type selected.");
                     break;
             }
-            _enemiesSpawned = _basicSpawned + _agileSpawned + _aggressiveSpawned + _ambushSpawned;
             if (_enemiesSpawned >= _totalEnemies)
             {
                 _stopSpawning = true;
             }
-            yield return _spawnTime;
         }
         _currentWave++;
     }
@@ -145,13 +163,52 @@ public class SpawnManager : MonoBehaviour
 
     public void StartSpawning()
     {
+        _stopSpawning = false;
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRoutine());
     }
 
-
     public void OnPlayerDeath()
     {
         _stopSpawning = true;
+    }
+
+    public void OnEnemyDeath()
+    {
+        _enemiesKilled++;
+
+        if (_enemiesKilled >= _totalEnemies)
+        {
+            int spawnBound = Random.Range(0, 3); // 0 = top, 1 = left, 2 = right
+            float ySpawn;
+            float xSpawn;
+            Vector3 spawnPos;
+
+            switch (spawnBound)
+            {
+                case 0:
+                    ySpawn = 7.5f;
+                    xSpawn = Random.Range(-12f, 12f);
+                    spawnPos = new Vector3(xSpawn, ySpawn, 0);
+                    Instantiate(_asteroidPrefab, spawnPos, Quaternion.identity);
+                    break;
+                case 1:
+                    ySpawn = Random.Range(2.5f, 6.5f);
+                    xSpawn = -12f;
+                    spawnPos = new Vector3(xSpawn, ySpawn, 0);
+                    Instantiate(_asteroidPrefab, spawnPos, Quaternion.identity);
+                    break;
+                case 2:
+                    ySpawn = Random.Range(2.5f, 6.5f);
+                    xSpawn = 12f;
+                    spawnPos = new Vector3(xSpawn, ySpawn, 0);
+                    Instantiate(_asteroidPrefab, spawnPos, Quaternion.identity);
+                    break;
+                default:
+                    Debug.LogError("Invalid asteroid spawn bound detected");
+                    break;
+            }
+            CalculateWave();
+        }
     }
 }

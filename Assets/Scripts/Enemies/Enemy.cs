@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     private bool _flyingIn = true;
     private Player _player;
     private AudioManager _audioManager;
+    private SpawnManager _spawnManager;
     private GameObject _playerObj;
     private GameObject _projectileContainer;
     private Vector3 _flyInDirection;
@@ -39,6 +40,7 @@ public class Enemy : MonoBehaviour
         _enemyCollider = gameObject.GetComponents<BoxCollider2D>();
         _enemyAudio = gameObject.GetComponent<AudioSource>();
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _canFire = Random.Range(3, 6);
 
 
@@ -61,6 +63,10 @@ public class Enemy : MonoBehaviour
         if (_audioManager == null)
         {
             Debug.LogError("Enemy audio manager reference is NULL!");
+        }
+        if (_spawnManager == null)
+        {
+            Debug.LogError("Enemy spawn manager reference is NULL!");
         }
         if (_enemyAudio == null)
         {
@@ -206,5 +212,10 @@ public class Enemy : MonoBehaviour
             _flyInDirection = Vector3.right;
             _flyInDestination = new Vector3(transform.position.x + Random.Range(4.0f, 10.0f), 1, 0);
         }
+    }
+
+    private void OnDestroy()
+    {
+        _spawnManager.OnEnemyDeath();
     }
 }

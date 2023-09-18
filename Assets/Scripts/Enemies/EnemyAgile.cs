@@ -27,6 +27,7 @@ public class EnemyAgile : MonoBehaviour
     private GameObject _projectileContainer;
     private Player _player;
     private AudioManager _audioManager;
+    private SpawnManager _spawnManager;
     private Vector3 _nextDestination;
     private Vector3 _flyInDirection;
     private Vector3 _flyInDestination;
@@ -41,6 +42,7 @@ public class EnemyAgile : MonoBehaviour
         _projectileContainer = GameObject.Find("Enemy_Projectiles");
         _player = _playerObj.GetComponent<Player>();
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _enemyAudio = gameObject.GetComponent<AudioSource>();
         _enemyCollider = gameObject.GetComponents<BoxCollider2D>();
 
@@ -59,6 +61,10 @@ public class EnemyAgile : MonoBehaviour
         if (_audioManager == null)
         {
             Debug.LogError("Agile enemy audio manager reference is NULL!");
+        }
+        if (_spawnManager == null)
+        {
+            Debug.LogError("Agile enemy spawn manager reference is NULL!");
         }
         if (_enemyAudio == null)
         {
@@ -189,6 +195,11 @@ public class EnemyAgile : MonoBehaviour
         _audioManager.Explosion();
         Instantiate(_explosionPrefab, transform.position, transform.rotation);
         Destroy(this.gameObject, 1.0f);
+    }
+
+    private void OnDestroy()
+    {
+        _spawnManager.OnEnemyDeath();
     }
 
     IEnumerator AgileMovement()
