@@ -7,6 +7,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _enemyContainer;
     [SerializeField]
+    private GameObject _asteroidPrefab;
+    [SerializeField]
     private GameObject[] _powerups;
     [SerializeField]
     private GameObject[] _enemyTypes; // 0 = basic, 1 = agile, 2 = aggressive, 3 = ammbush
@@ -34,9 +36,10 @@ public class SpawnManager : MonoBehaviour
     private int _ambushSpawned = 0;
     private int _enemiesSpawned = 0;
     private int _totalEnemies;
-    private int _currentWave = 1;
     private bool _stopSpawning = false;
     private WaitForSeconds _spawnTime = new WaitForSeconds(5.0f);
+
+    public int _currentWave { get; private set; } = 1;
 
     void Start()
     {
@@ -110,6 +113,7 @@ public class SpawnManager : MonoBehaviour
             }
             yield return _spawnTime;
         }
+        _currentWave++;
     }
 
     IEnumerator SpawnPowerupRoutine()
