@@ -155,12 +155,20 @@ public class EnemyAmbush : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            _player.Damage();
+            if (_player != null)
+            {
+                _player.Damage();
+            }
+
             DeathSequence();
         }
         
         if (other.CompareTag("Laser"))
         {
+            if (_player != null)
+            {
+                _player.AddScore(40);
+            }
             Destroy(other.gameObject);
             DeathSequence();
         }

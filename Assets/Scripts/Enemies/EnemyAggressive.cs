@@ -130,7 +130,7 @@ public class EnemyAggressive : MonoBehaviour
         {
             if (_player != null)
             {
-                _player.AddScore(40);
+                _player.AddScore(30);
             }
 
             Destroy(other.gameObject);

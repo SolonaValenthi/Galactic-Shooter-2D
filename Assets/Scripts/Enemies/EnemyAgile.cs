@@ -116,7 +116,7 @@ public class EnemyAgile : MonoBehaviour
         {
             if (_player != null)
             {
-                _player.AddScore(30);
+                _player.AddScore(25);
             }
 
             Destroy(other.gameObject);
