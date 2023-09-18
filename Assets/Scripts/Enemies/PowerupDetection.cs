@@ -60,7 +60,7 @@ public class PowerupDetection : MonoBehaviour
 
         if (other.CompareTag("Laser"))
         {
-            if (_incomingLaser == null)
+            if (_incomingLaser == null && _parentID == 1)
             {
                 _incomingLaser = other.gameObject;
                 StartCoroutine(_ambushParent.AfterDodge());
