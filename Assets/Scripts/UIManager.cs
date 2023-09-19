@@ -118,13 +118,10 @@ public class UIManager : MonoBehaviour
         StartCoroutine("LaserHeatSequence");
     }
 
-    public void UpdateWave(int currentWave)
+    public IEnumerator AnnounceWave(int currentWave)
     {
-        _currentWaveText.text = "Wave " + currentWave;
-    }
+        _currentWaveText.text = "WAVE " + currentWave;
 
-    public IEnumerator AnnounceWave()
-    {
         for (int i = 0; i < 3; i++)
         {
             _currentWaveText.gameObject.SetActive(true);

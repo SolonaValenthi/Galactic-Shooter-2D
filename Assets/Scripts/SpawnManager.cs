@@ -41,7 +41,7 @@ public class SpawnManager : MonoBehaviour
     private UIManager _uiManager;
     private WaitForSeconds _spawnTime = new WaitForSeconds(5.0f);
 
-    public int _currentWave { get; private set; } = 1;
+    public int _currentWave { get; private set; }
 
     void Start()
     {
@@ -57,6 +57,7 @@ public class SpawnManager : MonoBehaviour
             _totalWeight += item;
         }
 
+        _currentWave = 1;
         CalculateWave();
     }
 
@@ -67,7 +68,6 @@ public class SpawnManager : MonoBehaviour
         _aggressiveToSpawn = Mathf.RoundToInt(_currentWave * 0.75f);
         _ambushToSpawn = Mathf.RoundToInt(_currentWave * 0.5f);
         _totalEnemies = _basicToSpawn + _agileToSpawn + _aggressiveToSpawn + _ambushToSpawn;
-        _uiManager.UpdateWave(_currentWave);
     }
 
     private void ResetEnemyCount()
@@ -137,10 +137,10 @@ public class SpawnManager : MonoBehaviour
             }
             if (_enemiesSpawned >= _totalEnemies)
             {
+                yield return null;
                 _stopSpawning = true;
             }
         }
-        _currentWave++;
     }
 
     IEnumerator SpawnPowerupRoutine()
@@ -172,7 +172,8 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator WaveDelay()
     {
-        StartCoroutine(_uiManager.AnnounceWave());
+        CalculateWave();
+        StartCoroutine(_uiManager.AnnounceWave(_currentWave));
         yield return new WaitForSeconds(1.0f);
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRoutine());
@@ -199,6 +200,7 @@ public class SpawnManager : MonoBehaviour
             float ySpawn;
             float xSpawn;
             Vector3 spawnPos;
+            _currentWave++;
 
             switch (spawnBound)
             {
@@ -224,7 +226,6 @@ public class SpawnManager : MonoBehaviour
                     Debug.LogError("Invalid asteroid spawn bound detected");
                     break;
             }
-            CalculateWave();
         }
     }
 }
