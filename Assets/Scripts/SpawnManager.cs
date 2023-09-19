@@ -179,6 +179,41 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnPowerupRoutine());
     }
 
+    IEnumerator WaveCleared()
+    {
+        StartCoroutine(_uiManager.Intermission());
+        yield return new WaitForSeconds(1.0f);
+        int spawnBound = Random.Range(0, 3); // 0 = top, 1 = left, 2 = right
+        float ySpawn;
+        float xSpawn;
+        Vector3 spawnPos;
+
+        switch (spawnBound)
+        {
+            case 0:
+                ySpawn = 7.5f;
+                xSpawn = Random.Range(-12f, 12f);
+                spawnPos = new Vector3(xSpawn, ySpawn, 0);
+                Instantiate(_asteroidPrefab, spawnPos, Quaternion.identity);
+                break;
+            case 1:
+                ySpawn = Random.Range(2.5f, 6.5f);
+                xSpawn = -12f;
+                spawnPos = new Vector3(xSpawn, ySpawn, 0);
+                Instantiate(_asteroidPrefab, spawnPos, Quaternion.identity);
+                break;
+            case 2:
+                ySpawn = Random.Range(2.5f, 6.5f);
+                xSpawn = 12f;
+                spawnPos = new Vector3(xSpawn, ySpawn, 0);
+                Instantiate(_asteroidPrefab, spawnPos, Quaternion.identity);
+                break;
+            default:
+                Debug.LogError("Invalid asteroid spawn bound detected");
+                break;
+        }
+    }
+
     public void StartSpawning()
     {
         _stopSpawning = false;
@@ -196,36 +231,8 @@ public class SpawnManager : MonoBehaviour
 
         if (_enemiesKilled >= _totalEnemies)
         {
-            int spawnBound = Random.Range(0, 3); // 0 = top, 1 = left, 2 = right
-            float ySpawn;
-            float xSpawn;
-            Vector3 spawnPos;
             _currentWave++;
-
-            switch (spawnBound)
-            {
-                case 0:
-                    ySpawn = 7.5f;
-                    xSpawn = Random.Range(-12f, 12f);
-                    spawnPos = new Vector3(xSpawn, ySpawn, 0);
-                    Instantiate(_asteroidPrefab, spawnPos, Quaternion.identity);
-                    break;
-                case 1:
-                    ySpawn = Random.Range(2.5f, 6.5f);
-                    xSpawn = -12f;
-                    spawnPos = new Vector3(xSpawn, ySpawn, 0);
-                    Instantiate(_asteroidPrefab, spawnPos, Quaternion.identity);
-                    break;
-                case 2:
-                    ySpawn = Random.Range(2.5f, 6.5f);
-                    xSpawn = 12f;
-                    spawnPos = new Vector3(xSpawn, ySpawn, 0);
-                    Instantiate(_asteroidPrefab, spawnPos, Quaternion.identity);
-                    break;
-                default:
-                    Debug.LogError("Invalid asteroid spawn bound detected");
-                    break;
-            }
+            StartCoroutine(WaveCleared());
         }
     }
 }

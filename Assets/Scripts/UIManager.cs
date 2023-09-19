@@ -131,6 +131,19 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public IEnumerator Intermission()
+    {
+        _currentWaveText.text = "WAVE CLEARED!";
+        
+        for (int i = 0; i < 3; i++)
+        {
+            _currentWaveText.gameObject.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            _currentWaveText.gameObject.SetActive(false);
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
+
     IEnumerator ThrusterHeatSequence()
     {
         while (true)
