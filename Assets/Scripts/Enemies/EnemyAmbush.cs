@@ -15,6 +15,8 @@ public class EnemyAmbush : MonoBehaviour
     [SerializeField]
     private GameObject _explosionPrefab;
     [SerializeField]
+    private GameObject _enemyShield;
+    [SerializeField]
     private AudioClip _primaryLaserClip;
     [SerializeField]
     private Vector3 _laserOffset;
@@ -31,6 +33,7 @@ public class EnemyAmbush : MonoBehaviour
     private bool _isDead = false;
     private bool _incomingAttack = false;
     private bool _dodgeCD = false;
+    private bool _shieldActive = false;
     private Player _player;
     private AudioManager _audioManager;
     private PowerupDetection _powerupDetection;
@@ -103,6 +106,13 @@ public class EnemyAmbush : MonoBehaviour
             _GuideColor = _guideSprite.color;
         }
 
+        int shieldGen = Random.Range(0, 3);
+        if (shieldGen == 0)
+        {
+            _shieldActive = true;
+            _enemyShield.SetActive(true);
+        }
+
         CalculateFlyIn();
     }
 
@@ -166,16 +176,32 @@ public class EnemyAmbush : MonoBehaviour
                 _player.Damage();
             }
 
+            if (_shieldActive == true)
+            {
+                _shieldActive = false;
+                _enemyShield.SetActive(false);
+                return;
+            }
+
             DeathSequence();
         }
         
         if (other.CompareTag("Laser"))
         {
+            Destroy(other.gameObject);
+
+            if (_shieldActive == true)
+            {
+                _shieldActive = false;
+                _enemyShield.SetActive(false);
+                return;
+            }
+
             if (_player != null)
             {
                 _player.AddScore(40);
             }
-            Destroy(other.gameObject);
+
             DeathSequence();
         }
     }

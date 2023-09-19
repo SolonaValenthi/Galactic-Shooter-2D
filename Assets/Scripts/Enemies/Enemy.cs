@@ -9,6 +9,8 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
+    private GameObject _enemyShield;
+    [SerializeField]
     private AudioClip _laserClip;
     [SerializeField]
     private Vector3 _laserOffset;
@@ -19,6 +21,7 @@ public class Enemy : MonoBehaviour
     private float _playerDeviation;
     private bool _isDead = false;
     private bool _flyingIn = true;
+    private bool _shieldActive = false;
     private Player _player;
     private AudioManager _audioManager;
     private SpawnManager _spawnManager;
@@ -42,7 +45,6 @@ public class Enemy : MonoBehaviour
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _canFire = Random.Range(3, 6);
-
 
         if (_player == null)
         {
@@ -75,6 +77,13 @@ public class Enemy : MonoBehaviour
         if (_playerObj == null)
         {
             Debug.LogError("Enemy player object reference is NULL!");
+        }
+
+        int shieldGen = Random.Range(0, 3);
+        if (shieldGen == 0)
+        {
+            _shieldActive = true;
+            _enemyShield.SetActive(true);
         }
 
         CalculateFlyIn();
@@ -125,18 +134,33 @@ public class Enemy : MonoBehaviour
                 _player.Damage();
             }
 
+            if (_shieldActive == true)
+            {
+                _shieldActive = false;
+                _enemyShield.SetActive(false);
+                return;
+            }
+
             DeathSequence();
         }
 
         if (other.CompareTag("Laser"))
         {
+            Destroy(other.gameObject);
+
+            if (_shieldActive == true)
+            {
+                _shieldActive = false;
+                _enemyShield.SetActive(false);
+                return;
+            }
+
             if (_player != null)
             {
                 _player.AddScore(10);
             }
 
             DeathSequence();
-            Destroy(other.gameObject);
         }
     }
 

@@ -12,6 +12,8 @@ public class EnemyAggressive : MonoBehaviour
     private GameObject _missilePrefab;
     [SerializeField]
     private GameObject _explosionPrefab;
+    [SerializeField]
+    private GameObject _enemyShield;
 
     private float _distanceToPlayer;
     private bool _isDead = false;
@@ -20,6 +22,7 @@ public class EnemyAggressive : MonoBehaviour
     private bool _ramPhase;
     private bool _retreatPhase;
     private bool _firePhase;
+    private bool _shieldActive = false;
     private GameObject _playerObj;
     private GameObject _projectileContainer;
     private AudioManager _audioManager;
@@ -71,6 +74,13 @@ public class EnemyAggressive : MonoBehaviour
         if (_enemyCollider == null)
         {
             Debug.LogError("Aggressive enemy collider reference is NULL!");
+        }
+
+        int shieldGen = Random.Range(0, 3);
+        if (shieldGen == 0)
+        {
+            _shieldActive = true;
+            _enemyShield.SetActive(true);
         }
 
         CalculateFlyIn();
@@ -130,16 +140,31 @@ public class EnemyAggressive : MonoBehaviour
                 _ramPhase = false;
                 SelectDestination();
             }
+
+            if (_shieldActive == true)
+            {
+                _shieldActive = false;
+                _enemyShield.SetActive(false);
+                return;
+            }
         }
 
         if (other.CompareTag("Laser"))
         {
+            Destroy(other.gameObject);
+
+            if (_shieldActive == true)
+            {
+                _shieldActive = false;
+                _enemyShield.SetActive(false);
+                return;
+            }
+
             if (_player != null)
             {
                 _player.AddScore(30);
             }
 
-            Destroy(other.gameObject);
             DeathSequence();
         }
     }

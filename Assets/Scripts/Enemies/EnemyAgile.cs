@@ -11,6 +11,8 @@ public class EnemyAgile : MonoBehaviour
     [SerializeField]
     private GameObject _explosionPrefab;
     [SerializeField]
+    private GameObject _enemyShield;
+    [SerializeField]
     private AudioClip _laserClip;
     [SerializeField]
     private Vector3 _laserOffset;
@@ -18,6 +20,7 @@ public class EnemyAgile : MonoBehaviour
     private bool _flyingIn = true;
     private bool _isDead = false;
     private bool _atDestination = true;
+    private bool _shieldActive = false;
     private float _xDestination; // -9.5 to 9.5
     private float _yDestination; // 3 to 5
     private float _canFire;
@@ -75,6 +78,13 @@ public class EnemyAgile : MonoBehaviour
             Debug.LogError("Agile enemy collider reference is NULL!");
         }
 
+        int shieldGen = Random.Range(0, 3);
+        if (shieldGen == 0)
+        {
+            _shieldActive = true;
+            _enemyShield.SetActive(true);
+        }
+
         CalculateFlyIn();   
     }
 
@@ -115,17 +125,32 @@ public class EnemyAgile : MonoBehaviour
                 _player.Damage();
             }
 
+            if (_shieldActive == true)
+            {
+                _shieldActive = false;
+                _enemyShield.SetActive(false);
+                return;
+            }
+
             DeathSequence();
         }
 
         if (other.CompareTag("Laser"))
         {
+            Destroy(other.gameObject);
+
+            if (_shieldActive == true)
+            {
+                _shieldActive = false;
+                _enemyShield.SetActive(false);
+                return;
+            }
+
             if (_player != null)
             {
                 _player.AddScore(25);
             }
-
-            Destroy(other.gameObject);
+            
             DeathSequence();
         }
     }
