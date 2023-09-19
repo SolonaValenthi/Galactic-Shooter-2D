@@ -26,6 +26,8 @@ public class UIManager : MonoBehaviour
     private Image _fuelWarning;
     [SerializeField]
     private Image _ammoWarning;
+    [SerializeField]
+    private Text _currentWaveText;
 
     private Color _fuelColor;
     private Color _ammoColor;
@@ -35,6 +37,7 @@ public class UIManager : MonoBehaviour
     {
         _gameOverText.gameObject.SetActive(false);
         _restartText.gameObject.SetActive(false);
+        _currentWaveText.gameObject.SetActive(false);
         _livesDisplay.sprite = _liveSprites[3];
         _ammoDisplay.sprite = _ammoSprites[15];
         _scoreText.text = "Score: " + 0;
@@ -113,6 +116,22 @@ public class UIManager : MonoBehaviour
     public void LaserOverheat()
     {
         StartCoroutine("LaserHeatSequence");
+    }
+
+    public void UpdateWave(int currentWave)
+    {
+        _currentWaveText.text = "Wave " + currentWave;
+    }
+
+    public IEnumerator AnnounceWave()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            _currentWaveText.gameObject.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            _currentWaveText.gameObject.SetActive(false);
+            yield return new WaitForSeconds(0.2f);
+        }
     }
 
     IEnumerator ThrusterHeatSequence()

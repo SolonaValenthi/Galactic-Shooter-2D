@@ -38,12 +38,20 @@ public class SpawnManager : MonoBehaviour
     private int _enemiesKilled = 0;
     private int _totalEnemies;
     private bool _stopSpawning = false;
+    private UIManager _uiManager;
     private WaitForSeconds _spawnTime = new WaitForSeconds(5.0f);
 
     public int _currentWave { get; private set; } = 1;
 
     void Start()
     {
+        _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
+
+        if (_uiManager == null)
+        {
+            Debug.LogError("Spawn manager ui manager reference is NULL!");
+        }
+
         foreach (var item in _powerupTable)
         {
             _totalWeight += item;
@@ -59,6 +67,7 @@ public class SpawnManager : MonoBehaviour
         _aggressiveToSpawn = Mathf.RoundToInt(_currentWave * 0.75f);
         _ambushToSpawn = Mathf.RoundToInt(_currentWave * 0.5f);
         _totalEnemies = _basicToSpawn + _agileToSpawn + _aggressiveToSpawn + _ambushToSpawn;
+        _uiManager.UpdateWave(_currentWave);
     }
 
     private void ResetEnemyCount()
@@ -161,11 +170,18 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    IEnumerator WaveDelay()
+    {
+        StartCoroutine(_uiManager.AnnounceWave());
+        yield return new WaitForSeconds(1.0f);
+        StartCoroutine(SpawnEnemyRoutine());
+        StartCoroutine(SpawnPowerupRoutine());
+    }
+
     public void StartSpawning()
     {
         _stopSpawning = false;
-        StartCoroutine(SpawnEnemyRoutine());
-        StartCoroutine(SpawnPowerupRoutine());
+        StartCoroutine(WaveDelay());
     }
 
     public void OnPlayerDeath()
