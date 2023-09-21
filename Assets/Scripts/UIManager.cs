@@ -28,6 +28,8 @@ public class UIManager : MonoBehaviour
     private Image _ammoWarning;
     [SerializeField]
     private Text _currentWaveText;
+    [SerializeField]
+    private Text _missileText;
 
     private Color _fuelColor;
     private Color _ammoColor;
@@ -41,6 +43,7 @@ public class UIManager : MonoBehaviour
         _livesDisplay.sprite = _liveSprites[3];
         _ammoDisplay.sprite = _ammoSprites[15];
         _scoreText.text = "Score: " + 0;
+        _missileText.text = "Missiles: " + 0;
         _fuelSlider.value = 100;
         _fuelColor = _fuelWarning.color;
         _ammoColor = _ammoWarning.color;
@@ -83,6 +86,11 @@ public class UIManager : MonoBehaviour
             _fuelColor.r = 0f;
             _fuelWarning.color = _fuelColor;
         }
+    }
+
+    public void UpdateMissiles(int currentMissiles)
+    {
+        _missileText.text = "Missiles: " + currentMissiles;
     }
 
     void GameOverSequence()

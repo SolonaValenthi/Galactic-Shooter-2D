@@ -263,6 +263,7 @@ public class Player : MonoBehaviour
         {
             Instantiate(_missilePrefab, transform.position, Quaternion.identity);
             _missileCount--;
+            _uiManager.UpdateMissiles(_missileCount);
         }
     }
 
@@ -447,11 +448,9 @@ public class Player : MonoBehaviour
             {
                 _missileCount++;
             }
-            else
-            {
-                return;
-            }
         }
+
+        _uiManager.UpdateMissiles(_missileCount);
     }
 
     private void DamageShields()
