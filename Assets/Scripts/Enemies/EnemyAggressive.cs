@@ -132,7 +132,7 @@ public class EnemyAggressive : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && _retreatPhase == false)
         {
             if (_player != null)
             {
@@ -240,10 +240,6 @@ public class EnemyAggressive : MonoBehaviour
 
     private void Retreat(Vector3 destination)
     {
-        foreach (var collider in _enemyCollider)
-        {
-            collider.enabled = false;
-        }
         Vector3 targetPos = destination - transform.position;
         float retreatDistance = Vector3.Distance(destination, transform.position);
         transform.position += (targetPos * Time.deltaTime);
@@ -273,7 +269,7 @@ public class EnemyAggressive : MonoBehaviour
 
     private void OnDestroy()
     {
-        _spawnManager.OnEnemyDeath();
+        _spawnManager.OnEnemyDeath(this.gameObject);
     }
 
     IEnumerator ExitFirePhase()

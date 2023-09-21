@@ -224,7 +224,7 @@ public class EnemyAgile : MonoBehaviour
 
     private void OnDestroy()
     {
-        _spawnManager.OnEnemyDeath();
+        _spawnManager.OnEnemyDeath(this.gameObject);
     }
 
     IEnumerator AgileMovement()

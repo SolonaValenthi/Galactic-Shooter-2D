@@ -240,6 +240,6 @@ public class Enemy : MonoBehaviour
 
     private void OnDestroy()
     {
-        _spawnManager.OnEnemyDeath();
+        _spawnManager.OnEnemyDeath(this.gameObject);
     }
 }

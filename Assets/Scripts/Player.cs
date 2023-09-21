@@ -31,6 +31,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _thruster;
     [SerializeField]
+    private GameObject _missilePrefab;
+    [SerializeField]
     private AudioClip _laserClip;
     [SerializeField]
     private Vector3 _laserOffset;

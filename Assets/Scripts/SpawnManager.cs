@@ -41,7 +41,8 @@ public class SpawnManager : MonoBehaviour
     private UIManager _uiManager;
     private WaitForSeconds _spawnTime = new WaitForSeconds(5.0f);
 
-    public int _currentWave { get; private set; }
+    public int currentWave { get; private set; }
+    public List<GameObject> enemies { get; private set; } = new List<GameObject>();
 
     void Start()
     {
@@ -57,16 +58,16 @@ public class SpawnManager : MonoBehaviour
             _totalWeight += item;
         }
 
-        _currentWave = 1;
+        currentWave = 1;
         CalculateWave();
     }
 
     private void CalculateWave()
     {
-        _basicToSpawn = _currentWave * 2 + 3;
-        _agileToSpawn = Mathf.RoundToInt(_currentWave * 1.5f);
-        _aggressiveToSpawn = Mathf.RoundToInt(_currentWave * 0.75f);
-        _ambushToSpawn = Mathf.RoundToInt(_currentWave * 0.5f);
+        _basicToSpawn = currentWave * 2 + 3;
+        _agileToSpawn = Mathf.RoundToInt(currentWave * 1.5f);
+        _aggressiveToSpawn = Mathf.RoundToInt(currentWave * 0.75f);
+        _ambushToSpawn = Mathf.RoundToInt(currentWave * 0.5f);
         _totalEnemies = _basicToSpawn + _agileToSpawn + _aggressiveToSpawn + _ambushToSpawn;
     }
 
@@ -96,6 +97,7 @@ public class SpawnManager : MonoBehaviour
                     {
                         newEnemy = Instantiate(_enemyTypes[selectedEnemy], spawnPos, Quaternion.identity);
                         newEnemy.transform.parent = _enemyContainer.transform;
+                        enemies.Add(newEnemy);
                         _basicSpawned++;
                         _enemiesSpawned++;
                         yield return _spawnTime;
@@ -106,6 +108,7 @@ public class SpawnManager : MonoBehaviour
                     {
                         newEnemy = Instantiate(_enemyTypes[selectedEnemy], spawnPos, Quaternion.identity);
                         newEnemy.transform.parent = _enemyContainer.transform;
+                        enemies.Add(newEnemy);
                         _agileSpawned++;
                         _enemiesSpawned++;
                         yield return _spawnTime;
@@ -116,6 +119,7 @@ public class SpawnManager : MonoBehaviour
                     {
                         newEnemy = Instantiate(_enemyTypes[selectedEnemy], spawnPos, Quaternion.identity);
                         newEnemy.transform.parent = _enemyContainer.transform;
+                        enemies.Add(newEnemy);
                         _aggressiveSpawned++;
                         _enemiesSpawned++;
                         yield return _spawnTime;
@@ -126,6 +130,7 @@ public class SpawnManager : MonoBehaviour
                     {
                         newEnemy = Instantiate(_enemyTypes[selectedEnemy], spawnPos, Quaternion.identity);
                         newEnemy.transform.parent = _enemyContainer.transform;
+                        enemies.Add(newEnemy);
                         _ambushSpawned++;
                         _enemiesSpawned++;
                         yield return _spawnTime;
@@ -173,7 +178,7 @@ public class SpawnManager : MonoBehaviour
     IEnumerator WaveDelay()
     {
         CalculateWave();
-        StartCoroutine(_uiManager.AnnounceWave(_currentWave));
+        StartCoroutine(_uiManager.AnnounceWave(currentWave));
         yield return new WaitForSeconds(1.0f);
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRoutine());
@@ -225,13 +230,14 @@ public class SpawnManager : MonoBehaviour
         _stopSpawning = true;
     }
 
-    public void OnEnemyDeath()
+    public void OnEnemyDeath(GameObject enemy)
     {
         _enemiesKilled++;
+        enemies.Remove(enemy);
 
         if (_enemiesKilled >= _totalEnemies)
         {
-            _currentWave++;
+            currentWave++;
             StartCoroutine(WaveCleared());
         }
     }
