@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
     private int _shieldStrength;
     private int _score = 0;
     private int _ammoCount = 15;
+    private int _missileCount = 0;
     private float _fuel = 100;
     private float _canFire = -1f;
     private float _speedMulti;
@@ -414,7 +415,22 @@ public class Player : MonoBehaviour
         _bombsReady = false;
     }
 
-    public void DamageShields()
+    public void LoadMissiles(int missilesToLoad)
+    {
+        for (int i = 0; i < missilesToLoad; i++)
+        {
+            if (_missileCount < 5)
+            {
+                _missileCount++;
+            }
+            else
+            {
+                return;
+            }
+        }
+    }
+
+    private void DamageShields()
     {
         _shieldStrength--;
 

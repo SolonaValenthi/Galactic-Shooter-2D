@@ -6,7 +6,7 @@ public class Powerup : MonoBehaviour
 {
     [SerializeField]
     private float _moveSpeed = 3.0f;
-    [SerializeField] // 0 = triple shot, 1 = fuel, 2 = shields, 3 = ammo, 4 = health, 5 = bomb alt fire
+    [SerializeField] // 0 = triple shot, 1 = fuel, 2 = shields, 3 = ammo, 4 = health, 5 = bomb alt fire, 6 = missiles, 7 = jamming (negative)
     private int _powerupID;
     [SerializeField]
     private AudioManager _audioManager;
@@ -35,6 +35,11 @@ public class Powerup : MonoBehaviour
         if (_powerupID == 5)
         {
             StartCoroutine(BombColorChange());
+        }
+        // missile color change
+        if (_powerupID == 6)
+        {
+            StartCoroutine(MissileColorChange());
         }
     }
 
@@ -75,6 +80,11 @@ public class Powerup : MonoBehaviour
                         break;
                     case 5:
                         player.BombsReady();
+                        break;
+                    case 6:
+                        player.LoadMissiles(2); // the player may hold up to 5 missiles
+                        break;
+                    case 7:
                         break;
                     default:
                         Debug.LogError("Invalid ID assigned");
@@ -118,6 +128,25 @@ public class Powerup : MonoBehaviour
             while (_powerupColor.g > 0.4f)
             {
                 _powerupColor.g -= 0.06f;
+                _powerupSprite.color = _powerupColor;
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
+    }
+
+    IEnumerator MissileColorChange()
+    {
+        while (true)
+        {
+            while (_powerupColor.b < 1.0f)
+            {
+                _powerupColor.b += 0.06f;
+                _powerupSprite.color = _powerupColor;
+                yield return new WaitForSeconds(0.1f);
+            }
+            while (_powerupColor.b > 0f)
+            {
+                _powerupColor.b -= 0.06f;
                 _powerupSprite.color = _powerupColor;
                 yield return new WaitForSeconds(0.1f);
             }
