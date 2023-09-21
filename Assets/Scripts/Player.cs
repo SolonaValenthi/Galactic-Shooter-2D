@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _bombRate = 0.6f;
     [SerializeField]
+    private float _missileRate = 0.8f;
+    [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
     private GameObject _bombPrefab;
@@ -46,6 +48,7 @@ public class Player : MonoBehaviour
     private int _missileCount = 0;
     private float _fuel = 100;
     private float _canFire = -1f;
+    private float _canMissile = -1f;
     private float _speedMulti;
     private float _thrustScale;
     private float _blueValue;
@@ -123,6 +126,14 @@ public class Player : MonoBehaviour
             else
             {
                 FireLaser();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q) && Time.time > _canMissile)
+        {
+            if (_missileCount > 0)
+            {
+                FireMissile();
             }
         }
 
@@ -241,6 +252,17 @@ public class Player : MonoBehaviour
         if (_gameManager.isPaused == false)
         {
             Instantiate(_bombPrefab, transform.position + _bombOffset, Quaternion.identity);
+        }
+    }
+
+    private void FireMissile()
+    {
+        _canMissile = Time.time + _missileRate;
+
+        if (_gameManager.isPaused == false)
+        {
+            Instantiate(_missilePrefab, transform.position, Quaternion.identity);
+            _missileCount--;
         }
     }
 

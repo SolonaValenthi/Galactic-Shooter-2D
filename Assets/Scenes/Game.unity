@@ -2557,6 +2557,7 @@ MonoBehaviour:
   _speed: 5
   _fireRate: 0.15
   _bombRate: 0.35
+  _missileRate: 0.8
   _laserPrefab: {fileID: 4289852604995763779, guid: 1f884b10af8492043ad2e98abd263a2f,
     type: 3}
   _bombPrefab: {fileID: 1267006400923807173, guid: cd3ab6a691510fd4ebea5b559bb60dde,
@@ -2571,6 +2572,8 @@ MonoBehaviour:
   _debrisPrefab: {fileID: 17176875075301070, guid: f5a38777fbdcfac4db657231130aa346,
     type: 3}
   _thruster: {fileID: 684452962}
+  _missilePrefab: {fileID: 8021712210193393625, guid: 57f1d8f0ba2c26c45ab50afeeadac9c9,
+    type: 3}
   _laserClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _laserOffset: {x: 0, y: 1.05, z: 0}
   _bombOffset: {x: 0, y: 1.32, z: 0}
@@ -3195,6 +3198,7 @@ MonoBehaviour:
   - {fileID: 3864236032440819159, guid: 21b2bbf1d3288da40b47cd87d275eb53, type: 3}
   - {fileID: 8539935261466620698, guid: 5678aac9328a3124d83a29ac347aab73, type: 3}
   - {fileID: 5809488369941126149, guid: 30f36cedf6bccde41b627239574ad376, type: 3}
+  - {fileID: 5967372849180342668, guid: c1789533efc1cd14091f33c6ce851ebe, type: 3}
   _enemyTypes:
   - {fileID: 5729218059076540325, guid: 5ada96081eed7c64793abf8f6a786fb2, type: 3}
   - {fileID: 7500437245128398115, guid: 0082f0ad6664bd8489e62ae53f866da5, type: 3}

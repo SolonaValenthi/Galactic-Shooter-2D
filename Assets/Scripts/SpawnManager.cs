@@ -20,8 +20,9 @@ public class SpawnManager : MonoBehaviour
         30, // ammo
         15, // shields
         15, // triple shot
-        5,  // heal
-        5   // bomb
+        4,  // heal
+        3,  // bomb
+        3   // missile
     };
 
     private int _totalWeight;
@@ -37,7 +38,8 @@ public class SpawnManager : MonoBehaviour
     private int _enemiesSpawned = 0;
     private int _enemiesKilled = 0;
     private int _totalEnemies;
-    private bool _stopSpawning = false;
+    private bool _spawnEnemies = true;
+    private bool _spawnPowerups = true;
     private UIManager _uiManager;
     private WaitForSeconds _spawnTime = new WaitForSeconds(5.0f);
 
@@ -85,7 +87,7 @@ public class SpawnManager : MonoBehaviour
     {
         ResetEnemyCount();
         yield return new WaitForSeconds(3.0f);
-        while (_stopSpawning == false)
+        while (_spawnEnemies == true)
         {
             Vector3 spawnPos = new Vector3(Random.Range(-9.0f, 9.0f), 8, 0);
             int selectedEnemy = Random.Range(0, 4);
@@ -143,7 +145,7 @@ public class SpawnManager : MonoBehaviour
             if (_enemiesSpawned >= _totalEnemies)
             {
                 yield return null;
-                _stopSpawning = true;
+                _spawnEnemies = false;
             }
         }
     }
@@ -151,7 +153,7 @@ public class SpawnManager : MonoBehaviour
     IEnumerator SpawnPowerupRoutine()
     {
         yield return new WaitForSeconds(4.0f);
-        while (_stopSpawning == false)
+        while (_spawnPowerups == true)
         {
             int powerupToSpawn = 0;
             Vector3 powerupPos = new Vector3(Random.Range(-9.0f, 9.0f), 8, 0);
@@ -221,13 +223,15 @@ public class SpawnManager : MonoBehaviour
 
     public void StartSpawning()
     {
-        _stopSpawning = false;
+        _spawnEnemies = true;
+        _spawnPowerups = true;
         StartCoroutine(WaveDelay());
     }
 
     public void OnPlayerDeath()
     {
-        _stopSpawning = true;
+        _spawnEnemies = false;
+        _spawnPowerups = false;
     }
 
     public void OnEnemyDeath(GameObject enemy)
@@ -238,6 +242,7 @@ public class SpawnManager : MonoBehaviour
         if (_enemiesKilled >= _totalEnemies)
         {
             currentWave++;
+            _spawnPowerups = false;
             StartCoroutine(WaveCleared());
         }
     }
