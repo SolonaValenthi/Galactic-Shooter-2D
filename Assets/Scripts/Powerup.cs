@@ -41,6 +41,11 @@ public class Powerup : MonoBehaviour
         {
             StartCoroutine(MissileColorChange());
         }
+        // jamming color change
+        if (_powerupID == 7)
+        {
+            StartCoroutine(JammingColorChange());
+        }
     }
 
     // Update is called once per frame
@@ -85,6 +90,7 @@ public class Powerup : MonoBehaviour
                         player.LoadMissiles(2); // the player may hold up to 5 missiles
                         break;
                     case 7:
+                        player.Jamming();
                         break;
                     default:
                         Debug.LogError("Invalid ID assigned");
@@ -100,7 +106,7 @@ public class Powerup : MonoBehaviour
             _detectedEnemy = other.GetComponent<PowerupDetection>();
         }
 
-        if (other.CompareTag("EnemyLaser"))
+        if (other.CompareTag("EnemyLaser") && gameObject.tag != "NegativePower")
         {
             Destroy(other.gameObject);
             Destroy(this.gameObject);
@@ -149,6 +155,26 @@ public class Powerup : MonoBehaviour
                 _powerupColor.b -= 0.06f;
                 _powerupSprite.color = _powerupColor;
                 yield return new WaitForSeconds(0.1f);
+            }
+        }
+    }
+
+    IEnumerator JammingColorChange()
+    {
+        while (true)
+        {
+            float redChange = Random.Range(0.5f, 1.0f);
+            while (_powerupColor.r > redChange)
+            {
+                _powerupColor.r -= 0.06f;
+                _powerupSprite.color = _powerupColor;
+                yield return new WaitForSeconds(0.05f);
+            }
+            while (_powerupColor.r < 1.0f)
+            {
+                _powerupColor.r += 0.06f;
+                _powerupSprite.color = _powerupColor;
+                yield return new WaitForSeconds(0.05f);
             }
         }
     }

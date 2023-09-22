@@ -269,9 +269,9 @@ public class Player : MonoBehaviour
 
     private void UpdateAmmo()
     {
-        _ammoCount = Mathf.Clamp(_ammoCount, 0, 15);
         _ammoCount--;
-        
+        _ammoCount = Mathf.Clamp(_ammoCount, 0, 15);
+
         if (_ammoCount <= 0)
         {
             _laserOverheat = true;
@@ -451,6 +451,21 @@ public class Player : MonoBehaviour
         }
 
         _uiManager.UpdateMissiles(_missileCount);
+    }
+
+    public void Jamming()
+    {
+        _shieldStrength = 0;
+        _playerShield.SetActive(false);
+        _ammoCount = 0;
+        _infinAmmoActive = false;
+        _laserOverheat = true;
+        StopCoroutine("ReplenishAmmo");
+        UpdateAmmo();
+        _fuel = 0.0f;
+        _thrusterOverheat = true;
+        _uiManager.UpdateFuel(_fuel);
+        _uiManager.ThrusterOverheat();
     }
 
     private void DamageShields()

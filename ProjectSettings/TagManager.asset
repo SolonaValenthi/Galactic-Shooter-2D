@@ -14,6 +14,7 @@ TagManager:
   - Container
   - PowerUp
   - PowerupDetection
+  - NegativePower
   layers:
   - Default
   - TransparentFX
