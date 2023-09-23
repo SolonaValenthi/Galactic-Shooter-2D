@@ -18,9 +18,10 @@ public class SpawnManager : MonoBehaviour
     {
         30, // fuel
         30, // ammo
-        15, // shields
-        15, // triple shot
-        4,  // heal
+        10, // shields
+        10, // triple shot
+        7,  // jamming
+        7,  // heal
         3,  // bomb
         3   // missile
     };

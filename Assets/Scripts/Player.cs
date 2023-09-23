@@ -55,7 +55,6 @@ public class Player : MonoBehaviour
     private float _greenValue;
     private bool _tripleShotActive = false;
     private bool _infinAmmoActive = false;
-    private bool _thrusterOverheat = false;
     private bool _laserOverheat = false;
     private bool _bombsReady = false;
     private GameObject _projectileContainer;
@@ -63,6 +62,8 @@ public class Player : MonoBehaviour
     private UIManager _uiManager;
     private GameManager _gameManager;
     private CameraShake _cameraShake;
+
+    public bool thrusterOverheat { get; private set; } = false;
 
     AudioSource _playerAudio;
     SpriteRenderer _shieldRenderer;
@@ -139,7 +140,7 @@ public class Player : MonoBehaviour
 
         if (_fuel >= 100)
         {
-            _thrusterOverheat = false;
+            thrusterOverheat = false;
         }
 
         if (_ammoCount >= 15)
@@ -184,25 +185,19 @@ public class Player : MonoBehaviour
 
         if (_gameManager.isPaused == false)
         {
-            if (Input.GetKey(KeyCode.LeftShift) && _thrusterOverheat == false)
+            if (Input.GetKey(KeyCode.LeftShift) && thrusterOverheat == false)
             {
                 _thrustScale += 0.02f;
                 _speedMulti += 0.02f;
                 _fuel -= 0.5f;
-                _uiManager.UpdateFuel(_fuel);
-
-                if (_fuel <= 0)
-                {
-                    _thrusterOverheat = true;
-                    _uiManager.ThrusterOverheat();
-                }
+                DrainFuel();
             }
             else
             {
                 _thrustScale -= 0.02f;
                 _speedMulti -= 0.02f;
 
-                if (_thrusterOverheat == true)
+                if (thrusterOverheat == true)
                 {
                     _fuel += 0.05f;                
                 }
@@ -360,7 +355,7 @@ public class Player : MonoBehaviour
 
     public void ReplenishFuel()
     {
-        _thrusterOverheat = false;
+        thrusterOverheat = false;
         _fuel = 100;
         _uiManager.UpdateFuel(_fuel);
     }
@@ -463,9 +458,20 @@ public class Player : MonoBehaviour
         StopCoroutine("ReplenishAmmo");
         UpdateAmmo();
         _fuel = 0.0f;
-        _thrusterOverheat = true;
+        thrusterOverheat = true;
         _uiManager.UpdateFuel(_fuel);
         _uiManager.ThrusterOverheat();
+    }
+
+    public void DrainFuel()
+    {
+        _fuel -= 0.5f;
+        _uiManager.UpdateFuel(_fuel);
+        if (_fuel <= 0.0f)
+        {
+            thrusterOverheat = true;
+            _uiManager.ThrusterOverheat();
+        }
     }
 
     private void DamageShields()

@@ -11,7 +11,9 @@ public class Powerup : MonoBehaviour
     [SerializeField]
     private AudioManager _audioManager;
 
+    private GameObject _playerObj;
     private PowerupDetection _detectedEnemy;
+    private Player _player;
     private Color _powerupColor;
 
     SpriteRenderer _powerupSprite;
@@ -19,12 +21,22 @@ public class Powerup : MonoBehaviour
     private void Start()
     {
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+        _playerObj = GameObject.Find("Player");
+        _player = _playerObj.GetComponent<Player>();
         _powerupSprite = gameObject.GetComponent<SpriteRenderer>();
         _powerupColor = _powerupSprite.color;
 
         if (_audioManager == null)
         {
             Debug.LogError("Powerup audio manager reference is NULL!");
+        }
+        if (_playerObj == null)
+        {
+            Debug.LogError("Powerup player object reference is NULL!");
+        }
+        if (_player == null)
+        {
+            Debug.LogError("Powerup player script reference is NULL!");
         }
         if (_powerupSprite == null)
         {
@@ -51,7 +63,15 @@ public class Powerup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.down * _moveSpeed * Time.deltaTime);
+        if (Input.GetKey(KeyCode.C) && _player.thrusterOverheat == false)
+        {
+            PowerupMagnet();
+        }
+        else
+        {
+            transform.Translate(Vector3.down * _moveSpeed * Time.deltaTime);
+        } 
+
         if (transform.position.y < -7)
         {
             Destroy(this.gameObject);
@@ -61,36 +81,34 @@ public class Powerup : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
-        {
-            Player player = other.GetComponent<Player>();
-
-            if (player != null)
+        { 
+            if (_player != null)
             {
                 switch (_powerupID)
                 {
                     case 0:
-                        player.ActivateTripleShot();
+                        _player.ActivateTripleShot();
                         break;
                     case 1:
-                        player.ReplenishFuel();
+                        _player.ReplenishFuel();
                         break;
                     case 2:
-                        player.ActivateShield();
+                        _player.ActivateShield();
                         break;
                     case 3:
-                        player.ActivateInfinAmmo();
+                        _player.ActivateInfinAmmo();
                         break;
                     case 4:
-                        player.HealPlayer();
+                        _player.HealPlayer();
                         break;
                     case 5:
-                        player.BombsReady();
+                        _player.BombsReady();
                         break;
                     case 6:
-                        player.LoadMissiles(2); // the player may hold up to 5 missiles
+                        _player.LoadMissiles(2); // the player may hold up to 5 missiles
                         break;
                     case 7:
-                        player.Jamming();
+                        _player.Jamming();
                         break;
                     default:
                         Debug.LogError("Invalid ID assigned");
@@ -119,6 +137,13 @@ public class Powerup : MonoBehaviour
         {
             _detectedEnemy.ClearTarget();
         }
+    }
+
+    private void PowerupMagnet()
+    {
+        Vector3 toPlayer = _playerObj.transform.position - transform.position;
+        transform.Translate(toPlayer * _moveSpeed * Time.deltaTime);
+        _player.DrainFuel();
     }
 
     IEnumerator BombColorChange()
