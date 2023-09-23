@@ -454,6 +454,7 @@ public class Player : MonoBehaviour
         _playerShield.SetActive(false);
         _ammoCount = 0;
         _infinAmmoActive = false;
+        _bombsReady = false;
         _laserOverheat = true;
         StopCoroutine("ReplenishAmmo");
         UpdateAmmo();
