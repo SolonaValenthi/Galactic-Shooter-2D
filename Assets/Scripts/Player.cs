@@ -305,13 +305,18 @@ public class Player : MonoBehaviour
 
             if (_lives < 1)
             {
-                _spawnManager.OnPlayerDeath();
-                _gameManager.GameOver();
-                Instantiate(_explosion, transform.position, Quaternion.identity);
-                Instantiate(_debrisPrefab, transform.position, Quaternion.identity);
-                Destroy(this.gameObject);
+                DeathSequence();
             }
         }
+    }
+
+    private void DeathSequence()
+    {
+        _spawnManager.OnPlayerDeath();
+        _gameManager.GameOver();
+        Instantiate(_explosion, transform.position, Quaternion.identity);
+        Instantiate(_debrisPrefab, transform.position, Quaternion.identity);
+        Destroy(this.gameObject);
     }
 
     public void DamageEngine()
