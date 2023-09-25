@@ -122,7 +122,7 @@ public class EnemyAgile : MonoBehaviour
         {
             if (_player != null)
             {
-                _player.Damage();
+                _player.Damage(1);
             }
 
             if (_shieldActive == true)

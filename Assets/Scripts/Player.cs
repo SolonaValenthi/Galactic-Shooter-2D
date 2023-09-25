@@ -288,26 +288,29 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void Damage()
+    public void Damage(int damageDealt)
     {
-        if (_shieldStrength > 0)
+        for (int i = 0; i < damageDealt; i++)
         {
-            DamageShields();
-            return;
-        }
+            if (_shieldStrength > 0)
+            {
+                DamageShields();
+                return;
+            }
 
-        _lives--;
-        _uiManager.UpdateLives(_lives);
-        DamageEngine();
-        StartCoroutine(_cameraShake.ShakeCamera(0.2f, 0.2f));
+            _lives--;
+            _uiManager.UpdateLives(_lives);
+            DamageEngine();
+            StartCoroutine(_cameraShake.ShakeCamera(0.2f, 0.2f));
 
-        if ( _lives < 1)
-        {
-            _spawnManager.OnPlayerDeath();
-            _gameManager.GameOver();
-            Instantiate(_explosion, transform.position, Quaternion.identity);
-            Instantiate(_debrisPrefab, transform.position, Quaternion.identity);
-            Destroy(this.gameObject);
+            if (_lives < 1)
+            {
+                _spawnManager.OnPlayerDeath();
+                _gameManager.GameOver();
+                Instantiate(_explosion, transform.position, Quaternion.identity);
+                Instantiate(_debrisPrefab, transform.position, Quaternion.identity);
+                Destroy(this.gameObject);
+            }
         }
     }
 
@@ -509,7 +512,7 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag("EnemyLaser"))
         {
-            Damage();
+            Damage(1);
             if (other.name != "Piercing_Laser(Clone)")
             {
                 Destroy(other.gameObject);
@@ -518,7 +521,7 @@ public class Player : MonoBehaviour
 
         if (other.CompareTag("EnemyMissile"))
         {
-            Damage();
+            Damage(1);
             Destroy(other.gameObject);
         }
     }

@@ -136,7 +136,7 @@ public class EnemyAggressive : MonoBehaviour
         {
             if (_player != null)
             {
-                _player.Damage();
+                _player.Damage(1);
                 _ramPhase = false;
                 SelectDestination();
             }
