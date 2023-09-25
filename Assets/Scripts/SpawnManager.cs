@@ -38,12 +38,13 @@ public class SpawnManager : MonoBehaviour
     private int _ambushSpawned = 0;
     private int _enemiesSpawned = 0;
     private int _enemiesKilled = 0;
+    private int _maxEnemies = 6;
     private int _totalEnemies;
     private bool _spawnEnemies = true;
     private bool _spawnPowerups = true;
     private bool _bossWave = false;
     private UIManager _uiManager;
-    private WaitForSeconds _spawnTime = new WaitForSeconds(5.0f);
+    private WaitForSeconds _spawnTime = new WaitForSeconds(3.0f);
 
     public int currentWave { get; private set; }
     public List<GameObject> enemies { get; private set; } = new List<GameObject>();
@@ -106,7 +107,7 @@ public class SpawnManager : MonoBehaviour
             switch (selectedEnemy)
             {
                 case 0:
-                    if (_basicSpawned < _basicToSpawn)
+                    if (_basicSpawned < _basicToSpawn && enemies.Count < _maxEnemies)
                     {
                         newEnemy = Instantiate(_enemyTypes[selectedEnemy], spawnPos, Quaternion.identity);
                         newEnemy.transform.parent = _enemyContainer.transform;
@@ -117,7 +118,7 @@ public class SpawnManager : MonoBehaviour
                     }                 
                     break;
                 case 1:
-                    if (_agileSpawned < _agileToSpawn)
+                    if (_agileSpawned < _agileToSpawn && enemies.Count < _maxEnemies)
                     {
                         newEnemy = Instantiate(_enemyTypes[selectedEnemy], spawnPos, Quaternion.identity);
                         newEnemy.transform.parent = _enemyContainer.transform;
@@ -128,7 +129,7 @@ public class SpawnManager : MonoBehaviour
                     }
                     break;
                 case 2:
-                    if (_aggressiveSpawned < _aggressiveToSpawn)
+                    if (_aggressiveSpawned < _aggressiveToSpawn && enemies.Count < _maxEnemies)
                     {
                         newEnemy = Instantiate(_enemyTypes[selectedEnemy], spawnPos, Quaternion.identity);
                         newEnemy.transform.parent = _enemyContainer.transform;
@@ -139,7 +140,7 @@ public class SpawnManager : MonoBehaviour
                     }
                     break;
                 case 3:
-                    if (_ambushSpawned < _ambushToSpawn)
+                    if (_ambushSpawned < _ambushToSpawn && enemies.Count < _maxEnemies)
                     {
                         newEnemy = Instantiate(_enemyTypes[selectedEnemy], spawnPos, Quaternion.identity);
                         newEnemy.transform.parent = _enemyContainer.transform;
@@ -153,6 +154,7 @@ public class SpawnManager : MonoBehaviour
                     Debug.LogError("Invalid enemy type selected.");
                     break;
             }
+            yield return null;
             if (_enemiesSpawned >= _totalEnemies)
             {
                 yield return null;

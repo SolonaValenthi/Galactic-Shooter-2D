@@ -241,19 +241,17 @@ public class EnemyAgile : MonoBehaviour
 
     IEnumerator AgileFire()
     {
-        _fireAngle = transform.eulerAngles.z + 180;
-        GameObject newLaser = Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * (_fireAngle + _shotVariance)));
-        newLaser.transform.parent = _projectileContainer.transform;
-        _enemyAudio.PlayOneShot(_laserClip);
-        yield return new WaitForSeconds(0.1f);
-        _shotVariance = Random.Range(-10f, 10f);
-        newLaser = Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * (_fireAngle + _shotVariance)));
-        newLaser.transform.parent = _projectileContainer.transform;
-        _enemyAudio.PlayOneShot(_laserClip);
-        yield return new WaitForSeconds(0.1f);
-        _shotVariance = Random.Range(-10f, 10f);
-        newLaser = Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * (_fireAngle + _shotVariance)));
-        newLaser.transform.parent = _projectileContainer.transform;
-        _enemyAudio.PlayOneShot(_laserClip);
+        GameObject newLaser;
+        int shotsToFire = Random.Range(3, 6);
+
+        for (int i = 0; i < shotsToFire; i++)
+        {
+            _shotVariance = Random.Range(-10f, 10f);
+            _fireAngle = transform.eulerAngles.z + 180;
+            newLaser = Instantiate(_laserPrefab, transform.TransformPoint(_laserOffset), Quaternion.Euler(Vector3.forward * (_fireAngle + _shotVariance)));
+            newLaser.transform.parent = _projectileContainer.transform;
+            _enemyAudio.PlayOneShot(_laserClip);
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }
