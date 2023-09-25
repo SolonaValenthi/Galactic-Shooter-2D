@@ -41,6 +41,7 @@ public class SpawnManager : MonoBehaviour
     private int _totalEnemies;
     private bool _spawnEnemies = true;
     private bool _spawnPowerups = true;
+    private bool _bossWave = false;
     private UIManager _uiManager;
     private WaitForSeconds _spawnTime = new WaitForSeconds(5.0f);
 
@@ -72,6 +73,15 @@ public class SpawnManager : MonoBehaviour
         _aggressiveToSpawn = Mathf.RoundToInt(currentWave * 0.75f);
         _ambushToSpawn = Mathf.RoundToInt(currentWave * 0.5f);
         _totalEnemies = _basicToSpawn + _agileToSpawn + _aggressiveToSpawn + _ambushToSpawn;
+
+        if (currentWave % 5 == 0)
+        {
+            _bossWave = true;
+        }
+        else
+        {
+            _bossWave = false;
+        }
     }
 
     private void ResetEnemyCount()
@@ -242,9 +252,12 @@ public class SpawnManager : MonoBehaviour
 
         if (_enemiesKilled >= _totalEnemies)
         {
-            currentWave++;
-            _spawnPowerups = false;
-            StartCoroutine(WaveCleared());
+            if (_bossWave == false)
+            {
+                currentWave++;
+                _spawnPowerups = false;
+                StartCoroutine(WaveCleared());
+            }
         }
     }
 }

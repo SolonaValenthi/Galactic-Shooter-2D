@@ -277,11 +277,11 @@ public class EnemyAmbush : MonoBehaviour
             _flyingIn = false;
             if (_playerObj.transform.position.x >= transform.position.x)
             {
-                transform.Translate(Vector3.left * _dodgeSpeed * Time.deltaTime);
+                transform.Translate(Vector3.left * _enemySpeed * Time.deltaTime);
             }
             else if (_playerObj.transform.position.x < transform.position.x)
             {
-                transform.Translate(Vector3.right * _dodgeSpeed * Time.deltaTime);
+                transform.Translate(Vector3.right * _enemySpeed * Time.deltaTime);
             }
         }
     }

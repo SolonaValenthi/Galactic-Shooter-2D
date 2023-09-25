@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     private GameObject _bgm;
 
     private bool _isGameOver = false;
+    private SpawnManager _spawnManager;
     private UIManager _uiManager;
 
     public bool isPaused { get; private set; }
@@ -19,9 +20,14 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
         _pauseMenu.SetActive(false);
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
         isPaused = false;
 
+        if (_spawnManager == null)
+        {
+            Debug.LogError("Game Manager spawn manager reference is NULL!");
+        }
         if (_uiManager == null)
         {
             Debug.LogError("Game Manager UI manager reference is NULL!");
