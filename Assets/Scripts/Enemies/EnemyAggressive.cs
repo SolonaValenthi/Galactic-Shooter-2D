@@ -187,12 +187,12 @@ public class EnemyAggressive : MonoBehaviour
         if (transform.position.x > 0)
         {
             _flyInDirection = Vector3.left;
-            _flyInDestination = new Vector3(transform.position.x - Random.Range(4.0f, 10.0f), 1, 0);
+            _flyInDestination = new Vector3(transform.position.x - Random.Range(4.0f, 10.0f), 3, 0);
         }
         else if (transform.position.x < 0)
         {
             _flyInDirection = Vector3.right;
-            _flyInDestination = new Vector3(transform.position.x + Random.Range(4.0f, 10.0f), 1, 0);
+            _flyInDestination = new Vector3(transform.position.x + Random.Range(4.0f, 10.0f), 3, 0);
         }
     }
 

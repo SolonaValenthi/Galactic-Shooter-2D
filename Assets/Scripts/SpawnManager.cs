@@ -38,7 +38,7 @@ public class SpawnManager : MonoBehaviour
     private int _ambushSpawned = 0;
     private int _enemiesSpawned = 0;
     private int _enemiesKilled = 0;
-    private int _maxEnemies = 6;
+    private int _maxEnemies = 5;
     private int _totalEnemies;
     private bool _spawnEnemies = true;
     private bool _spawnPowerups = true;
