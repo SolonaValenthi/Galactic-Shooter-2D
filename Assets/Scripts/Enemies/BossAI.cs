@@ -23,7 +23,10 @@ public class BossAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (transform.position.y > 5.0f)
+        {
+            transform.Translate(Vector3.down * Time.deltaTime);
+        }
     }
 
     private void OnDestroy()
