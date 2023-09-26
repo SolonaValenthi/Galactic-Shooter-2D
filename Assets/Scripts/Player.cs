@@ -207,7 +207,6 @@ public class Player : MonoBehaviour
             {
                 _thrustScale += 0.02f;
                 _speedMulti += 0.02f;
-                _fuel -= 0.5f;
                 DrainFuel();
             }
             else
