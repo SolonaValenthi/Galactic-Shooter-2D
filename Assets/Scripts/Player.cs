@@ -49,6 +49,8 @@ public class Player : MonoBehaviour
     private float _fuel = 100;
     private float _canFire = -1f;
     private float _canMissile = -1f;
+    private float _xBound;
+    private float _yBound;
     private float _speedMulti;
     private float _thrustScale;
     private float _blueValue;
@@ -110,6 +112,8 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("Player shield renderer reference is NULL!");
         }
+
+        SetBounds();
     }
 
     // Update is called once per frame
@@ -161,19 +165,33 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, 0, 0);
         }
-        else if (transform.position.y <= -4.8f)
+        else if (transform.position.y <= _yBound)
         {
-            transform.position = new Vector3(transform.position.x, -4.8f, 0);
+            transform.position = new Vector3(transform.position.x, _yBound, 0);
         }
 
         // horizontal wrap
-        if (transform.position.x > 11.3f)
+        if (transform.position.x > _xBound)
         {
-            transform.position = new Vector3(-11.3f, transform.position.y, 0);
+            transform.position = new Vector3(-_xBound, transform.position.y, 0);
         }
-        else if (transform.position.x < -11.3f)
+        else if (transform.position.x < -_xBound)
         {
-            transform.position = new Vector3(11.3f, transform.position.y, 0);
+            transform.position = new Vector3(_xBound, transform.position.y, 0);
+        }
+    }
+
+    public void SetBounds()
+    {
+        if (_gameManager.bossActive == true)
+        {
+            _xBound = 16.5f;
+            _yBound = -7.5f;
+        }
+        else
+        {
+            _xBound = 11.3f;
+            _yBound = -4.8f;
         }
     }
 

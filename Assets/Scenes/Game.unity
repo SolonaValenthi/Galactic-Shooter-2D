@@ -736,6 +736,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pauseMenu: {fileID: 1846609495}
   _bgm: {fileID: 187222244}
+  bossActive: 0
 --- !u!1 &352335759
 GameObject:
   m_ObjectHideFlags: 0
@@ -3351,6 +3352,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyContainer: {fileID: 421063456}
   _asteroidPrefab: {fileID: 5052791149800782126, guid: 1fca0ae997369d348a47a701878269e2,
+    type: 3}
+  _enemyBoss: {fileID: 8822054821059082791, guid: 42ba19a2cfb7a7f499f98140f4c71b79,
     type: 3}
   _powerups:
   - {fileID: 6457033654757454521, guid: e003a2dfcd8b89747ad5964d37af92f6, type: 3}

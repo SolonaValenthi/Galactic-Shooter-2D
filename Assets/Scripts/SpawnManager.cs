@@ -9,6 +9,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _asteroidPrefab;
     [SerializeField]
+    private GameObject _enemyBoss;
+    [SerializeField]
     private GameObject[] _powerups;
     [SerializeField]
     private GameObject[] _enemyTypes; // 0 = basic, 1 = agile, 2 = aggressive, 3 = ammbush
@@ -44,6 +46,7 @@ public class SpawnManager : MonoBehaviour
     private bool _spawnPowerups = true;
     private bool _bossWave = false;
     private UIManager _uiManager;
+    private CameraShake _cameraShake;
     private WaitForSeconds _spawnTime = new WaitForSeconds(3.0f);
 
     public int currentWave { get; private set; }
@@ -52,10 +55,15 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
+        _cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
 
         if (_uiManager == null)
         {
             Debug.LogError("Spawn manager ui manager reference is NULL!");
+        }
+        if (_cameraShake == null)
+        {
+            Debug.LogError("Spawn manager camera shake reference is NULL!");
         }
 
         foreach (var item in _powerupTable)
@@ -63,16 +71,17 @@ public class SpawnManager : MonoBehaviour
             _totalWeight += item;
         }
 
-        currentWave = 1;
+        // remember to change this back to 1 after boss testing concludes
+        currentWave = 5;
         CalculateWave();
     }
 
-    private void CalculateWave()
+    private void CalculateWave()//remove these comments after boss testing concludes
     {
-        _basicToSpawn = currentWave * 2 + 3;
-        _agileToSpawn = Mathf.RoundToInt(currentWave * 1.5f);
-        _aggressiveToSpawn = Mathf.RoundToInt(currentWave * 0.75f);
-        _ambushToSpawn = Mathf.RoundToInt(currentWave * 0.5f);
+        _basicToSpawn = 1; //currentWave * 2 + 3;
+        _agileToSpawn = 0; //Mathf.RoundToInt(currentWave * 1.5f);
+        _aggressiveToSpawn = 0; //Mathf.RoundToInt(currentWave * 0.75f);
+        _ambushToSpawn = 0; //Mathf.RoundToInt(currentWave * 0.5f);
         _totalEnemies = _basicToSpawn + _agileToSpawn + _aggressiveToSpawn + _ambushToSpawn;
 
         if (currentWave % 5 == 0)
@@ -101,7 +110,7 @@ public class SpawnManager : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
         while (_spawnEnemies == true)
         {
-            Vector3 spawnPos = new Vector3(Random.Range(-9.0f, 9.0f), 8, 0);
+            Vector3 spawnPos = new Vector3(Random.Range(-9.0f, 9.0f), 10, 0);
             int selectedEnemy = Random.Range(0, 4);
             GameObject newEnemy;
             switch (selectedEnemy)
@@ -234,6 +243,13 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    IEnumerator BossSpawnSequence()
+    {
+        StartCoroutine(_cameraShake.BossCameraShift());
+        yield return new WaitForSeconds(3.0f);
+        Instantiate(_enemyBoss, new Vector3(0, 11, 0), Quaternion.identity);
+    }
+
     public void StartSpawning()
     {
         _spawnEnemies = true;
@@ -259,6 +275,10 @@ public class SpawnManager : MonoBehaviour
                 currentWave++;
                 _spawnPowerups = false;
                 StartCoroutine(WaveCleared());
+            }
+            else
+            {
+                StartCoroutine(BossSpawnSequence());
             }
         }
     }

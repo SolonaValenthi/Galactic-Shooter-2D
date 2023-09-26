@@ -15,6 +15,7 @@ TagManager:
   - PowerUp
   - PowerupDetection
   - NegativePower
+  - EnemyBoss
   layers:
   - Default
   - TransparentFX

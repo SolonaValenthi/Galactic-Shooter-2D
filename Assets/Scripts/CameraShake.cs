@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraShake : MonoBehaviour
 {
     private Vector3 _originalPos;
+    private Vector3 _bossCameraPos;
 
     // Start is called before the first frame update
     void Start()
@@ -27,5 +28,14 @@ public class CameraShake : MonoBehaviour
         }
 
         transform.position = _originalPos;
+    }
+
+    public IEnumerator BossCameraShift()
+    {
+        while (transform.position.z > -15.0f)
+        {
+            transform.Translate(Vector3.back * Time.deltaTime);
+            yield return null;
+        }
     }
 }

@@ -11,15 +11,18 @@ public class GameManager : MonoBehaviour
     private GameObject _bgm;
 
     private bool _isGameOver = false;
+    private Player _player;
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
 
     public bool isPaused { get; private set; }
+    public bool bossActive = false;
 
     private void Start()
     {
         Time.timeScale = 1;
         _pauseMenu.SetActive(false);
+        _player = GameObject.Find("Player").GetComponent<Player>();
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
         isPaused = false;
@@ -46,6 +49,18 @@ public class GameManager : MonoBehaviour
         {
             PauseGame();
         }
+    }
+
+    public void BossFight()
+    {
+        bossActive = true;
+        _player.SetBounds();
+    }
+
+    public void OnBossDeath()
+    {
+        bossActive = false;
+        _player.SetBounds();
     }
 
     public void GameOver()
