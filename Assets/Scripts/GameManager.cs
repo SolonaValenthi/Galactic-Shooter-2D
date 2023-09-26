@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     private UIManager _uiManager;
 
     public bool isPaused { get; private set; }
-    public bool bossActive = false;
+    public bool bossActive { get; private set; } = false;
 
     private void Start()
     {
