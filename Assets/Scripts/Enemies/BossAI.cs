@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BossAI : MonoBehaviour
 {
-    private float _bossSpeed = 3.0f;
+    private float _bossSpeed = 2.0f;
     private GameManager _gameManager;
 
     // Start is called before the first frame update
@@ -25,7 +25,7 @@ public class BossAI : MonoBehaviour
     {
         if (transform.position.y > 5.0f)
         {
-            transform.Translate(Vector3.down * Time.deltaTime);
+            transform.Translate(Vector3.down * Time.deltaTime * _bossSpeed);
         }
     }
 
