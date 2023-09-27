@@ -5,7 +5,7 @@ using UnityEngine;
 public class BossAI : MonoBehaviour
 {
     [SerializeField]
-    private GameObject[] _turrets; // turrets are left to right, beginning at index 0
+    private GameObject[] _turrets; // turrets are left to right, index 0 is left, index 3 is right
     [SerializeField]
     private GameObject _basicLaser;
     [SerializeField]
