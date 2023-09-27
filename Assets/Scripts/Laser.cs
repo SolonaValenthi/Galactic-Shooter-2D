@@ -42,7 +42,7 @@ public class Laser : MonoBehaviour
             }
             Destroy(this.gameObject);
         }
-        else if (transform.position.y < -10)
+        else if (transform.position.y < -20)
         {
             if (transform.parent != null && transform.parent.tag != "Container")
             {

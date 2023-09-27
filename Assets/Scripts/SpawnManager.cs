@@ -178,7 +178,7 @@ public class SpawnManager : MonoBehaviour
         while (_spawnPowerups == true)
         {
             int powerupToSpawn = 0;
-            Vector3 powerupPos = new Vector3(Random.Range(-9.0f, 9.0f), 8, 0);
+            Vector3 powerupPos = new Vector3(Random.Range(-9.0f, 9.0f), 10, 0);
             _randomPowerup = Random.Range(0, _totalWeight);
 
             foreach(var weight in _powerupTable)

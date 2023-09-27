@@ -10,6 +10,10 @@ public class BossAI : MonoBehaviour
     private GameObject _basicLaser;
     [SerializeField]
     private GameObject _piercingLaser;
+    [SerializeField]
+    private GameObject _orbLaser;
+    [SerializeField]
+    private GameObject _orbSpread;
 
     private float _bossSpeed = 2.0f;
     private float[] _turretFireAngles = new float[4];
@@ -57,8 +61,14 @@ public class BossAI : MonoBehaviour
         {
             StartCoroutine(BasicRapidFire());
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2) && _isAttacking == false)
+        {
+            StartCoroutine(OrbShotgun());
+        }
     }
 
+    // randomly select two of the boss' turrets
     private void TwoTurretSelect()
     {
         _selectedTurret1 = Random.Range(0, 4);
@@ -71,12 +81,15 @@ public class BossAI : MonoBehaviour
 
     private void CalculateFireAngle()
     {
-        int currentIndex = 0;
-        foreach (var turret in _turrets)
-        { 
-            Vector3 targetPos = _playerObj.transform.position - turret.transform.position;
-            _turretFireAngles[currentIndex] = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg - 90;
-            currentIndex++;
+        if (_playerObj != null)
+        {
+            int currentIndex = 0;
+            foreach (var turret in _turrets)
+            {
+                Vector3 targetPos = _playerObj.transform.position - turret.transform.position;
+                _turretFireAngles[currentIndex] = Mathf.Atan2(targetPos.y, targetPos.x) * Mathf.Rad2Deg - 90;
+                currentIndex++;
+            }
         }
     }
 
@@ -88,6 +101,7 @@ public class BossAI : MonoBehaviour
     // rapid fire from two randomly selected turrets
     IEnumerator BasicRapidFire()
     {
+        _isAttacking = true;
         TwoTurretSelect();
         int shotsToFire = Random.Range(20, 31);
         GameObject newLaser;
@@ -101,6 +115,25 @@ public class BossAI : MonoBehaviour
             newLaser.transform.parent = _projectileContainer.transform;
             yield return new WaitForSeconds(0.1f);
         }
-        yield return null;
+
+        _isAttacking = false;
+    }
+
+    // fire "shotgun" blasts from outer turrets
+    IEnumerator OrbShotgun()
+    {
+        _isAttacking = true;
+        GameObject newBurst;
+
+        for (int i = 0; i < 5; i++)
+        {
+            newBurst = Instantiate(_orbSpread, _turrets[0].transform.position, Quaternion.identity);
+            newBurst.transform.parent = _projectileContainer.transform;
+            newBurst = Instantiate(_orbSpread, _turrets[3].transform.position, Quaternion.identity);
+            newBurst.transform.parent = _projectileContainer.transform;
+            yield return new WaitForSeconds(0.75f);
+        }
+
+        _isAttacking = false;
     }
 }

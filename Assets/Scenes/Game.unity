@@ -736,7 +736,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pauseMenu: {fileID: 1846609495}
   _bgm: {fileID: 187222244}
-  bossActive: 0
 --- !u!1 &352335759
 GameObject:
   m_ObjectHideFlags: 0
