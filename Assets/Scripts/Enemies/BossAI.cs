@@ -7,6 +7,8 @@ public class BossAI : MonoBehaviour
     [SerializeField]
     private GameObject[] _turrets; // turrets are left to right, index 0 is left, index 3 is right
     [SerializeField]
+    private GameObject[] _targetIndicators; // same indexing as turrets
+    [SerializeField]
     private GameObject _basicLaser;
     [SerializeField]
     private GameObject _piercingLaser;
@@ -72,6 +74,11 @@ public class BossAI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3) && _isAttacking == false)
         {
             StartCoroutine(MissileBarrage());
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4) && _isAttacking == false)
+        {
+            StartCoroutine(PiercingRapidFire());
         }
     }
 
@@ -165,5 +172,60 @@ public class BossAI : MonoBehaviour
         }
 
         _isAttacking = false;
+    }
+
+    IEnumerator PiercingRapidFire()
+    {
+        _isAttacking = true;
+        
+        for (int i = 0; i < 2; i++)
+        {
+            int activeTurret = 0;
+            StartCoroutine(FirePierceLaser(activeTurret));
+            activeTurret++;
+            yield return new WaitForSeconds(0.4f);
+            StartCoroutine(FirePierceLaser(activeTurret));
+            activeTurret++;
+            yield return new WaitForSeconds(0.4f);
+            StartCoroutine(FirePierceLaser(activeTurret));
+            activeTurret++;
+            yield return new WaitForSeconds(0.4f);
+            StartCoroutine(FirePierceLaser(activeTurret));
+            yield return new WaitForSeconds(0.4f);
+        }
+
+        _isAttacking = false;
+        yield return null;
+    }
+
+    IEnumerator FirePierceLaser(int turret)
+    {
+        GameObject newPierce;
+        _targetIndicators[turret].SetActive(true);
+        SpriteRenderer activeLaserSprite = _targetIndicators[turret].GetComponent<SpriteRenderer>();
+        Color activeLaserColor = activeLaserSprite.color;
+        _targetIndicators[turret].transform.rotation = Quaternion.Euler(Vector3.forward * _turretFireAngles[turret]);
+
+        while(activeLaserColor.a < 1.0f)
+        {
+            activeLaserColor.a += 0.06f;
+            activeLaserSprite.color = activeLaserColor;
+            yield return new WaitForSeconds(0.05f);
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            _targetIndicators[turret].SetActive(false);
+            yield return new WaitForSeconds(0.1f);
+            _targetIndicators[turret].SetActive(true);
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        newPierce = Instantiate(_piercingLaser, _turrets[turret].transform.position, _targetIndicators[turret].transform.rotation);
+        newPierce.transform.parent = _projectileContainer.transform;
+        activeLaserColor.a = 0.0f;
+        activeLaserSprite.color = activeLaserColor;
+        _targetIndicators[turret].SetActive(false);
+
+        yield return null;
     }
 }
