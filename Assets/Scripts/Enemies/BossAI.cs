@@ -154,10 +154,16 @@ public class BossAI : MonoBehaviour
         {
             newMissile = Instantiate(_homingMissile, _turrets[1].transform.position, Quaternion.Euler(Vector3.forward * 30));
             newMissile.transform.parent = _projectileContainer.transform;
+            newMissile = Instantiate(_homingMissile, _turrets[2].transform.position, Quaternion.Euler(Vector3.forward * -30));
+            newMissile.transform.parent = _projectileContainer.transform;
+            yield return new WaitForSeconds(0.75f);
+            newMissile = Instantiate(_homingMissile, _turrets[0].transform.position, Quaternion.Euler(Vector3.forward * 30));
+            newMissile.transform.parent = _projectileContainer.transform;
+            newMissile = Instantiate(_homingMissile, _turrets[3].transform.position, Quaternion.Euler(Vector3.forward * -30));
+            newMissile.transform.parent = _projectileContainer.transform;
             yield return new WaitForSeconds(0.75f);
         }
 
         _isAttacking = false;
-        yield return null;
     }
 }
