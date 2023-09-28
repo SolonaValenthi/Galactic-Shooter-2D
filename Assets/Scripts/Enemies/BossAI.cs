@@ -68,6 +68,11 @@ public class BossAI : MonoBehaviour
         {
             StartCoroutine(OrbShotgun());
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3) && _isAttacking == false)
+        {
+            StartCoroutine(MissileBarrage());
+        }
     }
 
     // randomly select two of the boss' turrets
@@ -137,5 +142,22 @@ public class BossAI : MonoBehaviour
         }
 
         _isAttacking = false;
+    }
+
+    // fire several waves of homing missiles
+    IEnumerator MissileBarrage()
+    {
+        _isAttacking = true;
+        GameObject newMissile;
+
+        for (int i = 0; i < 3; i++)
+        {
+            newMissile = Instantiate(_homingMissile, _turrets[1].transform.position, Quaternion.Euler(Vector3.forward * 30));
+            newMissile.transform.parent = _projectileContainer.transform;
+            yield return new WaitForSeconds(0.75f);
+        }
+
+        _isAttacking = false;
+        yield return null;
     }
 }

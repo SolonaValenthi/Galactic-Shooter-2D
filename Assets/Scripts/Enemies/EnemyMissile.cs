@@ -72,8 +72,10 @@ public class EnemyMissile : MonoBehaviour
 
     IEnumerator HomingDelay()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.0f);
         _homingOn = true;
         _speed = 8.0f;
+        yield return new WaitForSeconds(1.8f);
+        _homingOn = false;
     }
 }
