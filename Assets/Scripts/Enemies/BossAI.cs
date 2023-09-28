@@ -14,6 +14,8 @@ public class BossAI : MonoBehaviour
     private GameObject _orbLaser;
     [SerializeField]
     private GameObject _orbSpread;
+    [SerializeField]
+    private GameObject _homingMissile;
 
     private float _bossSpeed = 2.0f;
     private float[] _turretFireAngles = new float[4];

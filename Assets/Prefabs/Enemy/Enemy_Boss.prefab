@@ -435,3 +435,5 @@ MonoBehaviour:
     type: 3}
   _orbSpread: {fileID: 136495988314677907, guid: e3c0a614362e9634ba9abea996445d15,
     type: 3}
+  _homingMissile: {fileID: 8088217919919122061, guid: 069850243b2b70440b85c1c7a4395558,
+    type: 3}
