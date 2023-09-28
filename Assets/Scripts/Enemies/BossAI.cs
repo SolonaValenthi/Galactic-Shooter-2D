@@ -174,6 +174,7 @@ public class BossAI : MonoBehaviour
         _isAttacking = false;
     }
 
+    // rapid fire a pierce laser from each turret
     IEnumerator PiercingRapidFire()
     {
         _isAttacking = true;
