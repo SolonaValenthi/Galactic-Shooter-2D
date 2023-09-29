@@ -274,12 +274,10 @@ public class BossAI : MonoBehaviour
 
     public void Damage(int damageTaken)
     {
-        if (_bossHealth > 0)
-        {
-            _bossHealth -= damageTaken;
-            _uiManager.UpdateBossHealth(_bossHealth / _maxBossHealth);
-        }
-        else
+        _bossHealth -= damageTaken;
+        _uiManager.UpdateBossHealth(_bossHealth / _maxBossHealth);
+
+        if (_bossHealth <= 0)
         {
             DeathSequence();
         }
