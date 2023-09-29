@@ -54,13 +54,13 @@ public class GameManager : MonoBehaviour
     public void BossFight()
     {
         bossActive = true;
+        StartCoroutine(_uiManager.BossSpawn());
         _player.SetBounds();
     }
 
     public void OnBossDeath()
     {
         bossActive = false;
-        _player.SetBounds();
     }
 
     public void GameOver()

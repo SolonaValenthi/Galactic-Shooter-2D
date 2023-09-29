@@ -20,13 +20,18 @@ public class BossAI : MonoBehaviour
     private GameObject _homingMissile;
 
     private float _bossSpeed = 2.0f;
+    private float _bossHealth = 200;
     private float[] _turretFireAngles = new float[4];
     private int _selectedTurret1;
     private int _selectedTurret2;
+    private int _maxBossHealth = 200;
     private bool _isAttacking = false;
     private GameObject _playerObj;
     private GameObject _projectileContainer;
     private GameManager _gameManager;
+    private UIManager _uiManager;
+
+    BoxCollider2D[] _bossColliders;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +39,8 @@ public class BossAI : MonoBehaviour
         _playerObj = GameObject.Find("Player");
         _projectileContainer = GameObject.Find("Enemy_Projectiles");
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
+        _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
+        _bossColliders = gameObject.GetComponents<BoxCollider2D>();
 
         if (_playerObj == null)
         {
@@ -47,8 +54,17 @@ public class BossAI : MonoBehaviour
         {
             Debug.LogError("Boss enemy game manager reference is NULL!");
         }
+        if (_bossColliders == null)
+        {
+            Debug.LogError("Boss enemy collider reference is NULL!");
+        }
+        if (_uiManager == null)
+        {
+            Debug.LogError("Boss enemy UI manager reference is NULL!");
+        }
 
         _gameManager.BossFight();
+        StartCoroutine(IntroSequence());
     }
 
     // Update is called once per frame
@@ -56,10 +72,7 @@ public class BossAI : MonoBehaviour
     {
         CalculateFireAngle();
         
-        if (transform.position.y > 5.0f)
-        {
-            transform.Translate(Vector3.down * Time.deltaTime * _bossSpeed);
-        }
+        
 
         if (Input.GetKeyDown(KeyCode.Alpha1) && _isAttacking == false)
         {
@@ -110,6 +123,35 @@ public class BossAI : MonoBehaviour
     private void OnDestroy()
     {
         _gameManager.OnBossDeath();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Laser"))
+        {
+            Damage(1);
+            Destroy(other.gameObject);
+        }
+    }
+
+    private void DeathSequence()
+    {
+        Debug.Log("Boss defeated!");
+        Destroy(this.gameObject);
+    }
+
+    IEnumerator IntroSequence()
+    {
+        while (transform.position.y > 5.0f)
+        {
+            transform.Translate(Vector3.down * Time.deltaTime * _bossSpeed);
+            yield return null;
+        }
+        yield return new WaitForSeconds(1.1f);
+        foreach (var collider in _bossColliders)
+        {
+            collider.enabled = true;
+        }
     }
 
     // rapid fire from two randomly selected turrets
@@ -228,5 +270,18 @@ public class BossAI : MonoBehaviour
         _targetIndicators[turret].SetActive(false);
 
         yield return null;
+    }
+
+    public void Damage(int damageTaken)
+    {
+        if (_bossHealth > 0)
+        {
+            _bossHealth -= damageTaken;
+            _uiManager.UpdateBossHealth(_bossHealth / _maxBossHealth);
+        }
+        else
+        {
+            DeathSequence();
+        }
     }
 }

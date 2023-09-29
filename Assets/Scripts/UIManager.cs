@@ -30,6 +30,10 @@ public class UIManager : MonoBehaviour
     private Text _currentWaveText;
     [SerializeField]
     private Text _missileText;
+    [SerializeField]
+    private Slider _bossHPSlider;
+    [SerializeField]
+    private GameObject _bossDisplay;
 
     private Color _fuelColor;
     private Color _ammoColor;
@@ -91,6 +95,11 @@ public class UIManager : MonoBehaviour
     public void UpdateMissiles(int currentMissiles)
     {
         _missileText.text = "Missiles: " + currentMissiles;
+    }
+
+    public void UpdateBossHealth(float healthPercent)
+    {
+        _bossHPSlider.value = healthPercent * 100;
     }
 
     void GameOverSequence()
@@ -184,5 +193,18 @@ public class UIManager : MonoBehaviour
             _ammoWarning.color = _ammoColor;
             yield return new WaitForSeconds(0.2f);
         }
+    }
+
+    public IEnumerator BossSpawn()
+    {
+        yield return new WaitForSeconds(2.5f);
+        _bossDisplay.SetActive(true);
+
+        while (_bossHPSlider.value < _bossHPSlider.maxValue)
+        {
+            _bossHPSlider.value++;
+            yield return new WaitForSeconds(0.01f);
+        }
+
     }
 }
