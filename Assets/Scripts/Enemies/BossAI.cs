@@ -18,6 +18,8 @@ public class BossAI : MonoBehaviour
     private GameObject _orbSpread;
     [SerializeField]
     private GameObject _homingMissile;
+    [SerializeField]
+    private GameObject _explosion;
 
     private float _bossSpeed = 2.0f;
     private float _bossHealth = 200;
@@ -26,7 +28,7 @@ public class BossAI : MonoBehaviour
     private int _selectedTurret2;
     private int _maxBossHealth = 200;
     private int _lastAttack = 4;
-    private bool _isAttacking = false;
+    private bool _canAttack = true;
     private GameObject _playerObj;
     private GameObject _projectileContainer;
     private GameManager _gameManager;
@@ -72,26 +74,6 @@ public class BossAI : MonoBehaviour
     void Update()
     {
         CalculateFireAngle();     
-        /*
-        if (Input.GetKeyDown(KeyCode.Alpha1) && _isAttacking == false)
-        {
-            StartCoroutine(BasicRapidFire());
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2) && _isAttacking == false)
-        {
-            StartCoroutine(OrbShotgun());
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3) && _isAttacking == false)
-        {
-            StartCoroutine(MissileBarrage());
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha4) && _isAttacking == false)
-        {
-            StartCoroutine(PiercingRapidFire());
-        }*/
     }
 
     // randomly select two of the boss' turrets
@@ -136,6 +118,13 @@ public class BossAI : MonoBehaviour
     private void DeathSequence()
     {
         Debug.Log("Boss defeated!");
+        StopAllCoroutines();
+        _canAttack = false;
+
+        foreach (var collider in _bossColliders)
+        {
+            collider.enabled = false;
+        }
         Destroy(this.gameObject);
     }
 
@@ -160,9 +149,12 @@ public class BossAI : MonoBehaviour
         yield return new WaitForSeconds(attackDelay);
         int selectedAttack = Random.Range(0, 4);
 
-        if (selectedAttack != _lastAttack)
+        while (selectedAttack == _lastAttack)
         {
-            _lastAttack = selectedAttack;
+            selectedAttack = Random.Range(0, 4);
+        }
+        if (_canAttack == true)
+        {
             switch (selectedAttack)
             {
                 case 0:
@@ -182,13 +174,13 @@ public class BossAI : MonoBehaviour
                     break;
             }
         }
-        Debug.Log("Selected attack: " + selectedAttack);
+
+        _lastAttack = selectedAttack;
     }
 
     // rapid fire from two randomly selected turrets, attack ID = 0
     IEnumerator BasicRapidFire()
     {
-        _isAttacking = true;
         TwoTurretSelect();
         int shotsToFire = Random.Range(20, 31);
         GameObject newLaser;
@@ -203,14 +195,12 @@ public class BossAI : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
-        _isAttacking = false;
         StartCoroutine(SelectAttack(1.0f));
     }
 
     // fire "shotgun" blasts from outer turrets, attack ID = 1
     IEnumerator OrbShotgun()
     {
-        _isAttacking = true;
         GameObject newBurst;
 
         for (int i = 0; i < 5; i++)
@@ -222,14 +212,12 @@ public class BossAI : MonoBehaviour
             yield return new WaitForSeconds(0.75f);
         }
 
-        _isAttacking = false;
         StartCoroutine(SelectAttack(3.5f));
     }
 
     // fire several waves of homing missiles, attack ID = 2
     IEnumerator MissileBarrage()
     {
-        _isAttacking = true;
         GameObject newMissile;
 
         for (int i = 0; i < 3; i++)
@@ -246,15 +234,12 @@ public class BossAI : MonoBehaviour
             yield return new WaitForSeconds(0.75f);
         }
 
-        _isAttacking = false;
         StartCoroutine(SelectAttack(2.0f));
     }
 
     // rapid fire a pierce laser from each turret, attack ID = 3
     IEnumerator PiercingRapidFire()
-    {
-        _isAttacking = true;
-        
+    {    
         for (int i = 0; i < 2; i++)
         {
             int activeTurret = 0;
@@ -271,7 +256,6 @@ public class BossAI : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
-        _isAttacking = false;
         StartCoroutine(SelectAttack(1.5f));
     }
 
