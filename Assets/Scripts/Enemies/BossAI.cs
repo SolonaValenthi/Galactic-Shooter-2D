@@ -129,7 +129,7 @@ public class BossAI : MonoBehaviour
         }
         foreach (var turret in _turrets)
         {
-            Destroy(turret);
+            turret.SetActive(false);
         }
         Destroy(this.gameObject, 10.0f);
     }
