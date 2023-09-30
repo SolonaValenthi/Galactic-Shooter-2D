@@ -29,6 +29,7 @@ public class BossAI : MonoBehaviour
     private int _maxBossHealth = 200;
     private int _lastAttack = 4;
     private bool _canAttack = true;
+    private bool _isDead = false;
     private GameObject _playerObj;
     private GameObject _projectileContainer;
     private GameManager _gameManager;
@@ -89,7 +90,7 @@ public class BossAI : MonoBehaviour
 
     private void CalculateFireAngle()
     {
-        if (_playerObj != null)
+        if (_playerObj != null && _isDead == false)
         {
             int currentIndex = 0;
             foreach (var turret in _turrets)
@@ -117,15 +118,20 @@ public class BossAI : MonoBehaviour
 
     private void DeathSequence()
     {
-        Debug.Log("Boss defeated!");
+        _isDead = true;
         StopAllCoroutines();
+        StartCoroutine(DeathExplosions());
         _canAttack = false;
 
         foreach (var collider in _bossColliders)
         {
             collider.enabled = false;
         }
-        Destroy(this.gameObject);
+        foreach (var turret in _turrets)
+        {
+            Destroy(turret);
+        }
+        Destroy(this.gameObject, 10.0f);
     }
 
     IEnumerator IntroSequence()
@@ -288,6 +294,37 @@ public class BossAI : MonoBehaviour
         _targetIndicators[turret].SetActive(false);
 
         yield return null;
+    }
+
+    IEnumerator DeathExplosions()
+    {
+        float explosionTime = 0.5f;
+        WaitForSeconds explosionDelay = new WaitForSeconds(explosionTime);
+        Vector3 spawnPos;
+        float yPos;
+        float xPos;
+
+        for (int i = 0; i < 6; i++)
+        {
+            explosionDelay = new WaitForSeconds(explosionTime);
+            yPos = Random.Range(-1.5f, 1.5f); xPos = Random.Range(-7.0f, 7.0f);
+            spawnPos = new Vector3(xPos, yPos, 0) + transform.position;
+            Instantiate(_explosion, spawnPos, Quaternion.identity);
+            yield return explosionDelay;
+            yPos = Random.Range(-1.5f, 1.5f); xPos = Random.Range(-7.0f, 7.0f);
+            spawnPos = new Vector3(xPos, yPos, 0) + transform.position;
+            Instantiate(_explosion, spawnPos, Quaternion.identity);
+            yield return explosionDelay;
+            yPos = Random.Range(-1.5f, 1.5f); xPos = Random.Range(-7.0f, 7.0f);
+            spawnPos = new Vector3(xPos, yPos, 0) + transform.position;
+            Instantiate(_explosion, spawnPos, Quaternion.identity);
+            yield return explosionDelay;
+            yPos = Random.Range(-1.5f, 1.5f); xPos = Random.Range(-7.0f, 7.0f);
+            spawnPos = new Vector3(xPos, yPos, 0) + transform.position;
+            Instantiate(_explosion, spawnPos, Quaternion.identity);
+            yield return explosionDelay;
+            explosionTime -= 0.07f;
+        }
     }
 
     public void Damage(int damageTaken)
