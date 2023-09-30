@@ -25,6 +25,7 @@ public class BossAI : MonoBehaviour
     private int _selectedTurret1;
     private int _selectedTurret2;
     private int _maxBossHealth = 200;
+    private int _lastAttack = 4;
     private bool _isAttacking = false;
     private GameObject _playerObj;
     private GameObject _projectileContainer;
@@ -70,10 +71,8 @@ public class BossAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CalculateFireAngle();
-        
-        
-
+        CalculateFireAngle();     
+        /*
         if (Input.GetKeyDown(KeyCode.Alpha1) && _isAttacking == false)
         {
             StartCoroutine(BasicRapidFire());
@@ -92,7 +91,7 @@ public class BossAI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha4) && _isAttacking == false)
         {
             StartCoroutine(PiercingRapidFire());
-        }
+        }*/
     }
 
     // randomly select two of the boss' turrets
@@ -152,9 +151,41 @@ public class BossAI : MonoBehaviour
         {
             collider.enabled = true;
         }
+
+        StartCoroutine(SelectAttack(0.5f));
     }
 
-    // rapid fire from two randomly selected turrets
+    IEnumerator SelectAttack(float attackDelay)
+    {
+        yield return new WaitForSeconds(attackDelay);
+        int selectedAttack = Random.Range(0, 4);
+
+        if (selectedAttack != _lastAttack)
+        {
+            _lastAttack = selectedAttack;
+            switch (selectedAttack)
+            {
+                case 0:
+                    StartCoroutine(BasicRapidFire());
+                    break;
+                case 1:
+                    StartCoroutine(OrbShotgun());
+                    break;
+                case 2:
+                    StartCoroutine(MissileBarrage());
+                    break;
+                case 3:
+                    StartCoroutine(PiercingRapidFire());
+                    break;
+                default:
+                    Debug.LogError("Invalid attack ID selected");
+                    break;
+            }
+        }
+        Debug.Log("Selected attack: " + selectedAttack);
+    }
+
+    // rapid fire from two randomly selected turrets, attack ID = 0
     IEnumerator BasicRapidFire()
     {
         _isAttacking = true;
@@ -173,9 +204,10 @@ public class BossAI : MonoBehaviour
         }
 
         _isAttacking = false;
+        StartCoroutine(SelectAttack(1.0f));
     }
 
-    // fire "shotgun" blasts from outer turrets
+    // fire "shotgun" blasts from outer turrets, attack ID = 1
     IEnumerator OrbShotgun()
     {
         _isAttacking = true;
@@ -191,9 +223,10 @@ public class BossAI : MonoBehaviour
         }
 
         _isAttacking = false;
+        StartCoroutine(SelectAttack(3.5f));
     }
 
-    // fire several waves of homing missiles
+    // fire several waves of homing missiles, attack ID = 2
     IEnumerator MissileBarrage()
     {
         _isAttacking = true;
@@ -214,9 +247,10 @@ public class BossAI : MonoBehaviour
         }
 
         _isAttacking = false;
+        StartCoroutine(SelectAttack(2.0f));
     }
 
-    // rapid fire a pierce laser from each turret
+    // rapid fire a pierce laser from each turret, attack ID = 3
     IEnumerator PiercingRapidFire()
     {
         _isAttacking = true;
@@ -226,19 +260,19 @@ public class BossAI : MonoBehaviour
             int activeTurret = 0;
             StartCoroutine(FirePierceLaser(activeTurret));
             activeTurret++;
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(0.5f);
             StartCoroutine(FirePierceLaser(activeTurret));
             activeTurret++;
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(0.5f);
             StartCoroutine(FirePierceLaser(activeTurret));
             activeTurret++;
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(0.5f);
             StartCoroutine(FirePierceLaser(activeTurret));
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(0.5f);
         }
 
         _isAttacking = false;
-        yield return null;
+        StartCoroutine(SelectAttack(1.5f));
     }
 
     IEnumerator FirePierceLaser(int turret)
