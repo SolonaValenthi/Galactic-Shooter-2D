@@ -22,6 +22,8 @@ public class BossAI : MonoBehaviour
     private GameObject _explosion;
     [SerializeField]
     private GameObject _bossShield;
+    [SerializeField]
+    private GameObject _shieldDrone;
 
     private float _bossSpeed = 2.0f;
     private float _bossHealth = 200;

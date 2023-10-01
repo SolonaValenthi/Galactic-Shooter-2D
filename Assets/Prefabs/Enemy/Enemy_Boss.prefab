@@ -554,6 +554,8 @@ MonoBehaviour:
   _explosion: {fileID: 4620905344678611944, guid: 0089de8db287e6140a153a1ba9ca6166,
     type: 3}
   _bossShield: {fileID: 4313622935129133465}
+  _shieldDrone: {fileID: 1387528238238977153, guid: 3f16a73a4da76d249bf983dec210f23d,
+    type: 3}
 --- !u!50 &8096012999666105747
 Rigidbody2D:
   serializedVersion: 4
