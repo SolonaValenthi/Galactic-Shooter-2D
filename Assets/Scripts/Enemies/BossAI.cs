@@ -20,6 +20,8 @@ public class BossAI : MonoBehaviour
     private GameObject _homingMissile;
     [SerializeField]
     private GameObject _explosion;
+    [SerializeField]
+    private GameObject _bossShield;
 
     private float _bossSpeed = 2.0f;
     private float _bossHealth = 200;
@@ -30,12 +32,16 @@ public class BossAI : MonoBehaviour
     private int _lastAttack = 4;
     private bool _canAttack = true;
     private bool _isDead = false;
+    private bool _intermissionReady = true;
+    private bool _shieldActive = false;
     private GameObject _playerObj;
     private GameObject _projectileContainer;
     private GameManager _gameManager;
     private UIManager _uiManager;
+    private Color _shieldColor;
 
     BoxCollider2D[] _bossColliders;
+    SpriteRenderer _shieldRenderer;
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +51,7 @@ public class BossAI : MonoBehaviour
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
         _bossColliders = gameObject.GetComponents<BoxCollider2D>();
+        _shieldRenderer = _bossShield.GetComponent<SpriteRenderer>();
 
         if (_playerObj == null)
         {
@@ -65,6 +72,14 @@ public class BossAI : MonoBehaviour
         if (_uiManager == null)
         {
             Debug.LogError("Boss enemy UI manager reference is NULL!");
+        }
+        if (_shieldRenderer == null)
+        {
+            Debug.LogError("Boss enemy shield sprite renderer reference is NULL!");
+        }
+        else
+        {
+            _shieldColor = _shieldRenderer.color;
         }
 
         _gameManager.BossFight();
@@ -134,6 +149,13 @@ public class BossAI : MonoBehaviour
         Destroy(this.gameObject, 10.0f);
     }
 
+    private void Intermission()
+    {
+        _intermissionReady = false;
+        StopAllCoroutines();
+        StartCoroutine(IntermissionSequence());
+    }
+
     IEnumerator IntroSequence()
     {
         while (transform.position.y > 5.0f)
@@ -148,6 +170,24 @@ public class BossAI : MonoBehaviour
         }
 
         StartCoroutine(SelectAttack(0.5f));
+    }
+
+    IEnumerator IntermissionSequence()
+    {
+        _bossShield.SetActive(true);
+        _shieldActive = true;
+
+        foreach (var indicator in _targetIndicators)
+        {
+            indicator.SetActive(false);
+        }
+        while (_shieldColor.a < 1)
+        {
+            _shieldColor.a += 0.05f;
+            _shieldRenderer.color = _shieldColor;
+            yield return new WaitForSeconds(0.1f);
+        }
+        yield return null;
     }
 
     IEnumerator SelectAttack(float attackDelay)
@@ -271,6 +311,8 @@ public class BossAI : MonoBehaviour
         _targetIndicators[turret].SetActive(true);
         SpriteRenderer activeLaserSprite = _targetIndicators[turret].GetComponent<SpriteRenderer>();
         Color activeLaserColor = activeLaserSprite.color;
+        activeLaserColor.a = 0.0f;
+        activeLaserSprite.color = activeLaserColor;
         _targetIndicators[turret].transform.rotation = Quaternion.Euler(Vector3.forward * _turretFireAngles[turret]);
 
         while(activeLaserColor.a < 1.0f)
@@ -329,8 +371,18 @@ public class BossAI : MonoBehaviour
 
     public void Damage(int damageTaken)
     {
+        if (_shieldActive == true)
+        {
+            return;
+        }
+        
         _bossHealth -= damageTaken;
         _uiManager.UpdateBossHealth(_bossHealth / _maxBossHealth);
+
+        if (_bossHealth <= _maxBossHealth / 2 && _intermissionReady == true)
+        {
+            Intermission();
+        }
 
         if (_bossHealth <= 0)
         {
