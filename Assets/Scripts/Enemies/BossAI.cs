@@ -32,6 +32,7 @@ public class BossAI : MonoBehaviour
     private int _selectedTurret2;
     private int _maxBossHealth = 200;
     private int _lastAttack = 4;
+    private int _dronesRemaining;
     private bool _canAttack = true;
     private bool _isDead = false;
     private bool _intermissionReady = true;
@@ -188,6 +189,11 @@ public class BossAI : MonoBehaviour
             _shieldColor.a += 0.05f;
             _shieldRenderer.color = _shieldColor;
             yield return new WaitForSeconds(0.1f);
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            Instantiate(_shieldDrone, transform.position, Quaternion.identity);
+            yield return new WaitForSeconds(2.0f);
         }
         yield return null;
     }
