@@ -464,7 +464,7 @@ public class Player : MonoBehaviour
     {
         for (int i = 0; i < missilesToLoad; i++)
         {
-            if (_missileCount < 5)
+            if (_missileCount < 6)
             {
                 _missileCount++;
             }
