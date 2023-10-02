@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6723863727433250339}
   - component: {fileID: 6723863727433250364}
   - component: {fileID: 6723863727433250365}
+  - component: {fileID: 7407862274338351696}
   m_Layer: 0
   m_Name: Jamming_Powerup
   m_TagString: NegativePower
@@ -73,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: -454961801
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: bb4bbe6d1e66cfc4da3c368fc4d14c8e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f826ac08da6b6d447a0788e17b7f6bd8, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -136,3 +137,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &7407862274338351696
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6723863727433250366}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8420ec2ee8fd4734097c65fe73b2c32b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

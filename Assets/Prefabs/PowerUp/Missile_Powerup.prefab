@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5967372849180342671}
   - component: {fileID: 5967372849180342670}
   - component: {fileID: 5967372849180342669}
+  - component: {fileID: 9176568269007402171}
   m_Layer: 0
   m_Name: Missile_Powerup
   m_TagString: PowerUp
@@ -73,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: -454961801
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5b898a9ee03cd2643b3bf6cd68e894af, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ff9c4816c0ccf1143b6093f9d8dbcb42, type: 3}
   m_Color: {r: 0, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -136,3 +137,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &9176568269007402171
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5967372849180342668}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4c52df8329614c34d9f70c0fb0e6b154, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
