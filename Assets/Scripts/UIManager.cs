@@ -11,9 +11,13 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Sprite[] _liveSprites;
     [SerializeField]
+    private Sprite[] _missileSprites;
+    [SerializeField]
     private Sprite[] _ammoSprites;
     [SerializeField]
     private Image _livesDisplay;
+    [SerializeField]
+    private Image _missileDisplay;
     [SerializeField]
     private Image _ammoDisplay;
     [SerializeField]
@@ -28,8 +32,6 @@ public class UIManager : MonoBehaviour
     private Image _ammoWarning;
     [SerializeField]
     private Text _currentWaveText;
-    [SerializeField]
-    private Text _missileText;
     [SerializeField]
     private Slider _bossHPSlider;
     [SerializeField]
@@ -47,7 +49,7 @@ public class UIManager : MonoBehaviour
         _livesDisplay.sprite = _liveSprites[3];
         _ammoDisplay.sprite = _ammoSprites[15];
         _scoreText.text = "Score: " + 0;
-        _missileText.text = "Missiles: " + 0;
+        _missileDisplay.sprite = _missileSprites[0];
         _fuelSlider.value = 100;
         _fuelColor = _fuelWarning.color;
         _ammoColor = _ammoWarning.color;
@@ -94,7 +96,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateMissiles(int currentMissiles)
     {
-        _missileText.text = "Missiles: " + currentMissiles;
+        _missileDisplay.sprite = _missileSprites[currentMissiles];
     }
 
     public void UpdateBossHealth(float healthPercent)
