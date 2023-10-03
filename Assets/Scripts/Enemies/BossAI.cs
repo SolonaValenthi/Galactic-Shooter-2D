@@ -32,7 +32,7 @@ public class BossAI : MonoBehaviour
     private int _selectedTurret2;
     private int _maxBossHealth = 200;
     private int _lastAttack = 4;
-    private int _dronesRemaining;
+    private int _dronesRemaining = 0;
     private bool _canAttack = true;
     private bool _isDead = false;
     private bool _intermissionReady = true;
@@ -130,7 +130,10 @@ public class BossAI : MonoBehaviour
         if (other.CompareTag("Laser"))
         {
             Damage(1);
-            Destroy(other.gameObject);
+            if (_shieldActive == false)
+            {
+                Destroy(other.gameObject);
+            }
         }
     }
 
@@ -179,6 +182,8 @@ public class BossAI : MonoBehaviour
     {
         _bossShield.SetActive(true);
         _shieldActive = true;
+        GameObject newDrone;
+        ShieldDrone spawnedDrone;
 
         foreach (var indicator in _targetIndicators)
         {
@@ -192,7 +197,10 @@ public class BossAI : MonoBehaviour
         }
         for (int i = 0; i < 5; i++)
         {
-            Instantiate(_shieldDrone, transform.position, Quaternion.identity);
+            newDrone = Instantiate(_shieldDrone, transform.position, Quaternion.identity);
+            spawnedDrone = newDrone.GetComponent<ShieldDrone>();
+            spawnedDrone.SetID(i);
+            _dronesRemaining++;
             yield return new WaitForSeconds(2.0f);
         }
         yield return null;
@@ -395,6 +403,18 @@ public class BossAI : MonoBehaviour
         if (_bossHealth <= 0)
         {
             DeathSequence();
+        }
+    }
+
+    public void DroneDestroyed()
+    {
+        _dronesRemaining--;
+
+        if (_dronesRemaining <= 0)
+        {
+            _bossShield.SetActive(false);
+            _shieldActive = false;
+            StartCoroutine(SelectAttack(0.5f));
         }
     }
 }

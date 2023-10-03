@@ -5,16 +5,23 @@ using UnityEngine;
 public class ShieldDrone : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _basicLaser;
+    private GameObject _orbLaser;
     [SerializeField]
     private GameObject _spriteController;
 
     private float _speed = 4;
-    private float _fireAngle;
+    private float _lookAngle;
+    private float _canFire;
+    private float _fireRate = 0.5f;
+    private int _droneID;
     private bool _isRotating = false;
+    private bool _isDead = false;
     private GameObject _boss;
     private GameObject _playerObj;
     private BossAI _bossAI;
+
+    private static float _rotationSpeed = 36;
+    private static int _killedDrones = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -33,24 +40,49 @@ public class ShieldDrone : MonoBehaviour
         }
 
         StartCoroutine(OnSpawn());
+        _canFire = Time.time + 2.0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        CaclulateFireAngle();
+        CaclulateLookAngle();
 
-        if (_isRotating == true)
+        if (_isRotating == true && _isDead == false)
         {
-            transform.RotateAround(_boss.transform.position, Vector3.forward, 36 * Time.deltaTime);
-            _spriteController.transform.rotation = Quaternion.Euler(Vector3.back * _fireAngle);
-        }       
+            transform.RotateAround(_boss.transform.position, Vector3.forward, _rotationSpeed * Time.deltaTime);
+            _spriteController.transform.rotation = Quaternion.Euler(Vector3.back * _lookAngle);
+        }    
+        
+        if (Time.time > _canFire && transform.position.y < 1.0f)
+        {
+            StartCoroutine(FireLaser());
+        }
     }
 
-    private void CaclulateFireAngle()
+    private void CaclulateLookAngle()
     {
-        Vector3 targetPos = _playerObj.transform.position - transform.position;
-        _fireAngle = Mathf.Atan2(targetPos.x, targetPos.y) * Mathf.Rad2Deg - 180;
+        if (_playerObj != null)
+        {
+            Vector3 targetPos = _playerObj.transform.position - transform.position;
+            _lookAngle = Mathf.Atan2(targetPos.x, targetPos.y) * Mathf.Rad2Deg - 180;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        ShieldDrone.RotateFaster();
+        ShieldDrone._killedDrones++;
+        _bossAI.DroneDestroyed();
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Laser"))
+        {
+            Destroy(other.gameObject);
+            Destroy(this.gameObject);
+        }
     }
 
     IEnumerator OnSpawn()
@@ -61,5 +93,29 @@ public class ShieldDrone : MonoBehaviour
             yield return null;
         }
         _isRotating = true;
+    }
+
+    IEnumerator FireLaser()
+    {
+        _canFire = Time.time + _fireRate;
+
+        for (int i = 0; i <= _killedDrones; i++)
+        {
+            float fireAngle = _spriteController.transform.eulerAngles.z + 180;
+            Instantiate(_orbLaser, transform.position, Quaternion.Euler(Vector3.forward * fireAngle));
+            Instantiate(_orbLaser, transform.position, Quaternion.Euler(Vector3.forward * (fireAngle - 30)));
+            Instantiate(_orbLaser, transform.position, Quaternion.Euler(Vector3.forward * (fireAngle + 30)));
+            yield return new WaitForSeconds(_fireRate);
+        }
+    }
+
+    public void SetID(int id)
+    {
+        _droneID = id;
+    }
+
+    public static void RotateFaster()
+    {
+        _rotationSpeed += 18;
     }
 }

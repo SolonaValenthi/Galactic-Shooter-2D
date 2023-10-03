@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e55370ef116c9824e8ab2e6df5b85d9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _basicLaser: {fileID: 4289852604995763779, guid: 1f884b10af8492043ad2e98abd263a2f,
+  _orbLaser: {fileID: 3661350473331162628, guid: 2a53e347b3ed9af4ba7e4fe6da6be406,
     type: 3}
   _spriteController: {fileID: 4231358848454642899}
 --- !u!61 &668580992591096095
