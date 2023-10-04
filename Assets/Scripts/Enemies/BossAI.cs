@@ -97,7 +97,7 @@ public class BossAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CalculateFireAngle();     
+        CalculateFireAngle();
     }
 
     // randomly select two of the boss' turrets
@@ -335,7 +335,7 @@ public class BossAI : MonoBehaviour
         GameObject newBurst;
         float elapsed = 0.0f;
         
-        while (elapsed <= 5.0f)
+        while (elapsed <= 10.0f)
         {
             newBurst = Instantiate(_fiveShotSpread, transform.position, _centralTurret.transform.rotation);
             newBurst.transform.parent = _projectileContainer.transform;
