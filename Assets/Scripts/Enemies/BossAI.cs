@@ -9,6 +9,8 @@ public class BossAI : MonoBehaviour
     [SerializeField]
     private GameObject[] _targetIndicators; // same indexing as turrets
     [SerializeField]
+    private GameObject _centralTurret; // do not index
+    [SerializeField]
     private GameObject _basicLaser;
     [SerializeField]
     private GameObject _piercingLaser;
@@ -16,6 +18,8 @@ public class BossAI : MonoBehaviour
     private GameObject _orbLaser;
     [SerializeField]
     private GameObject _orbSpread;
+    [SerializeField]
+    private GameObject _fiveShotSpread;
     [SerializeField]
     private GameObject _homingMissile;
     [SerializeField]
@@ -36,6 +40,7 @@ public class BossAI : MonoBehaviour
     private bool _canAttack = true;
     private bool _isDead = false;
     private bool _intermissionReady = true;
+    private bool _phaseTwo = false;
     private bool _shieldActive = false;
     private GameObject _playerObj;
     private GameObject _projectileContainer;
@@ -217,23 +222,47 @@ public class BossAI : MonoBehaviour
         }
         if (_canAttack == true)
         {
-            switch (selectedAttack)
+            if (_phaseTwo == false) //select a phase one attack
             {
-                case 0:
-                    StartCoroutine(BasicRapidFire());
-                    break;
-                case 1:
-                    StartCoroutine(OrbShotgun());
-                    break;
-                case 2:
-                    StartCoroutine(MissileBarrage());
-                    break;
-                case 3:
-                    StartCoroutine(PiercingRapidFire());
-                    break;
-                default:
-                    Debug.LogError("Invalid attack ID selected");
-                    break;
+                switch (selectedAttack) 
+                {
+                    case 0:
+                        StartCoroutine(BasicRapidFire());
+                        break;
+                    case 1:
+                        StartCoroutine(OrbShotgun());
+                        break;
+                    case 2:
+                        StartCoroutine(MissileBarrage());
+                        break;
+                    case 3:
+                        StartCoroutine(PiercingRapidFire());
+                        break;
+                    default:
+                        Debug.LogError("Invalid attack ID selected");
+                        break;
+                }
+            }
+            else // select a phase two attack
+            {
+                switch (selectedAttack) 
+                {
+                    case 0:
+                        StartCoroutine(PhaseTwoRapidFire());
+                        break;
+                    case 1:
+                        StartCoroutine(PhaseTwoShotgun());
+                        break;
+                    case 2:
+                        StartCoroutine(MissileBarrage());
+                        break;
+                    case 3:
+                        StartCoroutine(PiercingRapidFire());
+                        break;
+                    default:
+                        Debug.LogError("Invalid attack ID selected");
+                        break;
+                }
             }
         }
 
@@ -260,6 +289,29 @@ public class BossAI : MonoBehaviour
         StartCoroutine(SelectAttack(1.0f));
     }
 
+    // rapid fire from all four turrets
+    IEnumerator PhaseTwoRapidFire()
+    {
+        int shotsToFire = Random.Range(20, 31);
+        GameObject newLaser;
+
+        for (int i = 0; i < shotsToFire; i++)
+        {
+            float shotVariance = Random.Range(-15f, 15f);
+            newLaser = Instantiate(_basicLaser, _turrets[0].transform.position, Quaternion.Euler(Vector3.forward * (_turretFireAngles[0] + shotVariance)));
+            newLaser.transform.parent = _projectileContainer.transform;
+            newLaser = Instantiate(_basicLaser, _turrets[1].transform.position, Quaternion.Euler(Vector3.forward * (_turretFireAngles[1] + shotVariance)));
+            newLaser.transform.parent = _projectileContainer.transform;
+            newLaser = Instantiate(_basicLaser, _turrets[2].transform.position, Quaternion.Euler(Vector3.forward * (_turretFireAngles[2] + shotVariance)));
+            newLaser.transform.parent = _projectileContainer.transform;
+            newLaser = Instantiate(_basicLaser, _turrets[3].transform.position, Quaternion.Euler(Vector3.forward * (_turretFireAngles[3] + shotVariance)));
+            newLaser.transform.parent = _projectileContainer.transform;
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        StartCoroutine(SelectAttack(1.0f));
+    }
+
     // fire "shotgun" blasts from outer turrets, attack ID = 1
     IEnumerator OrbShotgun()
     {
@@ -275,6 +327,23 @@ public class BossAI : MonoBehaviour
         }
 
         StartCoroutine(SelectAttack(3.5f));
+    }
+
+    // fire shotgun blasts in a wave pattern
+    IEnumerator PhaseTwoShotgun()
+    {
+        GameObject newBurst;
+        float elapsed = 0.0f;
+        
+        while (elapsed <= 5.0f)
+        {
+            newBurst = Instantiate(_fiveShotSpread, transform.position, _centralTurret.transform.rotation);
+            newBurst.transform.parent = _projectileContainer.transform;
+            yield return new WaitForSeconds(0.2f);
+            elapsed += 0.2f;
+        }
+
+        StartCoroutine(SelectAttack(3.0f));
     }
 
     // fire several waves of homing missiles, attack ID = 2
@@ -414,6 +483,7 @@ public class BossAI : MonoBehaviour
         {
             _bossShield.SetActive(false);
             _shieldActive = false;
+            _phaseTwo = true;
             StartCoroutine(SelectAttack(0.5f));
         }
     }

@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3078919772905432865
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7054330557856837859}
+  m_Layer: 0
+  m_Name: Central_Turret
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7054330557856837859
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3078919772905432865}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.63, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8822054821059082789}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3924351754267346604
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,7 +142,7 @@ Transform:
   m_LocalScale: {x: 0.86121196, y: 0.9001292, z: 0.59207}
   m_Children: []
   m_Father: {fileID: 8822054821059082789}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8587281531851158827
 SpriteRenderer:
@@ -465,6 +495,7 @@ Transform:
   - {fileID: 2377996626854682029}
   - {fileID: 6002801420493298944}
   - {fileID: 6604779769685886431}
+  - {fileID: 7054330557856837859}
   - {fileID: 8078414207527933454}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -541,6 +572,7 @@ MonoBehaviour:
   - {fileID: 2064058756135496222}
   - {fileID: 4372430910708275701}
   - {fileID: 7734895176753785924}
+  _centralTurret: {fileID: 3078919772905432865}
   _basicLaser: {fileID: 3462453089705872088, guid: ca6244f99240cd74591691df0c4a32bb,
     type: 3}
   _piercingLaser: {fileID: 3443138369892243682, guid: e580af6f646bfcc4097a88a4f2fd156f,
@@ -548,6 +580,8 @@ MonoBehaviour:
   _orbLaser: {fileID: 3661350473331162628, guid: 2a53e347b3ed9af4ba7e4fe6da6be406,
     type: 3}
   _orbSpread: {fileID: 136495988314677907, guid: e3c0a614362e9634ba9abea996445d15,
+    type: 3}
+  _fiveShotSpread: {fileID: 8776663798865852805, guid: 8ba16f8f2525ea64b891cc1184e949ee,
     type: 3}
   _homingMissile: {fileID: 8088217919919122061, guid: 069850243b2b70440b85c1c7a4395558,
     type: 3}
