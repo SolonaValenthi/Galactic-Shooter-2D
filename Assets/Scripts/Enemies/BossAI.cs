@@ -28,6 +28,8 @@ public class BossAI : MonoBehaviour
     private GameObject _bossShield;
     [SerializeField]
     private GameObject _shieldDrone;
+    [SerializeField]
+    private AudioClip _laserClip;
 
     private float _bossSpeed = 2.0f;
     private float _bossHealth = 200;
@@ -36,7 +38,7 @@ public class BossAI : MonoBehaviour
     private int _selectedTurret2;
     private int _maxBossHealth = 200;
     private int _lastAttack = 4;
-    private int _dronesRemaining = 0;
+    private int _dronesRemaining = 5;
     private bool _canAttack = true;
     private bool _isDead = false;
     private bool _intermissionReady = true;
@@ -50,6 +52,7 @@ public class BossAI : MonoBehaviour
 
     BoxCollider2D[] _bossColliders;
     SpriteRenderer _shieldRenderer;
+    AudioSource _bossAudio;
 
     // Start is called before the first frame update
     void Start()
@@ -60,6 +63,7 @@ public class BossAI : MonoBehaviour
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
         _bossColliders = gameObject.GetComponents<BoxCollider2D>();
         _shieldRenderer = _bossShield.GetComponent<SpriteRenderer>();
+        _bossAudio = gameObject.GetComponent<AudioSource>();
 
         if (_playerObj == null)
         {
@@ -80,6 +84,10 @@ public class BossAI : MonoBehaviour
         if (_uiManager == null)
         {
             Debug.LogError("Boss enemy UI manager reference is NULL!");
+        }
+        if (_bossAudio == null)
+        {
+            Debug.LogError("Boss enemy audio source reference is NULL!");
         }
         if (_shieldRenderer == null)
         {
@@ -205,7 +213,6 @@ public class BossAI : MonoBehaviour
             newDrone = Instantiate(_shieldDrone, transform.position, Quaternion.identity);
             spawnedDrone = newDrone.GetComponent<ShieldDrone>();
             spawnedDrone.SetID(i);
-            _dronesRemaining++;
             yield return new WaitForSeconds(2.0f);
         }
         yield return null;
@@ -254,10 +261,10 @@ public class BossAI : MonoBehaviour
                         StartCoroutine(PhaseTwoShotgun());
                         break;
                     case 2:
-                        StartCoroutine(MissileBarrage());
+                        StartCoroutine(PhaseTwoMissiles());
                         break;
                     case 3:
-                        StartCoroutine(PiercingRapidFire());
+                        StartCoroutine(PhaseTwoPierce());
                         break;
                     default:
                         Debug.LogError("Invalid attack ID selected");
@@ -283,6 +290,7 @@ public class BossAI : MonoBehaviour
             newLaser.transform.parent = _projectileContainer.transform;
             newLaser = Instantiate(_basicLaser, _turrets[_selectedTurret2].transform.position, Quaternion.Euler(Vector3.forward * (_turretFireAngles[_selectedTurret2] + shotVariance)));
             newLaser.transform.parent = _projectileContainer.transform;
+            _bossAudio.PlayOneShot(_laserClip);
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -306,6 +314,7 @@ public class BossAI : MonoBehaviour
             newLaser.transform.parent = _projectileContainer.transform;
             newLaser = Instantiate(_basicLaser, _turrets[3].transform.position, Quaternion.Euler(Vector3.forward * (_turretFireAngles[3] + shotVariance)));
             newLaser.transform.parent = _projectileContainer.transform;
+            _bossAudio.PlayOneShot(_laserClip);
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -374,6 +383,7 @@ public class BossAI : MonoBehaviour
 
         newMissile = Instantiate(_homingMissile, _turrets[0].transform.position, Quaternion.Euler(Vector3.forward * 30));
         newMissile.transform.parent = _projectileContainer.transform;
+        yield return new WaitForSeconds(0.5f);
 
         for (int i = 0; i < 2; i++)
         {
@@ -430,8 +440,10 @@ public class BossAI : MonoBehaviour
             StartCoroutine(FirePierceLaser(1));
             StartCoroutine(FirePierceLaser(2));
             StartCoroutine(FirePierceLaser(3));
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1.8f);
         }
+
+        StartCoroutine(SelectAttack(1.0f));
     }
 
     IEnumerator FirePierceLaser(int turret)
