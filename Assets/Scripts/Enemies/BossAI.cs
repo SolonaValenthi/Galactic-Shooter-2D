@@ -368,6 +368,38 @@ public class BossAI : MonoBehaviour
         StartCoroutine(SelectAttack(2.0f));
     }
 
+    IEnumerator PhaseTwoMissiles()
+    {
+        GameObject newMissile;
+
+        newMissile = Instantiate(_homingMissile, _turrets[0].transform.position, Quaternion.Euler(Vector3.forward * 30));
+        newMissile.transform.parent = _projectileContainer.transform;
+
+        for (int i = 0; i < 2; i++)
+        {
+            newMissile = Instantiate(_homingMissile, _turrets[1].transform.position, Quaternion.Euler(Vector3.forward * 30));
+            newMissile.transform.parent = _projectileContainer.transform;
+            yield return new WaitForSeconds(0.5f);
+            newMissile = Instantiate(_homingMissile, _turrets[2].transform.position, Quaternion.Euler(Vector3.forward * -30));
+            newMissile.transform.parent = _projectileContainer.transform;
+            yield return new WaitForSeconds(0.5f);
+            newMissile = Instantiate(_homingMissile, _turrets[3].transform.position, Quaternion.Euler(Vector3.forward * -30));
+            newMissile.transform.parent = _projectileContainer.transform;
+            yield return new WaitForSeconds(0.5f);
+            newMissile = Instantiate(_homingMissile, _turrets[2].transform.position, Quaternion.Euler(Vector3.forward * -30));
+            newMissile.transform.parent = _projectileContainer.transform;
+            yield return new WaitForSeconds(0.5f);
+            newMissile = Instantiate(_homingMissile, _turrets[1].transform.position, Quaternion.Euler(Vector3.forward * 30));
+            newMissile.transform.parent = _projectileContainer.transform;
+            yield return new WaitForSeconds(0.5f);
+            newMissile = Instantiate(_homingMissile, _turrets[0].transform.position, Quaternion.Euler(Vector3.forward * 30));
+            newMissile.transform.parent = _projectileContainer.transform;
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        StartCoroutine(SelectAttack(2.0f));
+    }
+
     // rapid fire a pierce laser from each turret, attack ID = 3
     IEnumerator PiercingRapidFire()
     {    
@@ -388,6 +420,18 @@ public class BossAI : MonoBehaviour
         }
 
         StartCoroutine(SelectAttack(1.5f));
+    }
+
+    IEnumerator PhaseTwoPierce()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            StartCoroutine(FirePierceLaser(0));
+            StartCoroutine(FirePierceLaser(1));
+            StartCoroutine(FirePierceLaser(2));
+            StartCoroutine(FirePierceLaser(3));
+            yield return new WaitForSeconds(1.5f);
+        }
     }
 
     IEnumerator FirePierceLaser(int turret)

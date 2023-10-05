@@ -75,7 +75,7 @@ public class EnemyMissile : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
         _homingOn = true;
         _speed = 8.0f;
-        yield return new WaitForSeconds(1.8f);
+        yield return new WaitForSeconds(1.3f);
         _homingOn = false;
     }
 }
