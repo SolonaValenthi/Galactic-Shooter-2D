@@ -23,6 +23,8 @@ public class BossAI : MonoBehaviour
     [SerializeField]
     private GameObject _homingMissile;
     [SerializeField]
+    private GameObject _gigaLaser;
+    [SerializeField]
     private GameObject _explosion;
     [SerializeField]
     private GameObject _bossShield;
@@ -443,6 +445,9 @@ public class BossAI : MonoBehaviour
             yield return new WaitForSeconds(1.8f);
         }
 
+        GameObject newGiga = Instantiate(_gigaLaser, transform.position, Quaternion.identity);
+        Laser gigaLeser = newGiga.GetComponent<Laser>();
+        gigaLeser.SetSweep(_playerObj.transform.position);
         StartCoroutine(SelectAttack(1.0f));
     }
 

@@ -599,6 +599,8 @@ MonoBehaviour:
     type: 3}
   _homingMissile: {fileID: 8088217919919122061, guid: 069850243b2b70440b85c1c7a4395558,
     type: 3}
+  _gigaLaser: {fileID: 5441981437850230804, guid: f8a83c98408d703458f36c92532ca617,
+    type: 3}
   _explosion: {fileID: 4620905344678611944, guid: 0089de8db287e6140a153a1ba9ca6166,
     type: 3}
   _bossShield: {fileID: 4313622935129133465}

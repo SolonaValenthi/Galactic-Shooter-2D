@@ -7,7 +7,10 @@ public class Laser : MonoBehaviour
     [SerializeField]
     private float _speed = 8.0f;
     [SerializeField]
-    private int _projectileID; // 0 = regular laser, 1 = piercing laser
+    private int _projectileID; // 0 = regular laser, 1 = piercing laser, 2 = giga laser
+
+    private int _sweepDirection; // 0 = right-left, 1 = left-right
+    private float _sweepSpeed = 30.0f;
 
     BoxCollider2D _laserCollider;
 
@@ -19,6 +22,11 @@ public class Laser : MonoBehaviour
         {
             StartCoroutine(PiercingLaser());
         }
+
+        if (_projectileID == 2)
+        {
+            StartCoroutine(GigaDamage());
+        }
     }
 
     // Update is called once per frame
@@ -27,6 +35,11 @@ public class Laser : MonoBehaviour
         if (_projectileID == 0)
         {
             BasicLaser();
+        }
+        
+        if (_projectileID == 2)
+        {
+            GigaLaser();
         }
     }
 
@@ -52,11 +65,49 @@ public class Laser : MonoBehaviour
         }
     }
 
+    private void GigaLaser()
+    {
+        if (_sweepDirection == 0)
+        {
+            transform.Rotate(Vector3.back * _sweepSpeed * Time.deltaTime);
+        }
+        else if (_sweepDirection == 1)
+        {
+            transform.Rotate(Vector3.forward * _sweepSpeed * Time.deltaTime);
+        }
+    }
+
+    public void SetSweep(Vector3 playerPos)
+    {
+        if (playerPos.x >= 0)
+        {
+            _sweepDirection = 0;
+            transform.rotation = Quaternion.Euler(Vector3.forward * 240);
+        }
+        else if (playerPos.x < 0)
+        {
+            _sweepDirection = 1;
+            transform.rotation = Quaternion.Euler(Vector3.forward * 120);
+        }
+    }
+
     IEnumerator PiercingLaser()
     {
         yield return new WaitForSeconds(0.05f);
         _laserCollider.enabled = true;
         yield return new WaitForSeconds(0.2f);
         Destroy(this.gameObject);
+    }
+
+    IEnumerator GigaDamage()
+    {
+        Destroy(this.gameObject, 4.0f);
+        while (true)
+        {
+            yield return new WaitForSeconds(0.05f);
+            _laserCollider.enabled = false;
+            yield return new WaitForSeconds(0.05f);
+            _laserCollider.enabled = true;
+        }
     }
 }
