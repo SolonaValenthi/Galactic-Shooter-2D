@@ -72,7 +72,7 @@ public class Powerup : MonoBehaviour
             transform.Translate(Vector3.down * _moveSpeed * Time.deltaTime);
         } 
 
-        if (transform.position.y < -7)
+        if (transform.position.y < -8.5f)
         {
             Destroy(this.gameObject);
         }
@@ -105,7 +105,7 @@ public class Powerup : MonoBehaviour
                         _player.BombsReady();
                         break;
                     case 6:
-                        _player.LoadMissiles(2); // the player may hold up to 5 missiles
+                        _player.LoadMissiles(2); // the player may hold up to 6 missiles
                         break;
                     case 7:
                         _player.Jamming();
