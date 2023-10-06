@@ -208,6 +208,8 @@ MonoBehaviour:
     type: 3}
   _ambushLaser: {fileID: 3443138369892243682, guid: e580af6f646bfcc4097a88a4f2fd156f,
     type: 3}
+  _laserCharge: {fileID: 6964482940169035316, guid: 61c3d0dcdbae1724aa9c36f50855907e,
+    type: 3}
   _explosionPrefab: {fileID: 4620905344678611944, guid: 0089de8db287e6140a153a1ba9ca6166,
     type: 3}
   _enemyShield: {fileID: 1363110919287382255}

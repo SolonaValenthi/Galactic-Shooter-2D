@@ -13,6 +13,8 @@ public class EnemyAmbush : MonoBehaviour
     [SerializeField]
     private GameObject _ambushLaser;
     [SerializeField]
+    private GameObject _laserCharge;
+    [SerializeField]
     private GameObject _explosionPrefab;
     [SerializeField]
     private GameObject _enemyShield;
@@ -359,7 +361,9 @@ public class EnemyAmbush : MonoBehaviour
             _guideLaser.SetActive(true);
             yield return new WaitForSeconds(0.1f);
         }
+        GameObject charger = Instantiate(_laserCharge, transform.TransformPoint(-_laserOffset), Quaternion.Euler(Vector3.forward * Random.Range(0, 181)));
         yield return new WaitForSeconds(0.5f);
+        Destroy(charger);
         GameObject newLaser = Instantiate(_ambushLaser, transform.position, _guideLaser.transform.rotation);
         newLaser.transform.parent = _projectileContainer.transform;
         _GuideColor.a = 0.0f;
