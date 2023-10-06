@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _playerShield;
     [SerializeField]
+    private GameObject _magnetAura;
+    [SerializeField]
     private GameObject _rightDmg;
     [SerializeField]
     private GameObject _leftDmg;
@@ -69,6 +71,7 @@ public class Player : MonoBehaviour
 
     AudioSource _playerAudio;
     SpriteRenderer _shieldRenderer;
+    SpriteRenderer _magnetRenderer;
 
     // Start is called before the first frame update
     void Start()
@@ -82,6 +85,7 @@ public class Player : MonoBehaviour
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         _cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
         _shieldRenderer = _playerShield.GetComponent<SpriteRenderer>();
+        _magnetRenderer = _magnetAura.GetComponent<SpriteRenderer>();
         _playerAudio = gameObject.GetComponent<AudioSource>();
 
         if (_projectileContainer == null)
@@ -112,8 +116,13 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("Player shield renderer reference is NULL!");
         }
+        if (_magnetRenderer == null)
+        {
+            Debug.LogError("Player magnet renderer reference is NULL!");
+        }
 
         SetBounds();
+        StartCoroutine(RotateMagnet());
     }
 
     // Update is called once per frame
@@ -140,6 +149,15 @@ public class Player : MonoBehaviour
             {
                 FireMissile();
             }
+        }
+
+        if (Input.GetKey(KeyCode.C) && thrusterOverheat == false)
+        {
+            _magnetRenderer.enabled = true;
+        }
+        else
+        {
+            _magnetRenderer.enabled = false;
         }
 
         if (_fuel >= 100)
@@ -179,6 +197,8 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(_xBound, transform.position.y, 0);
         }
+
+        
     }
 
     public void SetBounds()
@@ -549,6 +569,15 @@ public class Player : MonoBehaviour
         {
             Damage(1);
             Destroy(other.gameObject);
+        }
+    }
+
+    IEnumerator RotateMagnet()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.19f);
+            _magnetAura.transform.rotation = Quaternion.Euler(Vector3.forward * Random.Range(-180, 180));
         }
     }
 }
