@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 3443138369892243685}
   - component: {fileID: 3443138369892243684}
   - component: {fileID: -8536960942043168906}
-  - component: {fileID: 3443138369892243683}
   - component: {fileID: -3858045093052298273}
   - component: {fileID: 6555079277720857865}
+  - component: {fileID: 3264637254846505345}
   m_Layer: 0
   m_Name: Piercing_Laser
   m_TagString: EnemyLaser
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: -454961801
   m_SortingLayer: 2
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: a3bfe76ac4b6705478061f7d48f5e752, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e8131c5c3bd75c247a7e7231131b9e9f, type: 3}
   m_Color: {r: 0, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -99,25 +99,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 8
   _projectileID: 1
---- !u!95 &3443138369892243683
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3443138369892243682}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 985d68697c7135b47ae2571d5fb8b29e, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!61 &-3858045093052298273
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -165,3 +146,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &3264637254846505345
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3443138369892243682}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 985d68697c7135b47ae2571d5fb8b29e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
