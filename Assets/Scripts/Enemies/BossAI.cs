@@ -25,6 +25,8 @@ public class BossAI : MonoBehaviour
     [SerializeField]
     private GameObject _gigaLaser;
     [SerializeField]
+    private GameObject _laserCharge;
+    [SerializeField]
     private GameObject _explosion;
     [SerializeField]
     private GameObject _bossShield;
@@ -467,6 +469,7 @@ public class BossAI : MonoBehaviour
             activeLaserSprite.color = activeLaserColor;
             yield return new WaitForSeconds(0.05f);
         }
+        GameObject charger = Instantiate(_laserCharge, _turrets[turret].transform.position, Quaternion.Euler(Vector3.forward * Random.Range(-180, 181)));
         for (int i = 0; i < 3; i++)
         {
             _targetIndicators[turret].SetActive(false);
@@ -475,6 +478,7 @@ public class BossAI : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
+        Destroy(charger);
         newPierce = Instantiate(_piercingLaser, _turrets[turret].transform.position, _targetIndicators[turret].transform.rotation);
         newPierce.transform.parent = _projectileContainer.transform;
         activeLaserColor.a = 0.0f;
