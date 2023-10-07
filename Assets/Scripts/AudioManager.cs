@@ -10,6 +10,8 @@ public class AudioManager : MonoBehaviour
     private AudioClip _explosionSFX;
     [SerializeField]
     private AudioClip _powerUpSFX;
+    [SerializeField]
+    private AudioSource _BGM;
 
     AudioSource _gameAudio;
 
@@ -22,6 +24,8 @@ public class AudioManager : MonoBehaviour
         {
             Debug.LogError("Audio Manager audio source reference is NULL!");
         }
+
+        StartCoroutine(FadeMusicIn(_BGM));
     }
 
     public void Explosion()
@@ -32,5 +36,14 @@ public class AudioManager : MonoBehaviour
     public void PowerUp()
     {
         _gameAudio.PlayOneShot(_powerUpSFX);
+    }
+
+    IEnumerator FadeMusicIn(AudioSource fadeTarget)
+    {
+        while (fadeTarget.volume < 1.0f)
+        {
+            fadeTarget.volume += 0.05f;
+            yield return new WaitForSeconds(0.05f);
+        }
     }
 }
