@@ -356,7 +356,7 @@ public class BossAI : MonoBehaviour
         
         while (elapsed <= 10.0f)
         {
-            newBurst = Instantiate(_fiveShotSpread, transform.position, _centralTurret.transform.rotation);
+            newBurst = Instantiate(_fiveShotSpread, _centralTurret.transform.position, _centralTurret.transform.rotation);
             newBurst.transform.parent = _projectileContainer.transform;
             yield return new WaitForSeconds(0.2f);
             elapsed += 0.2f;
@@ -453,10 +453,10 @@ public class BossAI : MonoBehaviour
             yield return new WaitForSeconds(1.8f);
         }
 
-        GameObject newGiga = Instantiate(_gigaLaser, transform.position, Quaternion.identity);
+        GameObject newGiga = Instantiate(_gigaLaser, _centralTurret.transform.position, Quaternion.identity);
         Laser gigaLaser = newGiga.GetComponent<Laser>();
         gigaLaser.SetSweep(_playerObj.transform.position);
-        StartCoroutine(SelectAttack(1.0f));
+        StartCoroutine(SelectAttack(2.5f));
     }
 
     IEnumerator FirePierceLaser(int turret)
@@ -485,7 +485,7 @@ public class BossAI : MonoBehaviour
         }
 
         Destroy(charger);
-        newPierce = Instantiate(_piercingLaser, _turrets[turret].transform.position, _targetIndicators[turret].transform.rotation);
+        newPierce = Instantiate(_piercingLaser, _targetIndicators[turret].transform.position, _targetIndicators[turret].transform.rotation);
         newPierce.transform.parent = _projectileContainer.transform;
         activeLaserColor.a = 0.0f;
         activeLaserSprite.color = activeLaserColor;
