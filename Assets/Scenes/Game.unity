@@ -422,7 +422,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5b17a0088dcdf924fa92da5af1e1be07, type: 3}
+  m_audioClip: {fileID: 8300000, guid: de595ed575a2a9444ac45e7dd48f4bdc, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0
   m_Pitch: 1
@@ -1793,6 +1793,8 @@ MonoBehaviour:
   _laserSFX: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _explosionSFX: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
   _powerUpSFX: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
+  _normalWaveMusic: {fileID: 8300000, guid: de595ed575a2a9444ac45e7dd48f4bdc, type: 3}
+  _bossMusicPhaseOne: {fileID: 8300000, guid: fa785b4bb45c5d041b796942cb93a2a4, type: 3}
   _BGM: {fileID: 187222246}
 --- !u!82 &1001244843
 AudioSource:

@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     private Player _player;
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
+    private AudioManager _audioManager;
 
     public bool isPaused { get; private set; }
     public bool bossActive { get; private set; } = false;
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
         _player = GameObject.Find("Player").GetComponent<Player>();
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
+        _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         isPaused = false;
 
         if (_spawnManager == null)
@@ -34,6 +36,10 @@ public class GameManager : MonoBehaviour
         if (_uiManager == null)
         {
             Debug.LogError("Game Manager UI manager reference is NULL!");
+        }
+        if (_uiManager == null)
+        {
+            Debug.LogError("Game Manager audio manager reference is NULL!");
         }
     }
 
@@ -55,6 +61,7 @@ public class GameManager : MonoBehaviour
     {
         bossActive = true;
         StartCoroutine(_uiManager.BossSpawn());
+        _audioManager.BossMusic();
         _player.SetBounds();
     }
 

@@ -11,6 +11,10 @@ public class AudioManager : MonoBehaviour
     [SerializeField]
     private AudioClip _powerUpSFX;
     [SerializeField]
+    private AudioClip _normalWaveMusic;
+    [SerializeField]
+    private AudioClip _bossMusicPhaseOne;
+    [SerializeField]
     private AudioSource _BGM;
 
     AudioSource _gameAudio;
@@ -38,6 +42,11 @@ public class AudioManager : MonoBehaviour
         _gameAudio.PlayOneShot(_powerUpSFX);
     }
 
+    public void BossMusic()
+    {
+        StartCoroutine(SwitchSong(_BGM, _bossMusicPhaseOne));
+    }
+
     IEnumerator FadeMusicIn(AudioSource fadeTarget)
     {
         while (fadeTarget.volume < 1.0f)
@@ -45,5 +54,21 @@ public class AudioManager : MonoBehaviour
             fadeTarget.volume += 0.05f;
             yield return new WaitForSeconds(0.05f);
         }
+    }
+
+    IEnumerator SwitchSong(AudioSource switchTarget, AudioClip newSong)
+    {
+        while (switchTarget.volume > 0)
+        {
+            switchTarget.volume -= 0.05f;
+            yield return new WaitForSeconds(0.05f);
+        }
+        switchTarget.Stop();
+        yield return null;
+        switchTarget.clip = newSong;
+        yield return null;
+        switchTarget.Play();
+        yield return null;
+        StartCoroutine(FadeMusicIn(switchTarget));
     }
 }
