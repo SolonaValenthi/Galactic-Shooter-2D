@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Game Manager UI manager reference is NULL!");
         }
-        if (_uiManager == null)
+        if (_audioManager == null)
         {
             Debug.LogError("Game Manager audio manager reference is NULL!");
         }

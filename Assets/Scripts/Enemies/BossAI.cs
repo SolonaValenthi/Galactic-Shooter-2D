@@ -52,6 +52,7 @@ public class BossAI : MonoBehaviour
     private GameObject _projectileContainer;
     private GameManager _gameManager;
     private UIManager _uiManager;
+    private AudioManager _audioManager;
     private Color _shieldColor;
 
     BoxCollider2D[] _bossColliders;
@@ -65,6 +66,7 @@ public class BossAI : MonoBehaviour
         _projectileContainer = GameObject.Find("Enemy_Projectiles");
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
+        _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
         _bossColliders = gameObject.GetComponents<BoxCollider2D>();
         _shieldRenderer = _bossShield.GetComponent<SpriteRenderer>();
         _bossAudio = gameObject.GetComponent<AudioSource>();
@@ -88,6 +90,10 @@ public class BossAI : MonoBehaviour
         if (_uiManager == null)
         {
             Debug.LogError("Boss enemy UI manager reference is NULL!");
+        }
+        if (_audioManager == null)
+        {
+            Debug.LogError("Boss enemy audio manager reference is NULL!");
         }
         if (_bossAudio == null)
         {
@@ -550,6 +556,7 @@ public class BossAI : MonoBehaviour
             _shieldActive = false;
             _phaseTwo = true;
             StartCoroutine(SelectAttack(0.5f));
+            _audioManager.PhaseTwoBossMusic();
         }
     }
 }
