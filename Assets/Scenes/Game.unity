@@ -1795,6 +1795,7 @@ MonoBehaviour:
   _powerUpSFX: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
   _normalWaveMusic: {fileID: 8300000, guid: de595ed575a2a9444ac45e7dd48f4bdc, type: 3}
   _bossMusicPhaseOne: {fileID: 8300000, guid: fa785b4bb45c5d041b796942cb93a2a4, type: 3}
+  _bossMusicPhaseTwo: {fileID: 8300000, guid: 2e4bbb7c04130024fb0dc0079563cfc8, type: 3}
   _BGM: {fileID: 187222246}
 --- !u!82 &1001244843
 AudioSource:
