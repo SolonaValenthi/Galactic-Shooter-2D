@@ -41,6 +41,10 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Game Manager audio manager reference is NULL!");
         }
+        if (_player == null)
+        {
+            Debug.LogError("Game manager player script reference is NULL");
+        }
     }
 
     // Update is called once per frame

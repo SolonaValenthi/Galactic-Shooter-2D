@@ -442,6 +442,7 @@ public class BossAI : MonoBehaviour
         StartCoroutine(SelectAttack(1.5f));
     }
 
+    // fire pierce lasers from all turrets, follower by sweeping laser
     IEnumerator PhaseTwoPierce()
     {
         for (int i = 0; i < 4; i++)

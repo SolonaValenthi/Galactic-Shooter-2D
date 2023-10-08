@@ -34,6 +34,10 @@ public class ShieldDrone : MonoBehaviour
         {
             Debug.LogError("Shield drone boss object reference is NULL!");
         }
+        if (_playerObj == null)
+        {
+            Debug.LogError("Shield drone player object reference is NULL!");
+        }
         if (_bossAI == null)
         {
             Debug.LogError("Shield drone boss AI reference is NULL!");
