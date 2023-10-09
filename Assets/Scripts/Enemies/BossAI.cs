@@ -34,6 +34,8 @@ public class BossAI : MonoBehaviour
     private GameObject _shieldDrone;
     [SerializeField]
     private AudioClip _laserClip;
+    [SerializeField]
+    private AudioClip _shotgunClip;
 
     private float _bossSpeed = 2.0f;
     private float _bossHealth = 200;
@@ -342,6 +344,7 @@ public class BossAI : MonoBehaviour
             newBurst.transform.parent = _projectileContainer.transform;
             newBurst = Instantiate(_orbSpread, _turrets[3].transform.position, Quaternion.identity);
             newBurst.transform.parent = _projectileContainer.transform;
+            _bossAudio.PlayOneShot(_shotgunClip);
             yield return new WaitForSeconds(0.75f);
         }
 
@@ -358,6 +361,7 @@ public class BossAI : MonoBehaviour
         {
             newBurst = Instantiate(_fiveShotSpread, _centralTurret.transform.position, _centralTurret.transform.rotation);
             newBurst.transform.parent = _projectileContainer.transform;
+            _bossAudio.PlayOneShot(_shotgunClip);
             yield return new WaitForSeconds(0.2f);
             elapsed += 0.2f;
         }
