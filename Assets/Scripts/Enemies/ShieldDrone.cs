@@ -18,6 +18,7 @@ public class ShieldDrone : MonoBehaviour
     private bool _isDead = false;
     private GameObject _boss;
     private GameObject _playerObj;
+    private GameObject _projectileContainer;
     private BossAI _bossAI;
 
     private static float _rotationSpeed = 36;
@@ -29,6 +30,7 @@ public class ShieldDrone : MonoBehaviour
         _boss = GameObject.FindGameObjectWithTag("EnemyBoss");
         _playerObj = GameObject.Find("Player");
         _bossAI = _boss.GetComponent<BossAI>();
+        _projectileContainer = GameObject.Find("Enemy_Projectiles");
 
         if (_boss == null)
         {
@@ -41,6 +43,10 @@ public class ShieldDrone : MonoBehaviour
         if (_bossAI == null)
         {
             Debug.LogError("Shield drone boss AI reference is NULL!");
+        }
+        if (_projectileContainer == null)
+        {
+            Debug.LogError("Shield drone projectile container reference is NULL!");
         }
 
         StartCoroutine(OnSpawn());
