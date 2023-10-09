@@ -165,6 +165,7 @@ public class BossAI : MonoBehaviour
     private void DeathSequence()
     {
         _isDead = true;
+        _audioManager.BossDefeated();
         StopAllCoroutines();
         StartCoroutine(DeathExplosions());
         _canAttack = false;

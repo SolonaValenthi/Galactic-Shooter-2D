@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
     public void OnBossDeath()
     {
         bossActive = false;
+        StartCoroutine(_uiManager.BossDefeat());
     }
 
     public void GameOver()

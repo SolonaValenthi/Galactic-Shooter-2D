@@ -17,6 +17,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField]
     private AudioClip _bossMusicPhaseTwo;
     [SerializeField]
+    private AudioClip _victory;
+    [SerializeField]
     private AudioSource _BGM;
 
     AudioSource _gameAudio;
@@ -52,6 +54,11 @@ public class AudioManager : MonoBehaviour
     public void PhaseTwoBossMusic()
     {
         StartCoroutine(SwitchSong(_BGM, _bossMusicPhaseTwo));
+    }
+
+    public void BossDefeated()
+    {
+        StartCoroutine(SwitchSong(_BGM, _victory));
     }
 
     IEnumerator FadeMusicIn(AudioSource fadeTarget)

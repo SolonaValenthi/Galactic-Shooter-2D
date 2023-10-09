@@ -27,11 +27,12 @@ public class EnemyMissile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.Translate(Vector3.up * _speed * Time.deltaTime);
+
         if (_playerObj != null)
         {
             _playerPos = _playerObj.transform.position;
             _distanceToPlayer = Vector3.Distance(_playerPos, transform.position);
-            transform.Translate(Vector3.up * _speed * Time.deltaTime);
 
             if (_homingOn == true)
             {

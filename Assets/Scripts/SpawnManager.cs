@@ -45,6 +45,7 @@ public class SpawnManager : MonoBehaviour
     private bool _spawnEnemies = true;
     private bool _spawnPowerups = true;
     private bool _bossWave = false;
+    private bool _waveSkipped = false; //for testing purposes only, remove from final version
     private UIManager _uiManager;
     private CameraShake _cameraShake;
     private WaitForSeconds _spawnTime = new WaitForSeconds(3.0f);
@@ -71,17 +72,25 @@ public class SpawnManager : MonoBehaviour
             _totalWeight += item;
         }
 
-        // remember to change this back to 1 after boss testing concludes
-        currentWave = 5;
+        currentWave = 1;
         CalculateWave();
     }
 
-    private void CalculateWave()//remove these comments after boss testing concludes
+    private void Update()
     {
-        _basicToSpawn = 1; //currentWave * 2 + 3;
-        _agileToSpawn = 0; //Mathf.RoundToInt(currentWave * 1.5f);
-        _aggressiveToSpawn = 0; //Mathf.RoundToInt(currentWave * 0.75f);
-        _ambushToSpawn = 0; //Mathf.RoundToInt(currentWave * 0.5f);
+        if (Input.GetKeyDown(KeyCode.O) && _waveSkipped == false)
+        {
+            _waveSkipped = true;
+            SkipToBoss();
+        }
+    }
+
+    private void CalculateWave()
+    {
+        _basicToSpawn = currentWave * 2 + 3;
+        _agileToSpawn = Mathf.RoundToInt(currentWave * 1.5f);
+        _aggressiveToSpawn = Mathf.RoundToInt(currentWave * 0.75f);
+        _ambushToSpawn = Mathf.RoundToInt(currentWave * 0.5f);
         _totalEnemies = _basicToSpawn + _agileToSpawn + _aggressiveToSpawn + _ambushToSpawn;
 
         if (currentWave % 5 == 0)
@@ -92,6 +101,19 @@ public class SpawnManager : MonoBehaviour
         {
             _bossWave = false;
         }
+    }
+
+    // for testing purposes only, remove from final version
+    private void SkipToBoss()
+    {
+        currentWave = 5;
+        _bossWave = true;
+        _basicToSpawn = 1;
+        _agileToSpawn = 0;
+        _aggressiveToSpawn = 0;
+        _ambushToSpawn = 0;
+        _totalEnemies = _basicToSpawn + _agileToSpawn + _aggressiveToSpawn + _ambushToSpawn;
+        Debug.Log("skipped to boss wave");
     }
 
     private void ResetEnemyCount()
@@ -201,7 +223,10 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator WaveDelay()
     {
-        CalculateWave();
+        if (_waveSkipped == false)
+        {
+            CalculateWave();
+        }
         StartCoroutine(_uiManager.AnnounceWave(currentWave));
         yield return new WaitForSeconds(1.0f);
         StartCoroutine(SpawnEnemyRoutine());

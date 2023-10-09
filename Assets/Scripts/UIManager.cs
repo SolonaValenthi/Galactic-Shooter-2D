@@ -36,6 +36,10 @@ public class UIManager : MonoBehaviour
     private Slider _bossHPSlider;
     [SerializeField]
     private GameObject _bossDisplay;
+    [SerializeField]
+    private Text _victoryText;
+    [SerializeField]
+    private Text _thankYouText;
 
     private Color _fuelColor;
     private Color _ammoColor;
@@ -208,5 +212,26 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(0.01f);
         }
 
+    }
+
+    public IEnumerator BossDefeat()
+    {
+        _victoryText.gameObject.SetActive(true);
+        _bossDisplay.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+        _thankYouText.gameObject.SetActive(true);
+
+        while (true)
+        {
+            if (_victoryText.gameObject.activeInHierarchy == true)
+            {
+                _victoryText.gameObject.SetActive(false);
+            }
+            else
+            {
+                _victoryText.gameObject.SetActive(true);
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 }
