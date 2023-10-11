@@ -9,6 +9,10 @@ public class GameManager : MonoBehaviour
     private GameObject _pauseMenu;
     [SerializeField]
     private GameObject _bgm;
+    [SerializeField]
+    private GameObject _pauseButtons;
+    [SerializeField]
+    private GameObject _controlDisplay;
 
     private bool _isGameOver = false;
     private Player _player;
@@ -104,5 +108,17 @@ public class GameManager : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void DisplayControls()
+    {
+        _pauseButtons.SetActive(false);
+        _controlDisplay.SetActive(true);
+    }
+
+    public void ReturnToPause()
+    {
+        _pauseButtons.SetActive(true);
+        _controlDisplay.SetActive(false);
     }
 }
