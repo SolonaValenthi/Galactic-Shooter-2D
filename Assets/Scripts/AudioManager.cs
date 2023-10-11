@@ -11,6 +11,10 @@ public class AudioManager : MonoBehaviour
     [SerializeField]
     private AudioClip _powerUpSFX;
     [SerializeField]
+    private AudioClip _buttonHover;
+    [SerializeField]
+    private AudioClip _buttonClick;
+    [SerializeField]
     private AudioClip _normalWaveMusic;
     [SerializeField]
     private AudioClip _bossMusicPhaseOne;
@@ -44,6 +48,16 @@ public class AudioManager : MonoBehaviour
     public void PowerUp()
     {
         _gameAudio.PlayOneShot(_powerUpSFX);
+    }
+
+    public void UIButtonHover()
+    {
+       _gameAudio.PlayOneShot(_buttonHover);
+    }
+
+    public void UIButtonClick()
+    {
+        _gameAudio.PlayOneShot(_buttonClick);
     }
 
     public void BossMusic()
