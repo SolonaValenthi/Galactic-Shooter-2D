@@ -71,6 +71,8 @@ public class Player : MonoBehaviour
     AudioSource _playerAudio;
     SpriteRenderer _shieldRenderer;
     SpriteRenderer _magnetRenderer;
+    SpriteRenderer _playerRenderer;
+    PolygonCollider2D _playerCollider;
 
     // Start is called before the first frame update
     void Start()
@@ -86,6 +88,8 @@ public class Player : MonoBehaviour
         _shieldRenderer = _playerShield.GetComponent<SpriteRenderer>();
         _magnetRenderer = _magnetAura.GetComponent<SpriteRenderer>();
         _playerAudio = gameObject.GetComponent<AudioSource>();
+        _playerCollider = gameObject.GetComponent<PolygonCollider2D>();
+        _playerRenderer = gameObject.GetComponent<SpriteRenderer>();
 
         if (_projectileContainer == null)
         {
@@ -118,6 +122,14 @@ public class Player : MonoBehaviour
         if (_magnetRenderer == null)
         {
             Debug.LogError("Player magnet renderer reference is NULL!");
+        }
+        if (_playerCollider == null)
+        {
+            Debug.LogError("Player collider reference is NULL!");
+        }
+        if (_playerRenderer == null)
+        {
+            Debug.LogError("Player sprite renderer reference is NULL!");
         }
 
         SetBounds();
@@ -326,6 +338,8 @@ public class Player : MonoBehaviour
 
     public void Damage(int damageDealt)
     {
+        StartCoroutine(ImmunityFrames());
+
         for (int i = 0; i < damageDealt; i++)
         {
             if (_shieldStrength > 0)
@@ -335,6 +349,7 @@ public class Player : MonoBehaviour
             }
 
             _lives--;
+            _lives = Mathf.Clamp(_lives, 0, 3);
             _uiManager.UpdateLives(_lives);
             DamageEngine();
             StartCoroutine(_cameraShake.ShakeCamera(0.2f, 0.2f));
@@ -578,5 +593,30 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(0.19f);
             _magnetAura.transform.rotation = Quaternion.Euler(Vector3.forward * Random.Range(-180, 180));
         }
+    }
+
+    IEnumerator ImmunityFrames()
+    {
+        _playerCollider.enabled = false;
+        float elapsed = 0.0f;
+
+        while (elapsed <= 0.7f)
+        {
+            if (_playerRenderer.enabled == true)
+            {
+                _playerRenderer.enabled = false;
+                elapsed += 0.05f;
+                yield return new WaitForSeconds(0.05f);
+            }
+            else
+            {
+                _playerRenderer.enabled = true;
+                elapsed += 0.05f;
+                yield return new WaitForSeconds(0.05f);
+            }
+        }
+        _playerCollider.enabled = true;
+        _playerRenderer.enabled = true;
+        yield return null;
     }
 }
