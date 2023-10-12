@@ -55,6 +55,7 @@ public class BossAI : MonoBehaviour
     private GameManager _gameManager;
     private UIManager _uiManager;
     private AudioManager _audioManager;
+    private CameraShake _cameraShake;
     private Color _shieldColor;
 
     BoxCollider2D[] _bossColliders;
@@ -69,6 +70,7 @@ public class BossAI : MonoBehaviour
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
         _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
         _audioManager = GameObject.Find("Audio_Manager").GetComponent<AudioManager>();
+        _cameraShake = GameObject.Find("Main Camera").GetComponent<CameraShake>();
         _bossColliders = gameObject.GetComponents<BoxCollider2D>();
         _shieldRenderer = _bossShield.GetComponent<SpriteRenderer>();
         _bossAudio = gameObject.GetComponent<AudioSource>();
@@ -96,6 +98,10 @@ public class BossAI : MonoBehaviour
         if (_audioManager == null)
         {
             Debug.LogError("Boss enemy audio manager reference is NULL!");
+        }
+        if (_cameraShake == null)
+        {
+            Debug.LogError("Boss enemy camera shake reference is NULL!");
         }
         if (_bossAudio == null)
         {
@@ -510,6 +516,7 @@ public class BossAI : MonoBehaviour
 
         for (int i = 0; i < 6; i++)
         {
+            StartCoroutine(_cameraShake.ShakeCamera(0.15f, 0.4f));
             explosionDelay = new WaitForSeconds(explosionTime);
             yPos = Random.Range(-1.5f, 1.5f); xPos = Random.Range(-7.0f, 7.0f);
             spawnPos = new Vector3(xPos, yPos, 0) + transform.position;
@@ -519,6 +526,7 @@ public class BossAI : MonoBehaviour
             spawnPos = new Vector3(xPos, yPos, 0) + transform.position;
             Instantiate(_explosion, spawnPos, Quaternion.identity);
             yield return explosionDelay;
+            StartCoroutine(_cameraShake.ShakeCamera(0.15f, 0.4f));
             yPos = Random.Range(-1.5f, 1.5f); xPos = Random.Range(-7.0f, 7.0f);
             spawnPos = new Vector3(xPos, yPos, 0) + transform.position;
             Instantiate(_explosion, spawnPos, Quaternion.identity);
