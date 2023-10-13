@@ -214,6 +214,8 @@ MonoBehaviour:
     type: 3}
   _enemyShield: {fileID: 1363110919287382255}
   _primaryLaserClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+  _chargeClip: {fileID: 8300000, guid: 5d20d2d35e7224844b19a08307354655, type: 3}
+  _pierceClip: {fileID: 8300000, guid: e40b5e2891dd2c944874e7276f70e5e7, type: 3}
   _laserOffset: {x: 0, y: 0.8, z: 0}
 --- !u!61 &8427551826763793438
 BoxCollider2D:

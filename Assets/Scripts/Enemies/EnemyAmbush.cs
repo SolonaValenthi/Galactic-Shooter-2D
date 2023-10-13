@@ -21,6 +21,10 @@ public class EnemyAmbush : MonoBehaviour
     [SerializeField]
     private AudioClip _primaryLaserClip;
     [SerializeField]
+    private AudioClip _chargeClip;
+    [SerializeField]
+    private AudioClip _pierceClip;
+    [SerializeField]
     private Vector3 _laserOffset;
 
     private float _spawnRange;
@@ -353,6 +357,7 @@ public class EnemyAmbush : MonoBehaviour
             _guideSprite.color = _GuideColor;
             yield return new WaitForSeconds(0.1f);
         }
+        _enemyAudio.PlayOneShot(_chargeClip);
         for (int i = 0; i < 3; i++)
         {
             _trackingOn = false;
@@ -365,6 +370,7 @@ public class EnemyAmbush : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         Destroy(charger);
         GameObject newLaser = Instantiate(_ambushLaser, transform.position, _guideLaser.transform.rotation);
+        _enemyAudio.PlayOneShot(_pierceClip);
         newLaser.transform.parent = _projectileContainer.transform;
         _GuideColor.a = 0.0f;
         _guideSprite.color = _GuideColor;

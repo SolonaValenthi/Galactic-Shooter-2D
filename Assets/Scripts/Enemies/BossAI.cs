@@ -36,6 +36,10 @@ public class BossAI : MonoBehaviour
     private AudioClip _laserClip;
     [SerializeField]
     private AudioClip _shotgunClip;
+    [SerializeField]
+    private AudioClip _chargeClip;
+    [SerializeField]
+    private AudioClip _pierceClip;
 
     private float _bossSpeed = 2.0f;
     private float _bossHealth = 200;
@@ -488,6 +492,8 @@ public class BossAI : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
         GameObject charger = Instantiate(_laserCharge, _turrets[turret].transform.position, Quaternion.Euler(Vector3.forward * Random.Range(-180, 181)));
+        _bossAudio.PlayOneShot(_chargeClip);
+        Destroy(charger, 0.7f);
         for (int i = 0; i < 3; i++)
         {
             _targetIndicators[turret].SetActive(false);
@@ -496,8 +502,8 @@ public class BossAI : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
-        Destroy(charger);
         newPierce = Instantiate(_piercingLaser, _targetIndicators[turret].transform.position, _targetIndicators[turret].transform.rotation);
+        _bossAudio.PlayOneShot(_pierceClip);
         newPierce.transform.parent = _projectileContainer.transform;
         activeLaserColor.a = 0.0f;
         activeLaserSprite.color = activeLaserColor;

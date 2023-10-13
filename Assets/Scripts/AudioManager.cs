@@ -77,7 +77,7 @@ public class AudioManager : MonoBehaviour
 
     IEnumerator FadeMusicIn(AudioSource fadeTarget)
     {
-        while (fadeTarget.volume < 1.0f)
+        while (fadeTarget.volume < 0.75f)
         {
             fadeTarget.volume += 0.05f;
             yield return new WaitForSeconds(0.05f);
