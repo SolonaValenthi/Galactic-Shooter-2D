@@ -38,6 +38,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioClip _laserClip;
     [SerializeField]
+    private Sprite[] _turnSprites; // index 0 = full left, 8 = neutral, 16 = full right
+    [SerializeField]
     private Vector3 _laserOffset;
     [SerializeField]
     private Vector3 _bombOffset;
@@ -47,6 +49,7 @@ public class Player : MonoBehaviour
     private int _score = 0;
     private int _ammoCount = 15;
     private int _missileCount = 0;
+    private int _currentSprite = 8;
     private float _fuel = 100;
     private float _canFire = -1f;
     private float _canMissile = -1f;
@@ -134,12 +137,14 @@ public class Player : MonoBehaviour
 
         SetBounds();
         StartCoroutine(RotateMagnet());
+        _playerRenderer.sprite = _turnSprites[_currentSprite];
     }
 
     // Update is called once per frame
     void Update()
     {
         CalculateMovement();
+        PlayerTurning();
         ThrusterControl();
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
@@ -208,8 +213,32 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(_xBound, transform.position.y, 0);
         }
+    }
 
-        
+    private void PlayerTurning()
+    {
+        if (Input.GetKey(KeyCode.A))
+        {
+            _currentSprite--;
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            _currentSprite++;
+        }
+        else if (_currentSprite != 8)
+        {
+            if (_currentSprite > 8)
+            {
+                _currentSprite--;
+            }
+            else if (_currentSprite < 8)
+            {
+                _currentSprite++;
+            }
+        }
+
+        _currentSprite = Mathf.Clamp(_currentSprite, 0, 16);
+        _playerRenderer.sprite = _turnSprites[_currentSprite];
     }
 
     public void SetBounds()

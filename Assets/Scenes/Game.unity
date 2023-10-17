@@ -4492,6 +4492,24 @@ MonoBehaviour:
   _missilePrefab: {fileID: 8021712210193393625, guid: 57f1d8f0ba2c26c45ab50afeeadac9c9,
     type: 3}
   _laserClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+  _turnSprites:
+  - {fileID: 21300000, guid: f3346fe3e2c9e4527a394f1e99d25f1f, type: 3}
+  - {fileID: 21300000, guid: be96d907589954304a9aaf149e51d40c, type: 3}
+  - {fileID: 21300000, guid: bb173694be00148b4bc0ebfa1a1e58ed, type: 3}
+  - {fileID: 21300000, guid: 35a20c271ee5445c6b637c26ef35a015, type: 3}
+  - {fileID: 21300000, guid: 053a77bc50ed441899c0d5a4bf34cb74, type: 3}
+  - {fileID: 21300000, guid: 07f1dc456c0c944c69246ec5b62e015a, type: 3}
+  - {fileID: 21300000, guid: 76f24fca3aede49a392f5b213ca9bc34, type: 3}
+  - {fileID: 21300000, guid: 9284343f055144054b5d7f5a72d1dbb1, type: 3}
+  - {fileID: 21300000, guid: 1b4a8fdd39d3a45d0a9ee484ad6800ec, type: 3}
+  - {fileID: 21300000, guid: b3ab8b6c15fbb4bf5bdca33e151a4d03, type: 3}
+  - {fileID: 21300000, guid: c7a5b907897124d63a1b3d00415f44f1, type: 3}
+  - {fileID: 21300000, guid: 642f2ccf679e74095a9a13fa5e839005, type: 3}
+  - {fileID: 21300000, guid: c17202ebaabb9488a968b16bdf23eeae, type: 3}
+  - {fileID: 21300000, guid: 783c36011820c44b99ac90932d536fd4, type: 3}
+  - {fileID: 21300000, guid: 859bb78ca669f4810a60697db925b402, type: 3}
+  - {fileID: 21300000, guid: a5dba836ea2bb43149e8e73f5dbc6978, type: 3}
+  - {fileID: 21300000, guid: c83085279e66140008ba22ca901f4c4b, type: 3}
   _laserOffset: {x: 0, y: 1.05, z: 0}
   _bombOffset: {x: 0, y: 1.32, z: 0}
 --- !u!212 &1652883515
