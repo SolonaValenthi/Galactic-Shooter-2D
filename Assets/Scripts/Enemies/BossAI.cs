@@ -167,7 +167,8 @@ public class BossAI : MonoBehaviour
             Damage(1);
             if (_shieldActive == false)
             {
-                Destroy(other.gameObject);
+                Laser hitBy = other.GetComponent<Laser>();
+                hitBy.HitEnemy(); ;
             }
         }
     }

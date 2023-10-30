@@ -90,7 +90,9 @@ public class ShieldDrone : MonoBehaviour
     {
         if (other.CompareTag("Laser"))
         {
-            Destroy(other.gameObject);
+            Laser hitBy = other.GetComponent<Laser>();
+            hitBy.HitEnemy();
+
             Destroy(this.gameObject);
         }
     }

@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _missileRate = 0.8f;
     [SerializeField]
-    private GameObject _laserPrefab;
+    private GameObject[] _lasers;
     [SerializeField]
     private GameObject _bombPrefab;
     [SerializeField]
@@ -50,6 +50,7 @@ public class Player : MonoBehaviour
     private int _ammoCount = 15;
     private int _missileCount = 0;
     private int _currentSprite = 8;
+    private int _laserIndex = 0;
     private float _fuel = 100;
     private float _canFire = -1f;
     private float _canMissile = -1f;
@@ -300,13 +301,23 @@ public class Player : MonoBehaviour
             if (_tripleShotActive == true)
             {
                 newLaser = Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+                newLaser.transform.parent = _projectileContainer.transform;
             }
             else
             {
-                newLaser = Instantiate(_laserPrefab, transform.position + _laserOffset, Quaternion.identity);
+                _lasers[_laserIndex].transform.position = transform.position + _laserOffset;
+                _lasers[_laserIndex].gameObject.SetActive(true);
+                
+                if (_laserIndex < 9)
+                {
+                    _laserIndex++;
+                }
+                else
+                {
+                    _laserIndex = 0;
+                }
             }
-
-            newLaser.transform.parent = _projectileContainer.transform;
+       
             _playerAudio.PlayOneShot(_laserClip);
 
             if (_infinAmmoActive == false)

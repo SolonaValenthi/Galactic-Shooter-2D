@@ -194,7 +194,8 @@ public class EnemyAmbush : MonoBehaviour
         
         if (other.CompareTag("Laser"))
         {
-            Destroy(other.gameObject);
+            Laser hitBy = other.GetComponent<Laser>();
+            hitBy.HitEnemy();
 
             if (_shieldActive == true)
             {

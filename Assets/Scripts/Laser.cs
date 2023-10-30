@@ -8,6 +8,8 @@ public class Laser : MonoBehaviour
     private float _speed = 8.0f;
     [SerializeField]
     private int _projectileID; // 0 = regular laser, 1 = piercing laser, 2 = giga laser
+    [SerializeField]
+    private bool _playerLaser = false;
 
     private int _sweepDirection; // 0 = right-left, 1 = left-right
     private float _sweepSpeed = 30.0f;
@@ -47,21 +49,52 @@ public class Laser : MonoBehaviour
     {
         transform.Translate(Vector3.up * _speed * Time.deltaTime);
 
+        CullLasers();
+    }
+
+    private void CullLasers()
+    {
         if (transform.position.y > 15)
         {
-            if (transform.parent != null && transform.parent.tag != "Container")
+            if (_playerLaser == false)
             {
-                Destroy(transform.parent.gameObject);
+                if (transform.parent != null && transform.parent.tag != "Container")
+                {
+                    Destroy(transform.parent.gameObject);
+                }
+                Destroy(this.gameObject);
             }
-            Destroy(this.gameObject);
+            else
+            {
+                gameObject.SetActive(false);
+            }
         }
         else if (transform.position.y < -20)
         {
-            if (transform.parent != null && transform.parent.tag != "Container")
+            if (_playerLaser == false)
             {
-                Destroy(transform.parent.gameObject);
+                if (transform.parent != null && transform.parent.tag != "Container")
+                {
+                    Destroy(transform.parent.gameObject);
+                }
+                Destroy(this.gameObject);
             }
+            else
+            {
+                gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public void HitEnemy()
+    {
+        if (_playerLaser == false)
+        {
             Destroy(this.gameObject);
+        }
+        else
+        {
+            gameObject.SetActive(false);
         }
     }
 
