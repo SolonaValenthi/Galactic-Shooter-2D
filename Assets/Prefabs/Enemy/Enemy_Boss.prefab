@@ -403,6 +403,8 @@ MonoBehaviour:
   _bossShield: {fileID: 4313622935129133465}
   _shieldDrone: {fileID: 1387528238238977153, guid: 3f16a73a4da76d249bf983dec210f23d,
     type: 3}
+  _debrisPrefab: {fileID: 1787627459992674184, guid: c5949ea4bb352624bb791eba3713b25e,
+    type: 3}
   _laserClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _shotgunClip: {fileID: 8300000, guid: 59f7957260481714e8b0d23a85076769, type: 3}
   _chargeClip: {fileID: 8300000, guid: 5d20d2d35e7224844b19a08307354655, type: 3}

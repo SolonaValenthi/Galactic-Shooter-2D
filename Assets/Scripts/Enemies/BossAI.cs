@@ -33,6 +33,8 @@ public class BossAI : MonoBehaviour
     [SerializeField]
     private GameObject _shieldDrone;
     [SerializeField]
+    private GameObject _debrisPrefab;
+    [SerializeField]
     private AudioClip _laserClip;
     [SerializeField]
     private AudioClip _shotgunClip;
@@ -158,6 +160,7 @@ public class BossAI : MonoBehaviour
     private void OnDestroy()
     {
         _gameManager.OnBossDeath();
+        Instantiate(_debrisPrefab, transform.position, Quaternion.identity);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -168,7 +171,7 @@ public class BossAI : MonoBehaviour
             if (_shieldActive == false)
             {
                 Laser hitBy = other.GetComponent<Laser>();
-                hitBy.HitEnemy(); ;
+                hitBy.HitEnemy();
             }
         }
     }
