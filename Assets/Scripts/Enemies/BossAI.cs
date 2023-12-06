@@ -29,6 +29,8 @@ public class BossAI : MonoBehaviour
     [SerializeField]
     private GameObject _explosion;
     [SerializeField]
+    private GameObject _finalExplosion;
+    [SerializeField]
     private GameObject _bossShield;
     [SerializeField]
     private GameObject _shieldDrone;
@@ -192,7 +194,6 @@ public class BossAI : MonoBehaviour
         {
             turret.SetActive(false);
         }
-        Destroy(this.gameObject, 10.0f);
     }
 
     private void Intermission()
@@ -498,6 +499,7 @@ public class BossAI : MonoBehaviour
         GameObject charger = Instantiate(_laserCharge, _turrets[turret].transform.position, Quaternion.Euler(Vector3.forward * Random.Range(-180, 181)));
         _bossAudio.PlayOneShot(_chargeClip);
         Destroy(charger, 0.7f);
+
         for (int i = 0; i < 3; i++)
         {
             _targetIndicators[turret].SetActive(false);
@@ -547,6 +549,11 @@ public class BossAI : MonoBehaviour
             yield return explosionDelay;
             explosionTime -= 0.07f;
         }
+
+        yield return null;
+        Instantiate(_finalExplosion, transform.position, Quaternion.identity);
+        yield return null;
+        Destroy(this.gameObject, 0.25f);
     }
 
     public void Damage(int damageTaken)
