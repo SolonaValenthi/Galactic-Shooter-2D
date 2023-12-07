@@ -477,6 +477,7 @@ public class BossAI : MonoBehaviour
         GameObject newGiga = Instantiate(_gigaLaser, _centralTurret.transform.position, Quaternion.identity);
         Laser gigaLaser = newGiga.GetComponent<Laser>();
         gigaLaser.SetSweep(_playerObj.transform.position);
+        StartCoroutine(_cameraShake.ShakeCamera(3.65f, 0.2f));
         StartCoroutine(SelectAttack(2.5f));
     }
 
