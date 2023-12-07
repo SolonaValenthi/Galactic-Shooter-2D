@@ -411,6 +411,7 @@ MonoBehaviour:
   _shotgunClip: {fileID: 8300000, guid: 59f7957260481714e8b0d23a85076769, type: 3}
   _chargeClip: {fileID: 8300000, guid: 5d20d2d35e7224844b19a08307354655, type: 3}
   _pierceClip: {fileID: 8300000, guid: e40b5e2891dd2c944874e7276f70e5e7, type: 3}
+  _gigaClip: {fileID: 8300000, guid: 200132cf753f38142aac43cf6b6d6249, type: 3}
 --- !u!50 &8096012999666105747
 Rigidbody2D:
   serializedVersion: 4
