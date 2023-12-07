@@ -161,8 +161,10 @@ public class BossAI : MonoBehaviour
 
     private void OnDestroy()
     {
-        _gameManager.OnBossDeath();
-        Instantiate(_debrisPrefab, transform.position, Quaternion.identity);
+        if (_gameManager != null)
+        {
+            
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -554,6 +556,8 @@ public class BossAI : MonoBehaviour
         yield return null;
         Instantiate(_finalExplosion, transform.position, Quaternion.identity);
         yield return null;
+        Instantiate(_debrisPrefab, transform.position, Quaternion.identity);
+        _gameManager.OnBossDeath();
         Destroy(this.gameObject, 0.25f);
     }
 
