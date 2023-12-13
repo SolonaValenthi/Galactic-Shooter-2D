@@ -78,11 +78,13 @@ public class SpawnManager : MonoBehaviour
 
     private void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.O) && _waveSkipped == false)
         {
             _waveSkipped = true;
             SkipToBoss();
         }
+        */
     }
 
     private void CalculateWave()
@@ -103,7 +105,7 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    // for testing purposes only, remove from final version
+    // for testing purposes only, disable in final version
     private void SkipToBoss()
     {
         currentWave = 5;
